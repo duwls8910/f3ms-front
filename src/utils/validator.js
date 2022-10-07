@@ -1,0 +1,39 @@
+// // 기수, 팀, 팀원 등록 시 필수 조건으로 작성해야하는 체크
+// import {
+//   number,
+//   startDate,
+//   endDate,
+//   inputStatus,
+// } from 'Modal/number/RegisterModals';
+
+// module.exports = {
+//   numberName: () => {
+//     // 기수명은 seb_00 form
+//     const isNumber = 'seb_40';
+//     if (isNumber === '') {
+//       return false;
+//     }
+//     return number;
+//   },
+//   isStart: () => {
+//     const start = startDate;
+//     if (start === '') {
+//       return false;
+//     }
+//     return startDate;
+//   },
+//   isEnd: () => {
+//     const start = endDate;
+//     if (start === '') {
+//       return false;
+//     }
+//     return endDate;
+//   },
+//   isClosed: () => {
+//     const status = inputStatus;
+//     if (inputStatus === false) {
+//       return false;
+//     }
+//     return status;
+//   },
+// };
