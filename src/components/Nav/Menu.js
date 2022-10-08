@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import bars from 'components/Nav/img/bars.png';
+import bars from 'assets/bars.png';
 
 export const ModalContainer = styled.div`
   text-align: center;

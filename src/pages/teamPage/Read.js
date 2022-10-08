@@ -8,6 +8,7 @@
 // 000 (int값으로)
 
 import React, { useEffect, useState } from 'react';
+import TeamList from 'pages/teamPage/teamList';
 import RegisterModals from 'components/Modal/team/RegisterModals';
 import UpdateModals from 'components/Modal/team/UpdateModals';
 import DeleteModals from 'components/Modal/team/DeleteModals';
@@ -15,53 +16,46 @@ import { Box, Stack, Button } from '@mui/material';
 import { StylesProvider } from '@material-ui/core';
 import styled from 'styled-components';
 
-export const EntireTeamPage = styled.div`
-  > div.teamPage {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: absolute;
-    top: 120px;
-    right: 70vh;
-  }
-`;
-
 export const TeamPageView = styled.div`
   display: flex;
-  flex-grow: 1;
-  flex-wrap: wrap-reverse;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 `;
 
-export const RegisterButtonPosition = styled.div`
-  position: relative;
-  /* top: 35%;
-  right: 100%; */
-  transform: translateX(50%);
-  margin: 4rem 0;
-`;
-
-export const UpdateButtonPosition = styled.div`
-  position: relative;
-  /* top: 138%;
-  right: 70%; */
-  transform: translateX(50%);
-  margin: 4rem 0;
-`;
-
-export const DeleteButtonPosition = styled.div`
-  position: relative;
-  /* top: 138%;
-  left: 30%; */
-  transform: translateX(50%);
-  margin: 4rem 0;
-`;
-
-export const MyButton = styled(Button)`
+export const TeamButton = styled(Button)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   border: 0;
   border-radius: 3px;
   height: 48px;
   padding: 0 30px;
 `;
+
+// export const  = styled.div`
+//   position: relative;
+//   /* top: 35%;
+//   right: 100%; */
+//   transform: translateX(50%);
+//   margin: 4rem 0;
+// `;
+
+// export const  = styled.div`
+//   position: relative;
+//   /* top: 138%;
+//   right: 70%; */
+//   transform: translateX(50%);
+//   margin: 4rem 0;
+// `;
+
+// export const  = styled.div`
+//   position: relative;
+//   /* top: 138%;
+//   left: 30%; */
+//   transform: translateX(50%);
+//   margin: 4rem 0;
+// `;
 
 export const ModalContainer = styled.div`
   display: flex;
@@ -168,127 +162,118 @@ const ReadTeam = () => {
   return (
     <>
       <Box>
-        <EntireTeamPage>
-          <div className='teamPage'>
-            <h3>팀명</h3>
-            <TeamPageView>
-              <br />
-              {selectedTeam.length === 0 && (
-                <div>{'진행여부를 선택해주세요'}</div>
-              )}
-              {progressTeam.map((id) => {
-                return (
-                  <input
-                    type='checkbox'
-                    value={id.data}
-                    onChange={(e) =>
-                      handleChecked(e.target.checked, e.target.value)
-                    }
-                    checked={selectedTeam.includes(id.data) ? true : false}
-                  />
-                );
-              })}
-            </TeamPageView>
-
-            {selectedTeam.map((id) => {
+        <TeamPageView>
+          <div>
+            {selectedTeam.length === 0 && (
+              <div>{'진행여부를 선택해주세요'}</div>
+            )}
+            {progressTeam.map((id) => {
               return (
-                <div>
-                  <div key={id}>
-                    <div>{id}</div>
-                  </div>
-                  <div onClick={() => removeCheck(id)} />
-                </div>
+                <input
+                  type='checkbox'
+                  value={id.data}
+                  onChange={(e) =>
+                    handleChecked(e.target.checked, e.target.value)
+                  }
+                  checked={selectedTeam.includes(id.data) ? true : false}
+                />
               );
             })}
-            {selectedTeam ? (
-              <>
-                <h3 className='numberName'>{selectedTeam.number_id}</h3>
-                <h4 className='startDate'>{selectedTeam.start_date}</h4>
-                <h4 className='endDate'>{selectedTeam.end_date}</h4>
-                <h4 className='comment'>{selectedTeam.comment}</h4>
-              </>
-            ) : (
-              '해당 팀의 정보를 찾을 수 없습니다'
-            )}
           </div>
-        </EntireTeamPage>
-        <Stack spacing={1} direction='row'>
-          <StylesProvider injectFirst>
-            <RegisterButtonPosition>
-              <MyButton variant='contained' onClick={openModalHandler}>
+          {selectedTeam.map((id) => {
+            return (
+              <div>
+                <div key={id}>
+                  <div>{id}</div>
+                </div>
+                <div onClick={() => removeCheck(id)} />
+              </div>
+            );
+          })}
+          <TeamList />
+        </TeamPageView>
+        <div>
+          {selectedTeam ? (
+            <>
+              <h3 className='numberName'>{selectedTeam.number_id}</h3>
+              <h4 className='startDate'>{selectedTeam.start_date}</h4>
+              <h4 className='endDate'>{selectedTeam.end_date}</h4>
+              <h4 className='comment'>{selectedTeam.comment}</h4>
+            </>
+          ) : (
+            '해당 팀의 정보를 찾을 수 없습니다'
+          )}
+        </div>
+        <div>
+          <Stack spacing={1} direction='row'>
+            <StylesProvider injectFirst>
+              <TeamButton variant='contained' onClick={openModalHandler}>
                 등록
-              </MyButton>
-            </RegisterButtonPosition>
-          </StylesProvider>
-          <ModalContainer>
-            {modalOpen ? (
-              <ModalBackdrop onClick={openModalHandler}>
-                <ModalView
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <div className='close-btn' onClick={closeModalHandler}>
-                    &times;
-                  </div>
-                  <div className='desc'>
-                    <RegisterModals />
-                  </div>
-                </ModalView>
-              </ModalBackdrop>
-            ) : null}
-          </ModalContainer>
-          <StylesProvider injectFirst>
-            <UpdateButtonPosition>
-              <MyButton variant='contained' onClick={openUpdateHandler}>
+              </TeamButton>
+              <StylesProvider />
+              <ModalContainer>
+                {modalOpen ? (
+                  <ModalBackdrop onClick={openModalHandler}>
+                    <ModalView
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
+                    >
+                      <div className='close-btn' onClick={closeModalHandler}>
+                        &times;
+                      </div>
+                      <div className='desc'>
+                        <RegisterModals />
+                      </div>
+                    </ModalView>
+                  </ModalBackdrop>
+                ) : null}
+              </ModalContainer>
+              <TeamButton variant='contained' onClick={openUpdateHandler}>
                 수정
-              </MyButton>
-            </UpdateButtonPosition>
-          </StylesProvider>
-          <ModalContainer>
-            {updateOpen ? (
-              <ModalBackdrop onClick={openUpdateHandler}>
-                <ModalView
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <div className='close-btn' onClick={closeUpdateHandler}>
-                    &times;
-                  </div>
-                  <div className='desc'>
-                    <UpdateModals />
-                  </div>
-                </ModalView>
-              </ModalBackdrop>
-            ) : null}
-          </ModalContainer>
-          <StylesProvider injectFirst>
-            <DeleteButtonPosition>
-              <MyButton variant='contained' onClick={openDeleteHandler}>
+              </TeamButton>
+              <ModalContainer>
+                {updateOpen ? (
+                  <ModalBackdrop onClick={openUpdateHandler}>
+                    <ModalView
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
+                    >
+                      <div className='close-btn' onClick={closeUpdateHandler}>
+                        &times;
+                      </div>
+                      <div className='desc'>
+                        <UpdateModals />
+                      </div>
+                    </ModalView>
+                  </ModalBackdrop>
+                ) : null}
+              </ModalContainer>
+              <TeamButton variant='contained' onClick={openDeleteHandler}>
                 삭제
-              </MyButton>
-            </DeleteButtonPosition>
-          </StylesProvider>
-          <ModalContainer>
-            {deleteOpen ? (
-              <ModalBackdrop onClick={openDeleteHandler}>
-                <ModalView
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <div className='close-btn' onClick={closeDeleteHandler}>
-                    &times;
-                  </div>
-                  <div className='desc'>
-                    <DeleteModals />
-                  </div>
-                </ModalView>
-              </ModalBackdrop>
-            ) : null}
-          </ModalContainer>
-        </Stack>
+              </TeamButton>
+              <ModalContainer>
+                {deleteOpen ? (
+                  <ModalBackdrop onClick={openDeleteHandler}>
+                    <ModalView
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
+                    >
+                      <div className='close-btn' onClick={closeDeleteHandler}>
+                        &times;
+                      </div>
+                      <div className='desc'>
+                        <DeleteModals />
+                      </div>
+                    </ModalView>
+                  </ModalBackdrop>
+                ) : null}
+              </ModalContainer>
+            </StylesProvider>
+          </Stack>
+        </div>
       </Box>
     </>
   );

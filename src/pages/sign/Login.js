@@ -107,30 +107,54 @@ const Login = () => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     setLoading(true);
-    const { userEmail, password } = loginInfo;
-    axios
-      .post(
-        `http://localhost:3000`,
-        { userEmail: userEmail, password: password },
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        if (res.data.data.accessToken) {
-          localStorage.setItem('user', res.data.data.accessToken);
-        }
-        setLoading(false);
-        console.log('로그인 성공');
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
+    const userinfo = {
+      email: 'kimcoding@codestates.com',
+      password: 'a12341234',
+    };
+    await fetch('http://localhost:8080/', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(userinfo),
+    })
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+    console.log(userinfo);
   };
+
+  // const handleLogin = (event) => {
+  //   event.preventDefault();
+  //   setLoading(true);
+  //   const { userEmail, password } = loginInfo;
+  //   axios
+  //     .post(
+  //       `http://localhost:3000`,
+  //       { userEmail: userEmail, password: password },
+  //       {
+  //         headers: { 'Content-Type': 'application/json' },
+  //         withCredentials: true,
+  //       }
+  //     )
+  //     .then((res) => {
+  //       if (res.data.data.accessToken) {
+  //         localStorage.setItem('user', res.data.data.accessToken);
+  //       }
+  //       setLoading(false);
+  //       console.log('로그인 성공');
+  //     })
+  //     .catch((err) => {
+  //       setLoading(false);
+  //       console.log(err);
+  //     });
+  // };
 
   return (
     <>

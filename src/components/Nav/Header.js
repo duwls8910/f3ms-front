@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import MenuModal from 'components/Modal/Menu';
+import MenuModal from 'components/Nav/Menu';
 import styled from 'styled-components';
 import { Typography } from '@mui/material';
 import SearchBar from 'material-ui-search-bar';

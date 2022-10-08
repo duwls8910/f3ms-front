@@ -1,7 +1,7 @@
 import { useState } from 'react';
 // import axios from 'axios';
 // import { numberName, isStart, isEnd, isClosed } from 'utils/validator';
-import numberDummy from 'static/numberDummy';
+// import numberDummy from 'static/numberDummy';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
@@ -78,14 +78,13 @@ const RegisterModals = () => {
 
   // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
-    // const data = {
-    //   number_id: 40,
-    //   start_date: '2022-10-14',
-    //   end_date: '2022-12-16',
-    //   comment: 'dd',
-    //   is_closed: 'false',
-    // };
-    await fetch('http://localhost:3000/admin/management/number', {
+    const data = {
+      number_id: 40,
+      start_date: '2022-10-14',
+      end_date: '2022-12-16',
+      comment: 'dd',
+    };
+    await fetch('http://localhost:8080/admin/management/number', {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -95,7 +94,7 @@ const RegisterModals = () => {
       },
       redirect: 'follow',
       referrer: 'no-referrer',
-      body: JSON.stringify(numberDummy),
+      body: JSON.stringify(data),
     })
       .then((response) => console.log(response))
       .catch((err) => console.log(err));

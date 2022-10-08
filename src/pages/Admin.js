@@ -14,12 +14,32 @@
 // 조회 화면에서 로그인이 된 상태라는 것이 보여야함(로그아웃도 같이 조회화면에 띄울 수 있게?)
 // 3. 검색(기수, 팀, 팀원) 기능을 넣는다(어떻게? -> map, filter 사용?)
 
+// // 검색기능 -> 10.11까지 관련 기능 구현 안함
+// // p.p / m.p 구분을 할 수 있게 검색결과가 나와야함(필터)
+// // 사용자의 관점에서 검색 기능을 정의해야함
+// // 검색(seb_00 / seb_00_pre / 000) => 어떻게 검색을 해도 해당 검색 결과가 나와야함
+// // Ajax 호출에 따른 엘리먼트 동적 처리 검색해볼것(기존에 떠있던 정보들이 사라지고 검색도니 정보만 받아서 뿌려주는거) => 새로고침 없이 실행해야함
+
 import React, { useState, useEffect, useNavigate } from 'react';
 // import axios from "axios";
 import ReadNumber from 'pages/numberPage/Read';
 import ReadTeam from 'pages/teamPage/Read';
 import Loading from 'utils/LoadingIndicator';
 import { Button } from '@mui/material';
+import styled from 'styled-components';
+
+export const EntireAdminPage = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+`;
+
+export const GetNumber = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+`;
 
 const Admin = () => {
   const [loading, setLoading] = useState(false);
@@ -80,13 +100,14 @@ const Admin = () => {
   return (
     <>
       {loading ? <Loading /> : null}
-      <div>
+      <EntireAdminPage>
         <h3>기수명</h3>
         <div>
           <ReadNumber />
         </div>
         <div />
         <br />
+        <h3>팀명</h3>
         <div>
           <ReadTeam />
         </div>
@@ -104,11 +125,11 @@ const Admin = () => {
          <div className="frontend">프론트엔드</div>
          <br />
          <div className="backend">백엔드</div> */}
-      </div>
-      <Button variant='contained'>등록</Button>
-      <Button variant='contained'>수정</Button>
-      <Button variant='contained'>삭제</Button>
-      {/* <Button variant="contained" onClick={removeTitle}>삭제</Button> */}
+        <Button variant='contained'>등록</Button>
+        <Button variant='contained'>수정</Button>
+        <Button variant='contained'>삭제</Button>
+        {/* <Button variant="contained" onClick={removeTitle}>삭제</Button> */}
+      </EntireAdminPage>
     </>
   );
 };

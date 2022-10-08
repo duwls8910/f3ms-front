@@ -16,35 +16,16 @@ export const EntireNumberPage = styled.div`
 `;
 
 export const GetNumber = styled.div`
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
 `;
 
-export const RegisterButtonPosition = styled.div`
-  position: absolute;
-  top: 35%;
-  right: 95%;
-
-  /* transform: translateX(50%); */
-  margin: 4rem 0;
-`;
-
-export const UpdateButtonPosition = styled.div`
-  position: absolute;
-  top: 43%;
-  right: 90%;
-  /* transform: translateX(50%); */
-  margin: 4rem 0;
-`;
-
-export const DeleteButtonPosition = styled.div`
-  position: absolute;
-  top: 43%;
-  right: 85%;
-  /* transform: translateX(50%); */
-  margin: 4rem 0;
-`;
-
-export const MyButton = styled(Button)`
+export const NumberButton = styled(Button)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   border: 0;
   border-radius: 3px;
   height: 48px;
@@ -53,6 +34,7 @@ export const MyButton = styled(Button)`
 
 export const ModalContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -104,7 +86,6 @@ const ReadNumber = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  // const navigate = useNavigate();
 
   // 전체 기수 데이터 조회 시
   // const getNumber = async () => {
@@ -130,12 +111,6 @@ const ReadNumber = () => {
   const removeCheck = (id) => {
     setSelectedNumber(selectedNumber.filter((el) => el !== id));
   };
-
-  // // 검색기능 -> 10.11까지 관련 기능 구현 안함
-  // // p.p / m.p 구분을 할 수 있게 검색결과가 나와야함(필터)
-  // // 사용자의 관점에서 검색 기능을 정의해야함
-  // // 검색(seb_00 / seb_00_pre / 000) => 어떻게 검색을 해도 해당 검색 결과가 나와야함
-  // // Ajax 호출에 따른 엘리먼트 동적 처리 검색해볼것(기존에 떠있던 정보들이 사라지고 검색도니 정보만 받아서 뿌려주는거) => 새로고침 없이 실행해야함
 
   // active 기수 / 종료 기수 구분
   // active한 기수의 경우 수정을 할 수 있어야함 => 팀 이름은 고유한 데이터 값이기 때문에 당연히 수정되면 안됨
@@ -196,14 +171,12 @@ const ReadNumber = () => {
                 <div key={id}>
                   <div>{id}</div>
                 </div>
-                <NumberList onClick={() => removeCheck(id)} />
+                <div onClick={() => removeCheck(id)} />
               </div>
             );
           })}
         </EntireNumberPage>
-        <GetNumber>
-          <NumberList />
-        </GetNumber>
+        <NumberList />
         <div>
           {selectedNumber ? (
             <>
@@ -216,15 +189,12 @@ const ReadNumber = () => {
             '기수의 정보를 찾을 수 없습니다'
           )}
         </div>
-
         <div>
           <Stack spacing={1} direction='row'>
             <StylesProvider injectFirst>
-              <RegisterButtonPosition>
-                <MyButton variant='contained' onClick={openModalHandler}>
-                  등록
-                </MyButton>
-              </RegisterButtonPosition>
+              <NumberButton variant='contained' onClick={openModalHandler}>
+                등록
+              </NumberButton>
             </StylesProvider>
             <ModalContainer>
               {modalOpen ? (
@@ -244,13 +214,10 @@ const ReadNumber = () => {
                 </ModalBackdrop>
               ) : null}
             </ModalContainer>
-
             <StylesProvider injectFirst>
-              <UpdateButtonPosition>
-                <MyButton variant='contained' onClick={openUpdateHandler}>
-                  수정
-                </MyButton>
-              </UpdateButtonPosition>
+              <NumberButton variant='contained' onClick={openUpdateHandler}>
+                수정
+              </NumberButton>
             </StylesProvider>
             <ModalContainer>
               {updateOpen ? (
@@ -270,14 +237,9 @@ const ReadNumber = () => {
                 </ModalBackdrop>
               ) : null}
             </ModalContainer>
-
-            <StylesProvider injectFirst>
-              <DeleteButtonPosition>
-                <MyButton variant='contained' onClick={openDeleteHandler}>
-                  삭제
-                </MyButton>
-              </DeleteButtonPosition>
-            </StylesProvider>
+            <NumberButton variant='contained' onClick={openDeleteHandler}>
+              삭제
+            </NumberButton>
             <ModalContainer>
               {deleteOpen ? (
                 <ModalBackdrop onClick={openDeleteHandler}>
