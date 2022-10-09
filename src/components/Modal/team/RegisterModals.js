@@ -84,14 +84,32 @@ const RegisterModals = () => {
 
   // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
-    await axios
-      .post(`http://localhost:8080/admin/management/team`, {
-        headers: {
-          'Content-Type': 'application/json',
-          withCredentials: true,
-        },
-      })
+    const data = {
+      team_name: 'seb_40_pre_001',
+      is_closed: false,
+    };
+    await fetch('http://localhost:8080/admin/management/team', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(data),
+    })
+      .then((response) => console.log(response))
       .catch((err) => console.log(err));
+    // await axios
+    //   .post(`http://localhost:8080/admin/management/team`, {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       withCredentials: true,
+    //     },
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   return (

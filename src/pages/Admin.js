@@ -24,14 +24,14 @@ import React, { useState, useEffect, useNavigate } from 'react';
 // import axios from "axios";
 import ReadNumber from 'pages/numberPage/Read';
 import ReadTeam from 'pages/teamPage/Read';
+import ReadMember from 'pages/memberPage/Read';
 import Loading from 'utils/LoadingIndicator';
-import { Button } from '@mui/material';
 import styled from 'styled-components';
 
 export const EntireAdminPage = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
 `;
 
 export const GetNumber = styled.div`
@@ -53,21 +53,21 @@ const Admin = () => {
   // 팀
   const [team, setTeam] = useState('');
 
-  // try {
-  //   fetch("http://localhost:3000/view")
-  //     .then((res) => {
-  //       console.log(res);
-  //       return res.json();
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // } catch (err) {
-  //   console.log(err);
-  // }
+  try {
+    fetch('http://localhost:8080/admin/management/team')
+      .then((res) => {
+        console.log(res);
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (err) {
+    console.log(err);
+  }
 
   // const navigate = useNavigate();
 
@@ -101,14 +101,14 @@ const Admin = () => {
     <>
       {loading ? <Loading /> : null}
       <EntireAdminPage>
-        <h3>기수명</h3>
         <div>
+          <h3>기수명</h3>
           <ReadNumber />
         </div>
         <div />
         <br />
-        <h3>팀명</h3>
         <div>
+          <h3>팀명</h3>
           <ReadTeam />
         </div>
         {/* <div>
@@ -118,17 +118,10 @@ const Admin = () => {
          </div> */}
         <div />
         <br />
-        <h3>팀원</h3>
-        <div className='member'>{name.title}</div>
-        {/* <div className="position">포지션</div>
-         <br />
-         <div className="frontend">프론트엔드</div>
-         <br />
-         <div className="backend">백엔드</div> */}
-        <Button variant='contained'>등록</Button>
-        <Button variant='contained'>수정</Button>
-        <Button variant='contained'>삭제</Button>
-        {/* <Button variant="contained" onClick={removeTitle}>삭제</Button> */}
+        <div>
+          <h3>팀원</h3>
+          <ReadMember />
+        </div>
       </EntireAdminPage>
     </>
   );

@@ -15,13 +15,6 @@ export const EntireNumberPage = styled.div`
   justify-content: left;
 `;
 
-export const GetNumber = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  align-items: flex-start;
-`;
-
 export const NumberButton = styled(Button)`
   display: flex;
   flex-direction: row;

@@ -98,6 +98,7 @@ const RegisterModals = () => {
     })
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
+    console.log(data);
     // if (!number) {
     //   setNumberError(true);
     //   alert('기수명을 작성해주세요');

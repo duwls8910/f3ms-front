@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Loading from 'utils/LoadingIndicator';
 import styled from 'styled-components';
 import { Stack, Button } from '@mui/material';
 import { StylesProvider } from '@material-ui/core';
@@ -69,6 +70,7 @@ export const ModalView = styled.div.attrs((props) => ({
 `;
 
 const DeleteModals = () => {
+  const [loading, setLoading] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   // 삭제 버튼을 눌렀을 때 작용할 클릭 이벤트
@@ -85,13 +87,18 @@ const DeleteModals = () => {
   };
 
   const closeModal = () => {
-    setOpenDeleteModal(!openDeleteModal);
+    setLoading(true);
+    setOpenDeleteModal(false);
   };
 
   return (
     <>
       <ModalContainer>
-        <span>해당 기수 정보를 삭제하시겠습니까?</span>
+        <span>
+          해당 기수 정보를
+          <br />
+          삭제하시겠습니까?
+        </span>
         <Stack spacing={1} direction='row'>
           <div>
             <StylesProvider injectFirst>
@@ -101,6 +108,7 @@ const DeleteModals = () => {
                 </MyButton>
               </OkButtonPosition>
               <NoButtonPosition>
+                {loading ? <Loading /> : null}
                 <MyButton variant='contained' onClick={closeModal}>
                   아니오
                 </MyButton>

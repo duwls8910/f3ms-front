@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import MenuModal from 'components/Nav/Menu';
+import Sidebar from 'components/Nav/Sidebar';
 import styled from 'styled-components';
 import { Typography } from '@mui/material';
 import SearchBar from 'material-ui-search-bar';
@@ -10,7 +10,7 @@ import './Header.css';
 export const SearchContainer = styled.div`
   align-items: flex-end;
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 700px;
 `;
 
 const Header = () => {
@@ -36,7 +36,7 @@ const Header = () => {
       <header>
         <nav className='navbar'>
           <div className='nav-links nav-menu'>
-            <MenuModal />
+            <Sidebar />
           </div>
           <div>
             <NavLink to='/' className='nav-links'>
