@@ -8,7 +8,7 @@ export default function Team() {
         <div>
           {teamDummy.map((team) => (
             <div>
-              <Link to='/admin/management/team/member' key={team.id}>
+              <Link to='/admin/management/member' key={team.id}>
                 {team.team_name}
               </Link>
             </div>

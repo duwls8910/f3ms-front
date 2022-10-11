@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import bars from 'assets/bars.png';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+
+export const Bar = styled.div`
+  display: flex;
+  align-items: flex-start;
+  text-decoration: none;
+`;
 
 export const ModalContainer = styled.div`
   text-align: center;
@@ -76,34 +83,36 @@ function Menu() {
 
   return (
     <>
-      <ModalContainer onClick={openModalHandler}>
-        <ModalBtn onClick={openModalHandler}>
-          <img src={bars} alt='' />
-        </ModalBtn>
-        {modalIsOpen ? (
-          <ModalBackdrop onClick={openModalHandler}>
-            <ModalView
-              onClick={(event) => {
-                event.stopPropagation();
-              }}
-            >
-              <div className='close-btn' onClick={openModalHandler}>
-                &times;
-              </div>
-              <div className='desc'></div>
-              <NavLink to='/admin/management/number' className='desc'>
-                <div>기수</div>
-              </NavLink>
-              <NavLink to='/admin/management/team' className='desc'>
-                <div>팀</div>
-              </NavLink>
-              <NavLink to='/admin/management/member' className='desc'>
-                <div>팀원</div>
-              </NavLink>
-            </ModalView>
-          </ModalBackdrop>
-        ) : null}
-      </ModalContainer>
+      <Bar>
+        <ModalContainer onClick={openModalHandler}>
+          <IconButton>
+            <MenuIcon fontSize='large' />
+          </IconButton>
+          {modalIsOpen ? (
+            <ModalBackdrop onClick={openModalHandler}>
+              <ModalView
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+              >
+                <div className='close-btn' onClick={openModalHandler}>
+                  &times;
+                </div>
+                <div className='desc' />
+                <NavLink to='/admin/management/number' className='desc'>
+                  <div>기수</div>
+                </NavLink>
+                <NavLink to='/admin/management/team' className='desc'>
+                  <div>팀</div>
+                </NavLink>
+                <NavLink to='/admin/management/member' className='desc'>
+                  <div>팀원</div>
+                </NavLink>
+              </ModalView>
+            </ModalBackdrop>
+          ) : null}
+        </ModalContainer>
+      </Bar>
     </>
   );
 }
