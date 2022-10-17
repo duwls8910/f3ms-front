@@ -1,13 +1,21 @@
 // 전체 기수 조회 페이지
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 // import axios from 'axios';
-import styled from 'styled-components';
-import NumberList from 'pages/numberPage/numberList';
 import RegisterModals from 'components/Modal/number/RegisterModals';
 import UpdateModals from 'components/Modal/number/UpdateModals';
-import DeleteModals from 'components/Modal/number/DeleteModals';
 import { Box, Stack, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
+import {
+  TableContainer,
+  TableHead,
+  Table,
+  TableRow,
+  TableBody,
+  TableCell,
+  StylesProvider,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import styled from 'styled-components';
 
 export const EntireNumberPage = styled.div`
   display: flex;
@@ -74,16 +82,65 @@ const progressNumber = [
   { id: 1, data: '종료' },
 ];
 
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+});
+
+const numberRows = [
+  {
+    name: 'seb_40',
+    start_date: '2022-10-20',
+    end_date: '2022-11-07',
+    comment: '40기 화이팅!',
+    is_closed: 'X',
+  },
+  {
+    name: 'seb_41',
+    start_date: '2022-10-20',
+    end_date: '2022-11-07',
+    comment: '',
+    is_closed: 'X',
+  },
+  {
+    name: 'seb_42',
+    start_date: '2022-10-20',
+    end_date: '2022-11-07',
+    comment: '',
+    is_closed: 'X',
+  },
+  {
+    name: 'seb_43',
+    start_date: '2022-10-20',
+    end_date: '2022-11-07',
+    comment: '',
+    is_closed: 'X',
+  },
+];
+
 const ReadNumber = () => {
+  // const [number, setNumber] = useState('');
+  // const [isActive, setIsActive] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState([]);
+  const [rows, setRows] = useState(numberRows);
+  const [searched, setSearched] = useState('');
+  const classes = useStyles();
   const [modalOpen, setModalOpen] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const openUpdateHandler = () => {
+    setUpdateOpen(true);
+  };
+
+  const closeUpdateHandler = () => {
+    setUpdateOpen(false);
+  };
 
   // 전체 기수 데이터 조회 시
   // const getNumber = async () => {
   //   const json = await (
-  //     await fetch('http://localhost:3000/admin/management/number')
+  //     await fetch(`${process.env.REACT_APP_URL}/admin/management/number`)
   //   ).json();
   //   setNumber(json.data[0]);
   // };
@@ -117,22 +174,6 @@ const ReadNumber = () => {
 
   const closeModalHandler = () => {
     setModalOpen(false);
-  };
-
-  const openUpdateHandler = () => {
-    setUpdateOpen(true);
-  };
-
-  const closeUpdateHandler = () => {
-    setUpdateOpen(false);
-  };
-
-  const openDeleteHandler = () => {
-    setDeleteOpen(true);
-  };
-
-  const closeDeleteHandler = () => {
-    setDeleteOpen(false);
   };
 
   return (
@@ -169,7 +210,33 @@ const ReadNumber = () => {
             );
           })}
         </EntireNumberPage>
-        <NumberList />
+        {/* NumberList 컴포넌트 대신 데이터를 테이블 형식으로 바꾸기 */}
+        <TableContainer>
+          <Table className={classes.table} aria-label='simple table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>기수명</TableCell>
+                <TableCell align='right'>시작일(start date)</TableCell>
+                <TableCell align='right'>종료일(end date)</TableCell>
+                <TableCell align='right'>기타사항(comment)</TableCell>
+                <TableCell align='right'>기수종료여부</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.name}>
+                  <TableCell component='th' scope='row'>
+                    <Link to='/admin/management/number/detail'>{row.name}</Link>
+                  </TableCell>
+                  <TableCell align='right'>{row.start_date}</TableCell>
+                  <TableCell align='right'>{row.end_date}</TableCell>
+                  <TableCell align='right'>{row.comment}</TableCell>
+                  <TableCell align='right'>{row.is_closed}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <div>
           {selectedNumber ? (
             <>
@@ -225,27 +292,6 @@ const ReadNumber = () => {
                     </div>
                     <div className='desc'>
                       <UpdateModals />
-                    </div>
-                  </ModalView>
-                </ModalBackdrop>
-              ) : null}
-            </ModalContainer>
-            <NumberButton variant='contained' onClick={openDeleteHandler}>
-              삭제
-            </NumberButton>
-            <ModalContainer>
-              {deleteOpen ? (
-                <ModalBackdrop onClick={openDeleteHandler}>
-                  <ModalView
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    <div className='close-btn' onClick={closeDeleteHandler}>
-                      &times;
-                    </div>
-                    <div className='desc'>
-                      <DeleteModals />
                     </div>
                   </ModalView>
                 </ModalBackdrop>

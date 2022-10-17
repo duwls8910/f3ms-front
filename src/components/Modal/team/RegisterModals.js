@@ -88,7 +88,7 @@ const RegisterModals = () => {
       team_name: 'seb_40_pre_001',
       is_closed: false,
     };
-    await fetch('http://localhost:8080/admin/management/team', {
+    await fetch(`${process.env.REACT_APP_URL}/admin/management/team`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -103,7 +103,7 @@ const RegisterModals = () => {
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
     // await axios
-    //   .post(`http://localhost:8080/admin/management/team`, {
+    //   .post(`${process.env.REACT_APP_URL}/admin/management/team`, {
     //     headers: {
     //       'Content-Type': 'application/json',
     //       withCredentials: true,

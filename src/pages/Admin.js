@@ -54,7 +54,7 @@ const Admin = () => {
   const [team, setTeam] = useState('');
 
   try {
-    fetch('http://localhost:8080/admin/management/team')
+    fetch(`${process.env.REACT_APP_URL}/admin/management/team`)
       .then((res) => {
         console.log(res);
         return res.json();

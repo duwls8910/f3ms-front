@@ -8,12 +8,21 @@
 // 000 (int값으로)
 
 import React, { useEffect, useState } from 'react';
-import TeamList from 'pages/teamPage/teamList';
+import { Link } from 'react-router-dom';
 import RegisterModals from 'components/Modal/team/RegisterModals';
 import UpdateModals from 'components/Modal/team/UpdateModals';
 import DeleteModals from 'components/Modal/team/DeleteModals';
 import { Box, Stack, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
+import {
+  TableContainer,
+  TableHead,
+  Table,
+  TableRow,
+  TableBody,
+  TableCell,
+  StylesProvider,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 
 export const TeamPageView = styled.div`
@@ -32,30 +41,6 @@ export const TeamButton = styled(Button)`
   height: 48px;
   padding: 0 30px;
 `;
-
-// export const  = styled.div`
-//   position: relative;
-//   /* top: 35%;
-//   right: 100%; */
-//   transform: translateX(50%);
-//   margin: 4rem 0;
-// `;
-
-// export const  = styled.div`
-//   position: relative;
-//   /* top: 138%;
-//   right: 70%; */
-//   transform: translateX(50%);
-//   margin: 4rem 0;
-// `;
-
-// export const  = styled.div`
-//   position: relative;
-//   /* top: 138%;
-//   left: 30%; */
-//   transform: translateX(50%);
-//   margin: 4rem 0;
-// `;
 
 export const ModalContainer = styled.div`
   display: flex;
@@ -105,23 +90,58 @@ const progressTeam = [
   { id: 1, data: '종료' },
 ];
 
+const teamRows = [
+  {
+    team_name: 'seb_40_pre_001',
+    team_issue_id: '',
+    comment: '001 pre test',
+    is_opened: 'O',
+  },
+  {
+    team_name: 'seb_40_pre_002',
+    team_issue_id: '',
+    comment: '',
+    is_opened: 'O',
+  },
+  {
+    team_name: 'seb_40_pre_003',
+    team_issue_id: '',
+    comment: '',
+    is_opened: 'O',
+  },
+  {
+    team_name: 'seb_40_pre_004',
+    team_issue_id: '',
+    comment: '',
+    is_opened: 'O',
+  },
+];
+
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+});
+
 const ReadTeam = () => {
   const [view, setView] = useState('');
   const [selectedTeam, setSelectedTeam] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [rows, setRows] = useState(teamRows);
+  const classes = useStyles();
 
-  const getTeam = async () => {
-    const json = await (
-      await fetch('http://localhost:8080/admin/management/team')
-    ).json();
-    setView(json.data[0]);
-  };
+  // const getTeam = async () => {
+  //   const json = await (
+  //     await fetch(`${process.env.REACT_APP_URL}/admin/management/team`)
+  //   ).json();
+  //   setView(json.data[0]);
+  // };
 
-  useEffect(() => {
-    getTeam();
-  }, []);
+  // useEffect(() => {
+  //   getTeam();
+  // }, []);
 
   const handleChecked = (checked, id) => {
     if (checked) {
@@ -190,14 +210,38 @@ const ReadTeam = () => {
               </div>
             );
           })}
-          <TeamList />
+          <TableContainer>
+            <Table class team_name={classes.table} aria-label='simple table'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>기수명</TableCell>
+                  <TableCell align='right'>팀 이슈</TableCell>
+                  <TableCell align='right'>기타사항(comment)</TableCell>
+                  <TableCell align='right'>팀종료여부</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow key={row.team_name}>
+                    <TableCell component='th' scope='row'>
+                      <Link to='/admin/management/number/detail'>
+                        {row.team_name}
+                      </Link>
+                    </TableCell>
+                    <TableCell align='right'>{row.team_issue_id}</TableCell>
+                    <TableCell align='right'>{row.comment}</TableCell>
+                    <TableCell align='right'>{row.is_opened}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </TeamPageView>
         <div>
           {selectedTeam ? (
             <>
-              <h3 className='numberName'>{selectedTeam.number_id}</h3>
-              <h4 className='startDate'>{selectedTeam.start_date}</h4>
-              <h4 className='endDate'>{selectedTeam.end_date}</h4>
+              <h3 className='team_name'>{selectedTeam.team_name}</h3>
+              <h4 className='team_issue'>{selectedTeam.team_issue_id}</h4>
               <h4 className='comment'>{selectedTeam.comment}</h4>
             </>
           ) : (

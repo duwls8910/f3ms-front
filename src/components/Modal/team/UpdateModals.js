@@ -66,7 +66,7 @@ const RegisterModals = () => {
   // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
     await axios
-      .post(`http://localhost:8080/admin/management/team`, {
+      .post(`${process.env.REACT_APP_URL}/admin/management/team`, {
         headers: {
           'Content-Type': 'application/json',
           withCredentials: true,

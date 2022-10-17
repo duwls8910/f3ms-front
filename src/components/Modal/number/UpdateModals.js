@@ -67,23 +67,6 @@ const UpdateModals = () => {
     setNewNumber({ ...newNumber, [key]: e.target.value });
   };
 
-  // 시,분,초 타이머 기능
-  // const [time, setTime] = useState('00:00:00');
-
-  // const currentTime = () => {
-  //   const date = new Date();
-  //   const hours = String(date.getHours()).padStart(2, '0');
-  //   const minutes = String(date.getMinutes()).padStart(2, '0');
-  //   const seconds = String(date.getSeconds()).padStart(2, '0');
-  //   setTime(`${hours}: ${minutes}: ${seconds}`);
-  // };
-
-  // const startTime = () => {
-  //   setInterval(currentTime, 1000);
-  // };
-
-  // startTime();
-
   const handleClickRadioButton = (e) => {
     setInputStatus(e.target.value);
   };
@@ -91,7 +74,7 @@ const UpdateModals = () => {
   const onSubmit = async () => {
     try {
       await axios
-        .patch(`http://localhost:3000/admin/management/number`, {
+        .patch(`${process.env.REACT_APP_URL}/admin/management/number`, {
           number_id: newNumber.new_number_id,
           start_date: newNumber.new_start_date,
           end_date: newNumber.new_end_date,
@@ -105,23 +88,6 @@ const UpdateModals = () => {
       console.log(err);
     }
   };
-
-  // 시,분,초 타이머 기능
-  // const [time, setTime] = useState('00:00:00');
-
-  // const currentTime = () => {
-  //   const date = new Date();
-  //   const hours = String(date.getHours()).padStart(2, '0');
-  //   const minutes = String(date.getMinutes()).padStart(2, '0');
-  //   const seconds = String(date.getSeconds()).padStart(2, '0');
-  //   setTime(`${hours}: ${minutes}: ${seconds}`);
-  // };
-
-  // const startTime = () => {
-  //   setInterval(currentTime, 1000);
-  // };
-
-  // startTime();
 
   return (
     <>
@@ -142,7 +108,6 @@ const UpdateModals = () => {
       <div>프로젝트 진행 기간을 선택해주세요</div>
       <br />
       <div>프로젝트 시작일</div>
-      {/* <div>{time}</div> */}
       <DatePicker
         dateFormat='yyyy-MM-dd'
         selected={startDate}

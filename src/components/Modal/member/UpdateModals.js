@@ -50,7 +50,7 @@ const MemberRegister = () => {
       position_cd: 'backend',
       is_active: true,
     };
-    await fetch('http://localhost:8080/admin/management/number', {
+    await fetch(`${process.env.REACT_APP_URL}/admin/management/member`, {
       method: 'PATCH',
       mode: 'cors',
       cache: 'no-cache',
@@ -79,7 +79,7 @@ const MemberRegister = () => {
     // } else {
     // await axios
     //   .patch(
-    //     `http://localhost:8080/admin/management/number`,
+    //     `${process.env.REACT_APP_URL}/admin/management/member`,
     //     {
     //       headers: {
     //         'Content-Type': 'application/json',

@@ -53,21 +53,21 @@ const RegisterModals = () => {
   // 기수 선택 드롭다운 상태 관리
   const [selectedDropValue, setSelectedDropValue] =
     useState('기수를 선택하세요');
-  const [numberError, setNumberError] = useState(false);
-  const [dateError, setDateError] = useState(false);
-  const [closedError, setIsClosedError] = useState(false);
+  // const [numberError, setNumberError] = useState(false);
+  // const [dateError, setDateError] = useState(false);
+  // const [closedError, setIsClosedError] = useState(false);
   const [inputStatus, setInputStatus] = useState('');
   // console.log({ inputStatus });
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  // 기수 선택을 위한 드롭다운 이벤트
+  // 기수 선택을 위한 드롭다운
   const handleDropNumber = (e) => {
     const { value } = e.target;
     setSelectedDropValue(number_data.filter((el) => el.value === value)[0].id);
   };
 
-  // 기수 종료 여부를 위한 라디오버튼 이벤트
+  // 기수 종료 여부를 위한 라디오버튼
   const handleClickRadioButton = (e) => {
     setInputStatus(e.target.value);
   };
@@ -84,22 +84,7 @@ const RegisterModals = () => {
       end_date: '2022-12-16',
       comment: 'dd',
     };
-    await fetch('http://localhost:8080/admin/management/number', {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(data),
-    })
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err));
-    console.log(data);
-    // if (!number) {
+    // if (!numberName) {
     //   setNumberError(true);
     //   alert('기수명을 작성해주세요');
     // }
@@ -111,36 +96,23 @@ const RegisterModals = () => {
     //   setIsClosedError(true);
     //   alert('기수 종료 여부를 선택해주세요');
     // } else {
-    // await axios
-    //   .post(
-    //     `http://localhost:8080/admin/management/number`,
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         withCredentials: true,
-    //       },
-    //     }.then((res) => console.log(res))
-    //   )
-    //   .catch((err) => console.log(err));
     // }
+    await fetch(`${process.env.REACT_APP_URL}/admin/management/number`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(number),
+    })
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+    console.log(number);
   };
-
-  // 시,분,초 타이머 기능
-  // const [time, setTime] = useState('::');
-
-  // const currentTime = () => {
-  //   const date = new Date();
-  //   const hours = String(date.getHours()).padStart(2, '0');
-  //   const minutes = String(date.getMinutes()).padStart(2, '0');
-  //   const seconds = String(date.getSeconds()).padStart(2, '0');
-  //   setTime(`${hours}: ${minutes}: ${seconds}`);
-  // };
-
-  // const startTime = () => {
-  //   setInterval(currentTime, 10);
-  // };
-
-  // startTime();
 
   return (
     <>
@@ -161,7 +133,6 @@ const RegisterModals = () => {
       <div>프로젝트 진행 기간을 선택해주세요</div>
       <br />
       <div>프로젝트 시작일</div>
-      {/* <div>{time}</div> */}
       <DatePicker
         dateFormat='yyyy-MM-dd'
         selected={startDate}

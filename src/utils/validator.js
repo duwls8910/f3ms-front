@@ -6,34 +6,35 @@
 //   inputStatus,
 // } from 'Modal/number/RegisterModals';
 
-// module.exports = {
-//   numberName: () => {
-//     // 기수명은 seb_00 form
-//     const isNumber = 'seb_40';
-//     if (isNumber === '') {
-//       return false;
-//     }
-//     return number;
-//   },
-//   isStart: () => {
-//     const start = startDate;
-//     if (start === '') {
-//       return false;
-//     }
-//     return startDate;
-//   },
-//   isEnd: () => {
-//     const start = endDate;
-//     if (start === '') {
-//       return false;
-//     }
-//     return endDate;
-//   },
-//   isClosed: () => {
-//     const status = inputStatus;
-//     if (inputStatus === false) {
-//       return false;
-//     }
-//     return status;
-//   },
-// };
+// export default function numberName() {
+//   // 기수명은 seb_00 form
+//   const isNumber = 'seb_40';
+//   if (isNumber === '') {
+//     return false;
+//   }
+//   return number;
+// }
+
+// export function isStart() {
+//   const start = startDate;
+//   if (start === '') {
+//     return false;
+//   }
+//   return startDate;
+// }
+
+// export function isEnd() {
+//   const start = endDate;
+//   if (start === '') {
+//     return false;
+//   }
+//   return endDate;
+// }
+
+// export function isClosed() {
+//   const status = inputStatus;
+//   if (inputStatus === false) {
+//     return false;
+//   }
+//   return status;
+// }

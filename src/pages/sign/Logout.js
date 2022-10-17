@@ -13,12 +13,11 @@ const Logout = () => {
     setLoading(true);
     try {
       axios
-        .get(``, {
-          headers: { authroization: `` },
+        .get(`${process.env.REACT_APP_URL}`, {
           withCredentials: true,
         })
         .then((res) => {
-          navigate('/login');
+          navigate('/');
           setLoading(false);
           console.log('logout complete');
         });

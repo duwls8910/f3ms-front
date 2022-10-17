@@ -78,7 +78,7 @@ const DeleteModals = () => {
   // 완료처리 버튼을 만들자
   const handleClick = () => {
     axios
-      .delete(`http://localhost:4000/admin/management`, {
+      .delete(`${process.env.REACT_APP_URL}/admin/management/`, {
         withCredentials: true,
       })
       .then((res) => {

@@ -77,7 +77,7 @@ const ReadMember = () => {
   // 전체 멤버 데이터 조회 시
   // const getMember = async () => {
   //   const json = await (
-  //     await fetch('http://localhost:8080/admin/management/member')
+  //     await fetch(`${process.env.REACT_APP_URL}/admin/management/member`)
   //   ).json();
   //   setNumber(json.data[0]);
   // };

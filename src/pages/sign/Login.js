@@ -20,7 +20,7 @@
 //     const { userEmail, password } = loginInfo;
 //     axios
 //       .post(
-//         `http://localhost:8080`,
+//         `${process.env.REACT_APP_URL}`,
 //         { userEmail: userEmail, password: password },
 //         {
 //           headers: { 'Content-Type': 'application/json' },
@@ -113,7 +113,7 @@ const Login = () => {
       email: 'kimcoding@codestates.com',
       password: 'a12341234',
     };
-    await fetch('http://localhost:8080/', {
+    await fetch(`${process.env.REACT_APP_URL}`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -136,7 +136,7 @@ const Login = () => {
   //   const { userEmail, password } = loginInfo;
   //   axios
   //     .post(
-  //       `http://localhost:3000`,
+  //       `${process.env.REACT_APP_URL}`,
   //       { userEmail: userEmail, password: password },
   //       {
   //         headers: { 'Content-Type': 'application/json' },
