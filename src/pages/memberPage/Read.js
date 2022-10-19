@@ -1,19 +1,22 @@
 // 해당하는 팀의 멤버 조회 페이지
 import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-import styled from 'styled-components';
-import MemberList from 'pages/memberPage/memberList';
+import { Link } from 'react-router-dom';
 import RegisterModals from 'components/Modal/member/RegisterModals';
 import UpdateModals from 'components/Modal/member/UpdateModals';
 import DeleteModals from 'components/Modal/member/DeleteModals';
 import { Box, Stack, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
+import styled from 'styled-components';
 
-export const EntireMemberPage = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-`;
+import {
+  TableContainer,
+  TableHead,
+  Table,
+  TableRow,
+  TableBody,
+  TableCell,
+  StylesProvider,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 export const MemberButton = styled(Button)`
   display: flex;
@@ -68,24 +71,49 @@ export const ModalView = styled.div.attrs((props) => ({
   }
 `;
 
+const memberRows = [
+  {
+    member_name: 'kimcoding',
+    team_id: 'seb_40_pre_001',
+    position_cd: '프론트엔드',
+    comment: 'test',
+    is_closed: 'X',
+  },
+  {
+    member_name: 'parkhacker',
+    team_id: 'seb_40_pre_001',
+    position_cd: '백엔드',
+    comment: 'test1',
+    is_closed: 'X',
+  },
+];
+
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+});
+
 const ReadMember = () => {
+  const [member, setMember] = useState([]);
+  const [rows, setRows] = useState(memberRows);
   const [modalOpen, setModalOpen] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   // const navigate = useNavigate();
 
-  // 전체 멤버 데이터 조회 시
-  // const getMember = async () => {
-  //   const json = await (
-  //     await fetch(`${process.env.REACT_APP_URL}/admin/management/member`)
-  //   ).json();
-  //   setNumber(json.data[0]);
-  // };
+  const classes = useStyles();
 
-  // useEffect(() => {
-  //   getMember();
-  // }, []);
-  // const getMember = memberDummy.filter((member) => member.member === '김코딩');
+  // 전체 멤버 데이터 조회 시
+  useEffect(() => {
+    const getMember = async () => {
+      let json = await fetch(
+        `${process.env.REACT_APP_URL}/admin/management/member`
+      ).json();
+      setMember(json.data);
+    };
+    getMember();
+  }, []);
 
   // validation check(필수 조건을 입력했을 때만 넘어갈 수 있게끔)
   const openModalHandler = () => {
@@ -115,11 +143,32 @@ const ReadMember = () => {
   return (
     <>
       <Box>
-        <EntireMemberPage>
-          <div>
-            <MemberList />
-          </div>
-        </EntireMemberPage>
+        <TableContainer>
+          <Table className={classes.table} aria-label='simple table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>팀원 이름</TableCell>
+                <TableCell align='right'>팀 이름</TableCell>
+                <TableCell align='right'>포지션</TableCell>
+                <TableCell align='right'>하차여부</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.name}>
+                  <TableCell component='th' scope='row'>
+                    <Link to='/admin/management/issue/member'>
+                      {row.member_name}
+                    </Link>
+                  </TableCell>
+                  <TableCell align='right'>{row.team_id}</TableCell>
+                  <TableCell align='right'>{row.position_cd}</TableCell>
+                  <TableCell align='right'>{row.is_closed}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <div>
           <Stack spacing={1} direction='row'>
             <StylesProvider injectFirst>

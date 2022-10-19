@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import teamDummy from 'static/teamDummy';
-// import Sidebar from 'components/Nav/Sidebar';
 // import DropdownMenu from 'components/Nav/DropDownMenu';
 import styled from 'styled-components';
 import { Typography } from '@mui/material';
@@ -12,7 +11,7 @@ export const HeaderContainer = styled.header`
   width: 100%;
   height: 100px;
   overflow: hidden;
-  position: sticky;
+  position: relative;
   z-index: 1;
   background-color: rgb(234, 211, 172);
 `;
@@ -25,25 +24,51 @@ export const NavBar = styled.div`
   margin: 0 auto;
 `;
 
-export const NavStyle = styled(NavLink)`
+export const LogoStyle = styled(NavLink)`
   color: black;
-  font-size: 40px;
-  display: flex;
-  justify-content: center;
+  font-size: 20px;
   position: absolute;
   top: 20px;
+  left: 50px;
   &:link {
     transition: 0.5s;
     text-decoration: none;
   }
 `;
 
-export const LogoStyle = styled(NavLink)`
+const NumberLink = styled(NavLink)`
+  position: relative;
+  top: 30px;
+  left: 400px;
+  font-size: 30px;
+  text-decoration: none;
   color: black;
-  font-size: 20px;
-  position: absolute;
-  top: 10px;
-  left: 50px;
+  &:link {
+    transition: 0.5s;
+    text-decoration: none;
+  }
+`;
+
+const TeamLink = styled(NavLink)`
+  position: relative;
+  top: 30px;
+  left: 500px;
+  font-size: 30px;
+  text-decoration: none;
+  color: black;
+  &:link {
+    transition: 0.5s;
+    text-decoration: none;
+  }
+`;
+
+const MemberLink = styled(NavLink)`
+  position: relative;
+  top: 30px;
+  left: 600px;
+  font-size: 30px;
+  text-decoration: none;
+  color: black;
   &:link {
     transition: 0.5s;
     text-decoration: none;
@@ -52,8 +77,8 @@ export const LogoStyle = styled(NavLink)`
 
 export const SearchContainer = styled.div`
   position: absolute;
-  top: 10px;
-  right: 100px;
+  top: 23px;
+  right: 300px;
   max-width: 1440px;
   margin: 0 auto;
 `;
@@ -102,6 +127,9 @@ const Header = () => {
           </LogoStyle>
         </div>
         {/* <DropdownMenu /> */}
+        <NumberLink to='/admin/management/number'>기수</NumberLink>
+        <TeamLink to='/admin/management/number/detail'>팀</TeamLink>
+        <MemberLink to='/admin/management/member'>팀원</MemberLink>
         <div>
           <SearchContainer>
             <SearchBar

@@ -9,6 +9,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import NumberDetail from 'pages/numberPage/NumberDetail';
 import RegisterModals from 'components/Modal/team/RegisterModals';
 import UpdateModals from 'components/Modal/team/UpdateModals';
 import DeleteModals from 'components/Modal/team/DeleteModals';
@@ -211,7 +212,7 @@ const ReadTeam = () => {
             );
           })}
           <TableContainer>
-            <Table class team_name={classes.table} aria-label='simple table'>
+            <Table className={classes.table} aria-label='simple table'>
               <TableHead>
                 <TableRow>
                   <TableCell>기수명</TableCell>
@@ -224,7 +225,7 @@ const ReadTeam = () => {
                 {rows.map((row) => (
                   <TableRow key={row.team_name}>
                     <TableCell component='th' scope='row'>
-                      <Link to='/admin/management/number/detail'>
+                      <Link to='/admin/management/issue/team'>
                         {row.team_name}
                       </Link>
                     </TableCell>
@@ -316,6 +317,7 @@ const ReadTeam = () => {
                 ) : null}
               </ModalContainer>
             </StylesProvider>
+            <NumberDetail />
           </Stack>
         </div>
       </Box>

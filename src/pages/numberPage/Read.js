@@ -1,7 +1,6 @@
 // 전체 기수 조회 페이지
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import axios from 'axios';
 import RegisterModals from 'components/Modal/number/RegisterModals';
 import UpdateModals from 'components/Modal/number/UpdateModals';
 import { Box, Stack, Button } from '@mui/material';
@@ -82,49 +81,35 @@ const progressNumber = [
   { id: 1, data: '종료' },
 ];
 
+const numberRows = [
+  {
+    name: 'seb_40',
+    start_date: '2022-10-20',
+    end_date: '2022-11-04',
+    comment: 'test',
+    is_closed: 'X',
+  },
+  {
+    name: 'seb_41',
+    start_date: '2022-10-20',
+    end_date: '2022-11-04',
+    comment: 'test1',
+    is_closed: 'X',
+  },
+];
+
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 });
 
-const numberRows = [
-  {
-    name: 'seb_40',
-    start_date: '2022-10-20',
-    end_date: '2022-11-07',
-    comment: '40기 화이팅!',
-    is_closed: 'X',
-  },
-  {
-    name: 'seb_41',
-    start_date: '2022-10-20',
-    end_date: '2022-11-07',
-    comment: '',
-    is_closed: 'X',
-  },
-  {
-    name: 'seb_42',
-    start_date: '2022-10-20',
-    end_date: '2022-11-07',
-    comment: '',
-    is_closed: 'X',
-  },
-  {
-    name: 'seb_43',
-    start_date: '2022-10-20',
-    end_date: '2022-11-07',
-    comment: '',
-    is_closed: 'X',
-  },
-];
-
 const ReadNumber = () => {
-  // const [number, setNumber] = useState('');
+  const [number, setNumber] = useState([]);
   // const [isActive, setIsActive] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState([]);
   const [rows, setRows] = useState(numberRows);
-  const [searched, setSearched] = useState('');
+  // const [searched, setSearched] = useState('');
   const classes = useStyles();
   const [modalOpen, setModalOpen] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
@@ -138,16 +123,15 @@ const ReadNumber = () => {
   };
 
   // 전체 기수 데이터 조회 시
-  // const getNumber = async () => {
-  //   const json = await (
-  //     await fetch(`${process.env.REACT_APP_URL}/admin/management/number`)
-  //   ).json();
-  //   setNumber(json.data[0]);
-  // };
-
-  // useEffect(() => {
-  //   getNumber();
-  // }, []);
+  useEffect(() => {
+    const getNumber = async () => {
+      let json = await fetch(
+        `${process.env.REACT_APP_URL}/admin/management/number`
+      ).json();
+      setNumber(json.data);
+    };
+    getNumber();
+  }, []);
 
   // 기수 진행 여부 체크박스 표시를 위한 이벤트(handleChecked, removeCheck)
   const handleChecked = (checked, id) => {
@@ -210,7 +194,6 @@ const ReadNumber = () => {
             );
           })}
         </EntireNumberPage>
-        {/* NumberList 컴포넌트 대신 데이터를 테이블 형식으로 바꾸기 */}
         <TableContainer>
           <Table className={classes.table} aria-label='simple table'>
             <TableHead>

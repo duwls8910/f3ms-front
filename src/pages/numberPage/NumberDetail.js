@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ReadTeam from 'pages/teamPage/Read';
 import DeleteModals from 'components/Modal/number/DeleteModals';
 import { Button } from '@mui/material';
 import { StylesProvider } from '@material-ui/core';
@@ -73,7 +72,6 @@ const NumberDetail = () => {
   return (
     <>
       <div>
-        <ReadTeam />
         <StylesProvider injectFirst>
           <NumberButton variant='contained' onClick={openDeleteHandler}>
             기수 삭제

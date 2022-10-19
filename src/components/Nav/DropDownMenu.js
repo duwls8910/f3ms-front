@@ -8,8 +8,8 @@
 //   flex-direction: row;
 //   justify-content: space-around;
 //   align-items: center;
-//   position: absolute;
-//   left: 10rem;
+//   position: relative;
+//   left: 11rem;
 //   margin-left: 70px;
 //   color: black;
 //   font-size: 19px;
@@ -67,8 +67,6 @@
 
 // const Ul = styled.ul`
 //   & > li {
-//     position: relative;
-//     z-index: 10;
 //     margin-bottom: 10px;
 //   }
 
@@ -97,22 +95,18 @@
 //   }
 // `;
 
-// const Logout = styled.div`
-//   cursor: pointer;
-//   font-size: 16px;
-//   display: block;
-//   text-decoration: none;
-//   color: black;
-//   font-size: 19px;
-// `;
+// // const LogoutDiv = styled.div`
+// //   cursor: pointer;
+// //   font-size: 16px;
+// //   display: block;
+// //   text-decoration: none;
+// //   color: black;
+// //   font-size: 19px;
+// // `;
 
 // const DropdownMenu = () => {
 //   const [myPageIsOpen, myPageRef, myPageHandler] = useDetectClose(false);
 //   const [boardIsOpen, boardRef, boardHandler] = useDetectClose(false);
-
-//   const logoutClickHandler = () => {
-//     console.log('logout');
-//   };
 
 //   return (
 //     <Wrapper>
@@ -123,19 +117,13 @@
 //         <Menu isDropped={myPageIsOpen}>
 //           <Ul>
 //             <Li>
-//               <LinkWrapper>
-//                 <NavLink to='admin/management/number'>기수</NavLink>
-//               </LinkWrapper>
+//               <LinkWrapper to='admin/management/number'>기수</LinkWrapper>
 //             </Li>
 //             <Li>
-//               <LinkWrapper>
-//                 <NavLink to='admin/management/team'>팀</NavLink>
-//               </LinkWrapper>
+//               <LinkWrapper to='admin/management/team'>팀</LinkWrapper>
 //             </Li>
 //             <Li>
-//               <LinkWrapper>
-//                 <NavLink to='admin/management/member'>팀원</NavLink>
-//               </LinkWrapper>
+//               <LinkWrapper to='admin/management/member'>팀원</LinkWrapper>
 //             </Li>
 //           </Ul>
 //         </Menu>
@@ -158,7 +146,6 @@
 //           </Ul>
 //         </Menu>
 //       </DropdownContainer>
-//       <Logout onClick={logoutClickHandler}>로그아웃</Logout>
 //     </Wrapper>
 //   );
 // };

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
+import Loading from 'utils/LoadingIndicator';
 // import { numberName, isStart, isEnd, isClosed } from 'utils/validator';
-// import numberDummy from 'static/numberDummy';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
@@ -43,13 +43,7 @@ const number_data = [
 
 // // 기수 이름은 seb_은 지정된 값. 숫자는 마지막 숫자 +1로 자동으로 추가되도록(=> number_name)?
 const RegisterModals = () => {
-  const [number, setNumber] = useState({
-    number_id: 40,
-    start_date: new Date(),
-    end_date: new Date(),
-    comment: '',
-    is_closed: false,
-  });
+  const [number, setNumber] = useState([]);
   // 기수 선택 드롭다운 상태 관리
   const [selectedDropValue, setSelectedDropValue] =
     useState('기수를 선택하세요');
@@ -60,6 +54,7 @@ const RegisterModals = () => {
   // console.log({ inputStatus });
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [loading, setLoading] = useState(false);
 
   // 기수 선택을 위한 드롭다운
   const handleDropNumber = (e) => {
@@ -78,12 +73,6 @@ const RegisterModals = () => {
 
   // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
-    const data = {
-      number_id: 40,
-      start_date: '2022-10-14',
-      end_date: '2022-12-16',
-      comment: 'dd',
-    };
     // if (!numberName) {
     //   setNumberError(true);
     //   alert('기수명을 작성해주세요');
@@ -97,25 +86,31 @@ const RegisterModals = () => {
     //   alert('기수 종료 여부를 선택해주세요');
     // } else {
     // }
-    await fetch(`${process.env.REACT_APP_URL}/admin/management/number`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(number),
-    })
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err));
-    console.log(number);
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_URL}/admin/management/number`,
+        {
+          number: number.number_id,
+          startDate: number.start_date,
+          endDate: number.end_date,
+          comment: number.comment,
+          closed: number.is_closed,
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      );
+      setLoading(false);
+      // console.log(number);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <>
+      {loading ? <Loading /> : null}
       <h4>기수(필수 입력)</h4>
       <Autocomplete
         id='combo-box-demo'
