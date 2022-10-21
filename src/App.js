@@ -8,7 +8,11 @@ import ReadNumber from 'pages/numberPage/Read';
 import ReadTeam from 'pages/teamPage/Read';
 import ReadMember from 'pages/memberPage/Read';
 
-import TeamIssue from 'pages/IssuePage/TeamIssue';
+import SpecificNumber from 'pages/numberPage/SpecificNumber';
+import SpecificTeam from 'pages/teamPage/SpecificTeam';
+import SpecificMember from 'pages/memberPage/SpecificMember';
+
+// import TeamIssue from 'pages/IssuePage/TeamIssue';
 
 function App() {
   return (
@@ -17,11 +21,20 @@ function App() {
       <Routes>
         <Route exact path='/' element={<Login />} />
         <Route path='/admin/management' element={<Admin />} />
+
         <Route path='/admin/management/number' element={<ReadNumber />} />
-        <Route path='/admin/management/number/detail' element={<ReadTeam />} />
-        {/* <Route path='/admin/management/team' element={<ReadTeam />} /> */}
+        <Route path='/admin/management/team' element={<ReadTeam />} />
         <Route path='/admin/management/member' element={<ReadMember />} />
-        <Route path='/admin/management/issue/team' element={<TeamIssue />} />
+
+        <Route
+          path='/admin/management/number/:id'
+          element={<SpecificNumber />}
+        />
+        <Route path='/admin/management/team/:id' element={<SpecificTeam />} />
+        <Route
+          path='/admin/management/member/:id'
+          element={<SpecificMember />}
+        />
       </Routes>
     </BrowserRouter>
   );

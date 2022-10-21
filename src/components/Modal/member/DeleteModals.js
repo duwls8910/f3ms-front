@@ -72,32 +72,35 @@ export const MyButton = styled(Button)`
 
 const DeleteModals = () => {
   const [loading, setLoading] = useState(false);
+  const [numberName, setNumberName] = useState('');
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   // 삭제 버튼을 눌렀을 때 작용할 클릭 이벤트
   // 사용자에게는 삭제처럼 보이지만 실제로는 비활성화임(true / false)
   // 완료처리 버튼을 만들자
-  const handleClick = () => {
-    axios
-      .delete(`${process.env.REACT_APP_URL}/admin/management`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
+
+  const handleClick = async () => {
+    try {
+      await axios.delete(
+        `${process.env.REACT_APP_URL}/admin/management/number/${numberName}`
+      );
+      openDeleteModal(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const closeModal = () => {
-    setLoading(true);
+    setLoading(false);
     setOpenDeleteModal(false);
   };
 
   return (
     <>
+      {loading ? <Loading /> : null}
       <ModalContainer>
         <div>
-          해당 멤버의 정보를
+          해당 수강생의 정보를
           <br />
           삭제하시겠습니까?
         </div>
@@ -110,7 +113,6 @@ const DeleteModals = () => {
                 </MyButton>
               </OkButtonPosition>
               <NoButtonPosition>
-                {loading ? <Loading /> : null}
                 <MyButton variant='contained' onClick={closeModal}>
                   아니오
                 </MyButton>

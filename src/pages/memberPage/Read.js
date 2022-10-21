@@ -1,10 +1,11 @@
 // 해당하는 팀의 멤버 조회 페이지
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Loading from 'utils/LoadingIndicator';
 import RegisterModals from 'components/Modal/member/RegisterModals';
-import UpdateModals from 'components/Modal/member/UpdateModals';
-import DeleteModals from 'components/Modal/member/DeleteModals';
 import { Box, Stack, Button } from '@mui/material';
+import axios from 'axios';
+import { nanoid } from 'nanoid';
 import styled from 'styled-components';
 
 import {
@@ -41,7 +42,7 @@ export const ModalBackdrop = styled.div`
   justify-content: center;
   align-items: center;
   width: 400px;
-  height: 600px;
+  height: 550px;
   top: 0;
   bottom: 0;
   left: 0;
@@ -65,7 +66,7 @@ export const ModalView = styled.div.attrs((props) => ({
 
   > div.close-btn {
     position: absolute;
-    bottom: 320px;
+    bottom: 290px;
     left: 17rem;
     cursor: pointer;
   }
@@ -73,14 +74,14 @@ export const ModalView = styled.div.attrs((props) => ({
 
 const memberRows = [
   {
-    member_name: 'kimcoding',
+    name: 'kimcoding',
     team_id: 'seb_40_pre_001',
     position_cd: '프론트엔드',
     comment: 'test',
     is_closed: 'X',
   },
   {
-    member_name: 'parkhacker',
+    name: 'parkhacker',
     team_id: 'seb_40_pre_001',
     position_cd: '백엔드',
     comment: 'test1',
@@ -97,9 +98,8 @@ const useStyles = makeStyles({
 const ReadMember = () => {
   const [member, setMember] = useState([]);
   const [rows, setRows] = useState(memberRows);
+  const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [updateOpen, setUpdateOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
   // const navigate = useNavigate();
 
   const classes = useStyles();
@@ -107,10 +107,12 @@ const ReadMember = () => {
   // 전체 멤버 데이터 조회 시
   useEffect(() => {
     const getMember = async () => {
-      let json = await fetch(
-        `${process.env.REACT_APP_URL}/admin/management/member`
-      ).json();
-      setMember(json.data);
+      const response = await axios(
+        `${process.env.REACT_APP_URL}/admin/management/number`
+      );
+      setMember(response.data);
+      setRows(response.data);
+      setLoading(false);
     };
     getMember();
   }, []);
@@ -124,24 +126,9 @@ const ReadMember = () => {
     setModalOpen(false);
   };
 
-  const openUpdateHandler = () => {
-    setUpdateOpen(true);
-  };
-
-  const closeUpdateHandler = () => {
-    setUpdateOpen(false);
-  };
-
-  const openDeleteHandler = () => {
-    setDeleteOpen(true);
-  };
-
-  const closeDeleteHandler = () => {
-    setDeleteOpen(false);
-  };
-
   return (
     <>
+      {loading ? <Loading /> : null}
       <Box>
         <TableContainer>
           <Table className={classes.table} aria-label='simple table'>
@@ -155,9 +142,9 @@ const ReadMember = () => {
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <TableRow key={row.name}>
+                <TableRow key={nanoid()}>
                   <TableCell component='th' scope='row'>
-                    <Link to='/admin/management/issue/member'>
+                    <Link to='/admin/management/member/:id'>
                       {row.member_name}
                     </Link>
                   </TableCell>
@@ -188,53 +175,7 @@ const ReadMember = () => {
                       &times;
                     </div>
                     <div className='desc'>
-                      <RegisterModals />
-                    </div>
-                  </ModalView>
-                </ModalBackdrop>
-              ) : null}
-            </ModalContainer>
-            <StylesProvider injectFirst>
-              <MemberButton variant='contained' onClick={openUpdateHandler}>
-                수정
-              </MemberButton>
-            </StylesProvider>
-            <ModalContainer>
-              {updateOpen ? (
-                <ModalBackdrop onClick={openUpdateHandler}>
-                  <ModalView
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    <div className='close-btn' onClick={closeUpdateHandler}>
-                      &times;
-                    </div>
-                    <div className='desc'>
-                      <UpdateModals />
-                    </div>
-                  </ModalView>
-                </ModalBackdrop>
-              ) : null}
-            </ModalContainer>
-            <StylesProvider injectFirst>
-              <MemberButton variant='contained' onClick={openDeleteHandler}>
-                삭제
-              </MemberButton>
-            </StylesProvider>
-            <ModalContainer>
-              {deleteOpen ? (
-                <ModalBackdrop onClick={openDeleteHandler}>
-                  <ModalView
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    <div className='close-btn' onClick={closeDeleteHandler}>
-                      &times;
-                    </div>
-                    <div className='desc'>
-                      <DeleteModals />
+                      <RegisterModals setModalOpen={setModalOpen} />
                     </div>
                   </ModalView>
                 </ModalBackdrop>

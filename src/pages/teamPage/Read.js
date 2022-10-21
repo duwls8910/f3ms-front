@@ -1,18 +1,17 @@
 // 각 팀 조회 시 p.p인지 m.p인지 구분할 수 있어야함
 // 기본적으로 p.p를 먼저 띄우고 사용자가 라디오버튼(체크박스)를 누르면 m.p팀이 나오게 함
-// 기수 api(정보)만 받아옴 -> 이벤트 클릭 시점에 아이디에 해당하는 팀만 받아옴(call횟수를 늘리는 대신 한번에 처리할 데이터의 양(사이즈)을 줄임)
+// 기수 api(정보)만 받아옴 -> 이벤트 클릭 시점에 아이디에 해당하는 팀만 받아옴
+// (call횟수를 늘리는 대신 한번에 처리할 데이터의 양(사이즈)을 줄임)
 
 // seb_ 고정값으로 두고
 // 00 기수 숫자(number값이 들어감)
 // pre / main (드롭다운, 드롭다운의 value가 나올 때 화면에서 보여지는 출력만 _pre_로 보일 수 있게)
 // 000 (int값으로)
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import NumberDetail from 'pages/numberPage/NumberDetail';
+import axios from 'axios';
+import { nanoid } from 'nanoid';
 import RegisterModals from 'components/Modal/team/RegisterModals';
-import UpdateModals from 'components/Modal/team/UpdateModals';
-import DeleteModals from 'components/Modal/team/DeleteModals';
 import { Box, Stack, Button } from '@mui/material';
 import {
   TableContainer,
@@ -86,33 +85,28 @@ export const ModalView = styled.div.attrs((props) => ({
   }
 `;
 
-const progressTeam = [
-  { id: 0, data: '진행중' },
-  { id: 1, data: '종료' },
-];
-
 const teamRows = [
   {
-    team_name: 'seb_40_pre_001',
-    team_issue_id: '',
+    name: '40_pre_001',
+    issue_id: '',
     comment: '001 pre test',
     is_opened: 'O',
   },
   {
-    team_name: 'seb_40_pre_002',
-    team_issue_id: '',
+    name: '40_pre_002',
+    issue_id: '',
     comment: '',
     is_opened: 'O',
   },
   {
-    team_name: 'seb_40_pre_003',
-    team_issue_id: '',
+    name: '40_pre_003',
+    issue_id: '',
     comment: '',
     is_opened: 'O',
   },
   {
-    team_name: 'seb_40_pre_004',
-    team_issue_id: '',
+    name: '40_pre_004',
+    issue_id: '',
     comment: '',
     is_opened: 'O',
   },
@@ -125,36 +119,22 @@ const useStyles = makeStyles({
 });
 
 const ReadTeam = () => {
-  const [view, setView] = useState('');
+  const [team, setTeam] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [updateOpen, setUpdateOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
   const [rows, setRows] = useState(teamRows);
   const classes = useStyles();
 
-  // const getTeam = async () => {
-  //   const json = await (
-  //     await fetch(`${process.env.REACT_APP_URL}/admin/management/team`)
-  //   ).json();
-  //   setView(json.data[0]);
-  // };
-
-  // useEffect(() => {
-  //   getTeam();
-  // }, []);
-
-  const handleChecked = (checked, id) => {
-    if (checked) {
-      setSelectedTeam([...selectedTeam, id]);
-    } else if (!checked) {
-      setSelectedTeam(selectedTeam.filter((el) => el !== id));
-    }
-  };
-
-  const removeCheck = (id) => {
-    setSelectedTeam(selectedTeam.filter((el) => el !== id));
-  };
+  useEffect(() => {
+    const getTeam = async () => {
+      const response = await axios(
+        `${process.env.REACT_APP_URL}/admin/management/team`
+      );
+      setTeam(response.data);
+      setRows(response.data);
+    };
+    getTeam();
+  }, []);
 
   const openModalHandler = () => {
     setModalOpen(true);
@@ -164,85 +144,38 @@ const ReadTeam = () => {
     setModalOpen(false);
   };
 
-  const openUpdateHandler = () => {
-    setUpdateOpen(true);
-  };
-
-  const closeUpdateHandler = () => {
-    setUpdateOpen(false);
-  };
-
-  const openDeleteHandler = () => {
-    setDeleteOpen(true);
-  };
-
-  const closeDeleteHandler = () => {
-    setDeleteOpen(false);
-  };
-
   return (
     <>
       <Box>
-        <TeamPageView>
-          <div>
-            {selectedTeam.length === 0 && (
-              <div>{'진행여부를 선택해주세요'}</div>
-            )}
-            {progressTeam.map((id) => {
-              return (
-                <input
-                  type='checkbox'
-                  value={id.data}
-                  onChange={(e) =>
-                    handleChecked(e.target.checked, e.target.value)
-                  }
-                  checked={selectedTeam.includes(id.data) ? true : false}
-                />
-              );
-            })}
-          </div>
-          {selectedTeam.map((id) => {
-            return (
-              <div>
-                <div key={id}>
-                  <div>{id}</div>
-                </div>
-                <div onClick={() => removeCheck(id)} />
-              </div>
-            );
-          })}
-          <TableContainer>
-            <Table className={classes.table} aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>기수명</TableCell>
-                  <TableCell align='right'>팀 이슈</TableCell>
-                  <TableCell align='right'>기타사항(comment)</TableCell>
-                  <TableCell align='right'>팀종료여부</TableCell>
+        <TableContainer>
+          <Table className={classes.table} aria-label='simple table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>팀 명</TableCell>
+                <TableCell align='right'>팀 이슈</TableCell>
+                <TableCell align='right'>기타사항(comment)</TableCell>
+                <TableCell align='right'>팀종료여부</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={nanoid()}>
+                  <TableCell component='th' scope='row'>
+                    <Link to='/admin/management/team/:id'>{`seb_${row.team_name}`}</Link>
+                  </TableCell>
+                  <TableCell align='right'>{row.team_issue_id}</TableCell>
+                  <TableCell align='right'>{row.comment}</TableCell>
+                  <TableCell align='right'>{row.is_opened}</TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.team_name}>
-                    <TableCell component='th' scope='row'>
-                      <Link to='/admin/management/issue/team'>
-                        {row.team_name}
-                      </Link>
-                    </TableCell>
-                    <TableCell align='right'>{row.team_issue_id}</TableCell>
-                    <TableCell align='right'>{row.comment}</TableCell>
-                    <TableCell align='right'>{row.is_opened}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TeamPageView>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <div>
           {selectedTeam ? (
             <>
-              <h3 className='team_name'>{selectedTeam.team_name}</h3>
-              <h4 className='team_issue'>{selectedTeam.team_issue_id}</h4>
+              <h3 className='name'>{selectedTeam.name}</h3>
+              <h4 className='issue'>{selectedTeam.issue_id}</h4>
               <h4 className='comment'>{selectedTeam.comment}</h4>
             </>
           ) : (
@@ -274,50 +207,7 @@ const ReadTeam = () => {
                   </ModalBackdrop>
                 ) : null}
               </ModalContainer>
-              <TeamButton variant='contained' onClick={openUpdateHandler}>
-                수정
-              </TeamButton>
-              <ModalContainer>
-                {updateOpen ? (
-                  <ModalBackdrop onClick={openUpdateHandler}>
-                    <ModalView
-                      onClick={(event) => {
-                        event.stopPropagation();
-                      }}
-                    >
-                      <div className='close-btn' onClick={closeUpdateHandler}>
-                        &times;
-                      </div>
-                      <div className='desc'>
-                        <UpdateModals />
-                      </div>
-                    </ModalView>
-                  </ModalBackdrop>
-                ) : null}
-              </ModalContainer>
-              <TeamButton variant='contained' onClick={openDeleteHandler}>
-                삭제
-              </TeamButton>
-              <ModalContainer>
-                {deleteOpen ? (
-                  <ModalBackdrop onClick={openDeleteHandler}>
-                    <ModalView
-                      onClick={(event) => {
-                        event.stopPropagation();
-                      }}
-                    >
-                      <div className='close-btn' onClick={closeDeleteHandler}>
-                        &times;
-                      </div>
-                      <div className='desc'>
-                        <DeleteModals />
-                      </div>
-                    </ModalView>
-                  </ModalBackdrop>
-                ) : null}
-              </ModalContainer>
             </StylesProvider>
-            <NumberDetail />
           </Stack>
         </div>
       </Box>

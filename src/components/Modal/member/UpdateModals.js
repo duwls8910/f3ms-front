@@ -92,7 +92,7 @@ const MemberRegister = () => {
 
   return (
     <>
-      <div>팀원</div>
+      <div>수강생</div>
       <br />
       <TextField
         id='outlined-basic'

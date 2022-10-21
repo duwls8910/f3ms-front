@@ -1,15 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
-import {
-  TextField,
-  Autocomplete,
-  Button,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-} from '@mui/material';
+// import axios from 'axios';
+import { TextField, Autocomplete, Button } from '@mui/material';
 import { StylesProvider } from '@material-ui/core';
 import styled from 'styled-components';
 
@@ -53,7 +44,7 @@ const RegisterModals = () => {
   const [isChecked, setCheck] = useState([]);
 
   // 라디오 버튼 상태변경
-  const [inputStatus, setInputStatus] = useState('');
+  // const [inputStatus, setInputStatus] = useState('');
 
   const handleDropTeam = (e) => {
     const { value } = e.target;
@@ -74,13 +65,13 @@ const RegisterModals = () => {
   };
 
   // 팀 등록 여부에 따른 라디오 버튼 이벤트
-  const handleClickRadioButton = (e) => {
-    setInputStatus(e.target.value);
-  };
+  // const handleClickRadioButton = (e) => {
+  //   setInputStatus(e.target.value);
+  // };
 
-  const handleInputValue = (key) => (e) => {
-    setTeam({ ...team, [key]: e.target.value });
-  };
+  // const handleInputValue = (key) => (e) => {
+  //   setTeam({ ...team, [key]: e.target.value });
+  // };
 
   // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
@@ -102,14 +93,6 @@ const RegisterModals = () => {
     })
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
-    // await axios
-    //   .post(`${process.env.REACT_APP_URL}/admin/management/team`, {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       withCredentials: true,
-    //     },
-    //   })
-    //   .catch((err) => console.log(err));
   };
 
   return (
@@ -158,32 +141,6 @@ const RegisterModals = () => {
         label='특이사항 작성'
         variant='standard'
       />
-      <br />
-      <FormControl>
-        <FormLabel item='number-row-radio-buttons-group-label'>
-          팀 종료 여부
-        </FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby='number-row-radio-buttons-group-label'
-          name='number-row-radio-buttons-group'
-          value={inputStatus}
-          onChange={handleClickRadioButton}
-        >
-          <FormControlLabel
-            control={<Radio />}
-            value='종료'
-            label='종료'
-            onChange={handleInputValue}
-          />
-          <FormControlLabel
-            control={<Radio />}
-            value='종료 X'
-            label='종료 X'
-            onChange={handleInputValue}
-          />
-        </RadioGroup>
-      </FormControl>
       <br />
       <StylesProvider injectFirst>
         <ButtonPosition>

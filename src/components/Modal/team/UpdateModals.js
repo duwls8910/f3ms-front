@@ -1,14 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import {
-  TextField,
-  Button,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-} from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import { StylesProvider } from '@material-ui/core';
 import styled from 'styled-components';
 
@@ -39,12 +31,11 @@ const RegisterModals = () => {
   });
   // pre/main 체크 여부를 위한 상태변경
   const [isChecked, setCheck] = useState([]);
-  const [inputStatus, setInputStatus] = useState('');
-  // console.log({ inputStatus });
+  // const [inputStatus, setInputStatus] = useState('');
 
-  const handleClickRadioButton = (e) => {
-    setInputStatus(e.target.value);
-  };
+  // const handleClickRadioButton = (e) => {
+  //   setInputStatus(e.target.value);
+  // };
 
   const handleInputValue = (key) => (e) => {
     setTeam({ ...team, [key]: e.target.value });
@@ -116,32 +107,6 @@ const RegisterModals = () => {
         label='특이사항 작성'
         variant='standard'
       />
-      <br />
-      <FormControl>
-        <FormLabel item='number-row-radio-buttons-group-label'>
-          팀 종료 여부
-        </FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby='number-row-radio-buttons-group-label'
-          name='number-row-radio-buttons-group'
-          value={inputStatus}
-          onChange={handleClickRadioButton}
-        >
-          <FormControlLabel
-            control={<Radio />}
-            value='종료'
-            label='종료'
-            onChange={handleInputValue}
-          />
-          <FormControlLabel
-            control={<Radio />}
-            value='종료 X'
-            label='종료 X'
-            onChange={handleInputValue}
-          />
-        </RadioGroup>
-      </FormControl>
       <br />
       <StylesProvider injectFirst>
         <ButtonPosition>

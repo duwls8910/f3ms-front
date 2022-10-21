@@ -1,8 +1,8 @@
-import shortid from 'shortid';
+import { nanoid } from 'nanoid';
 
 const numberDummy = [
   {
-    id: shortid(),
+    id: nanoid(),
     number_id: 'seb_40',
     start_date: '2022-10-14',
     end_date: '2022-12-16',
@@ -12,7 +12,7 @@ const numberDummy = [
     updatedAt: new Date(),
   },
   {
-    id: shortid(),
+    id: nanoid(),
     number_id: 'seb_41',
     start_date: '2023-02-14',
     end_date: '2023-04-16',
@@ -22,7 +22,7 @@ const numberDummy = [
     updatedAt: new Date(),
   },
   {
-    id: shortid(),
+    id: nanoid(),
     number_id: 'seb_42',
     start_date: '2023-05-14',
     end_date: '2023-07-16',
@@ -32,7 +32,7 @@ const numberDummy = [
     updatedAt: new Date(),
   },
   {
-    id: shortid(),
+    id: nanoid(),
     number_id: 'seb_43',
     start_date: '2023-07-14',
     end_date: '2023-08-16',

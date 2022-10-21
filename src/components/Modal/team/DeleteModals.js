@@ -92,7 +92,11 @@ const DeleteModals = () => {
   return (
     <>
       <ModalContainer>
-        <div>해당 팀의 정보를 삭제하시겠습니까?</div>
+        <div>
+          해당 팀의 정보를
+          <br />
+          삭제하시겠습니까?
+        </div>
         <Stack spacing={1} direction='row'>
           <div>
             <StylesProvider injectFirst>
