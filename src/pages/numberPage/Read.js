@@ -104,7 +104,6 @@ const ReadNumber = () => {
   const [number, setNumber] = useState([]);
   const [loading, setLoading] = useState(false);
   // const [isActive, setIsActive] = useState(false);
-  const [selectedNumber, setSelectedNumber] = useState([]);
   const [rows, setRows] = useState(numberRows);
   // const [searched, setSearched] = useState('');
   const classes = useStyles();
@@ -179,18 +178,6 @@ const ReadNumber = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <div>
-          {selectedNumber ? (
-            <>
-              <h3 className='numberName'>{selectedNumber.number_id}</h3>
-              <h4 className='startDate'>{selectedNumber.start_date}</h4>
-              <h4 className='endDate'>{selectedNumber.end_date}</h4>
-              <h4 className='comment'>{selectedNumber.comment}</h4>
-            </>
-          ) : (
-            '기수의 정보를 찾을 수 없습니다'
-          )}
-        </div>
         <div>
           <Stack spacing={1} direction='row'>
             <StylesProvider injectFirst>

@@ -3,11 +3,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
-import UpdateModals from 'components/Modal/number/UpdateModals';
-import DeleteModals from 'components/Modal/number/DeleteModals';
+import UpdateModals from 'components/Modal/member/UpdateModals';
+import DeleteModals from 'components/Modal/member/DeleteModals';
 import { Box, Stack, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
+import {
+  TableContainer,
+  TableHead,
+  Table,
+  TableRow,
+  TableBody,
+  TableCell,
+  StylesProvider,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
+import { nanoid } from 'nanoid';
 
 export const MemberButton = styled(Button)`
   display: flex;
@@ -21,6 +31,7 @@ export const MemberButton = styled(Button)`
 
 export const ModalContainer = styled.div`
   display: flex;
+import { Link } from 'react-router-dom';
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -98,10 +109,19 @@ export const DeleteModalView = styled.div.attrs((props) => ({
   }
 `;
 
-const SpecificNumber = () => {
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+});
+
+const SpecificMember = ({ id }) => {
   const [loading, setLoading] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [memberData, setMemberData] = useState([]);
+
+  const classes = useStyles();
 
   useEffect(() => {
     const getSpecMember = async () => {
@@ -115,18 +135,22 @@ const SpecificNumber = () => {
   }, []);
 
   const openModalHandler = () => {
+    setLoading(false);
     setUpdateOpen(true);
   };
 
   const closeModalHandler = () => {
+    setLoading(false);
     setUpdateOpen(false);
   };
 
   const openDeleteHandler = () => {
+    setLoading(false);
     setDeleteOpen(true);
   };
 
   const closeDeleteHandler = () => {
+    setLoading(false);
     setDeleteOpen(false);
   };
 
@@ -134,7 +158,36 @@ const SpecificNumber = () => {
     <>
       {loading ? <Loading /> : null}
       <Box>
-        {/* 클릭한 기수의 정보가 들어가야함 */}
+        {memberData ? (
+          <TableContainer>
+            <Table className={classes.table} aria-label='simple table'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>팀원 이름</TableCell>
+                  <TableCell align='right'>제목</TableCell>
+                  <TableCell align='right'>이슈 내용</TableCell>
+                  <TableCell align='right'>해결 여부</TableCell>
+                  <TableCell align='right'>완료 날짜</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {memberData.map((row) => (
+                  <TableRow key={nanoid()}>
+                    <TableCell component='th' scope='row'>
+                      {row.id}
+                    </TableCell>
+                    <TableCell align='right'>{row.title}</TableCell>
+                    <TableCell align='right'>{row.content}</TableCell>
+                    <TableCell align='right'>{row.is_completed}</TableCell>
+                    <TableCell align='right'>{row.completed_date}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          '해당 수강생의 정보를 찾을 수 없습니다'
+        )}
         <Stack spacing={1} direction='row'>
           <StylesProvider injectFirst>
             <MemberButton variant='contained' onClick={openModalHandler}>
@@ -188,4 +241,4 @@ const SpecificNumber = () => {
   );
 };
 
-export default SpecificNumber;
+export default SpecificMember;

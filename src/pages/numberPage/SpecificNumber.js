@@ -7,8 +7,18 @@ import Loading from 'utils/LoadingIndicator';
 import UpdateModals from 'components/Modal/number/UpdateModals';
 import DeleteModals from 'components/Modal/number/DeleteModals';
 import { Box, Stack, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
+import {
+  TableContainer,
+  TableHead,
+  Table,
+  TableRow,
+  TableBody,
+  TableCell,
+  StylesProvider,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
+import { nanoid } from 'nanoid';
 
 export const NumberButton = styled(Button)`
   display: flex;
@@ -99,10 +109,19 @@ export const DeleteModalView = styled.div.attrs((props) => ({
   }
 `;
 
-const SpecificNumber = () => {
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+});
+
+const SpecificNumber = ({ id }) => {
   const [loading, setLoading] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [numberData, setNumberData] = useState([]);
+
+  const classes = useStyles();
 
   // 해당 기수 조회 시
   useEffect(() => {
@@ -136,7 +155,36 @@ const SpecificNumber = () => {
     <>
       {loading ? <Loading /> : null}
       <Box>
-        {/* 클릭한 기수의 정보가 들어가야함 */}
+        {numberData ? (
+          <TableContainer>
+            <Table className={classes.table} aria-label='simple table'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>기수명</TableCell>
+                  <TableCell align='right'>시작일</TableCell>
+                  <TableCell align='right'>종료일</TableCell>
+                  <TableCell align='right'>기타사항</TableCell>
+                  <TableCell align='right'>기수종료여부</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {numberData.map((row) => (
+                  <TableRow key={nanoid()}>
+                    <TableCell component='th' scope='row'>
+                      {row.id}
+                    </TableCell>
+                    <TableCell align='right'>{row.start_date}</TableCell>
+                    <TableCell align='right'>{row.end_date}</TableCell>
+                    <TableCell align='right'>{row.comment}</TableCell>
+                    <TableCell align='right'>{row.is_closed}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          '해당 기수의 정보를 찾을 수 없습니다'
+        )}
         <Stack spacing={1} direction='row'>
           <StylesProvider injectFirst>
             <NumberButton variant='contained' onClick={openModalHandler}>

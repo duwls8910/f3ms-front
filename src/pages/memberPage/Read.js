@@ -7,7 +7,6 @@ import { Box, Stack, Button } from '@mui/material';
 import axios from 'axios';
 import { nanoid } from 'nanoid';
 import styled from 'styled-components';
-
 import {
   TableContainer,
   TableHead,
@@ -144,9 +143,7 @@ const ReadMember = () => {
               {rows.map((row) => (
                 <TableRow key={nanoid()}>
                   <TableCell component='th' scope='row'>
-                    <Link to='/admin/management/member/:id'>
-                      {row.member_name}
-                    </Link>
+                    <Link to='/admin/management/member/:id'>{row.name}</Link>
                   </TableCell>
                   <TableCell align='right'>{row.team_id}</TableCell>
                   <TableCell align='right'>{row.position_cd}</TableCell>

@@ -120,7 +120,6 @@ const useStyles = makeStyles({
 
 const ReadTeam = () => {
   const [team, setTeam] = useState([]);
-  const [selectedTeam, setSelectedTeam] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [rows, setRows] = useState(teamRows);
   const classes = useStyles();
@@ -171,17 +170,6 @@ const ReadTeam = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <div>
-          {selectedTeam ? (
-            <>
-              <h3 className='name'>{selectedTeam.name}</h3>
-              <h4 className='issue'>{selectedTeam.issue_id}</h4>
-              <h4 className='comment'>{selectedTeam.comment}</h4>
-            </>
-          ) : (
-            '해당 팀의 정보를 찾을 수 없습니다'
-          )}
-        </div>
         <div>
           <Stack spacing={1} direction='row'>
             <StylesProvider injectFirst>
