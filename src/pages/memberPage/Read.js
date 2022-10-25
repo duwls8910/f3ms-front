@@ -48,7 +48,7 @@ export const ModalBackdrop = styled.div`
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(244, 230, 193);
+  background-color: rgb(156, 165, 182);
   position: fixed;
 `;
 
@@ -67,6 +67,7 @@ export const ModalView = styled.div.attrs((props) => ({
     position: absolute;
     bottom: 290px;
     left: 17rem;
+    font-size: 22px;
     cursor: pointer;
   }
 `;
@@ -94,7 +95,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ReadMember = () => {
+const ReadMember = ({ id }) => {
   const [member, setMember] = useState([]);
   const [rows, setRows] = useState(memberRows);
   const [loading, setLoading] = useState(false);
@@ -134,20 +135,22 @@ const ReadMember = () => {
             <TableHead>
               <TableRow>
                 <TableCell>팀원 이름</TableCell>
-                <TableCell align='right'>팀 이름</TableCell>
-                <TableCell align='right'>포지션</TableCell>
-                <TableCell align='right'>하차여부</TableCell>
+                <TableCell align='center'>팀 이름</TableCell>
+                <TableCell align='center'>포지션</TableCell>
+                <TableCell align='center'>하차여부</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map((row) => (
                 <TableRow key={nanoid()}>
                   <TableCell component='th' scope='row'>
-                    <Link to='/admin/management/member/:id'>{row.name}</Link>
+                    <Link to='/admin/management/member/:id'>
+                      {row.member_name}
+                    </Link>
                   </TableCell>
-                  <TableCell align='right'>{row.team_id}</TableCell>
-                  <TableCell align='right'>{row.position_cd}</TableCell>
-                  <TableCell align='right'>{row.is_closed}</TableCell>
+                  <TableCell align='center'>{row.team_id}</TableCell>
+                  <TableCell align='center'>{row.position_cd}</TableCell>
+                  <TableCell align='center'>{row.is_closed}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

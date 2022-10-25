@@ -49,7 +49,7 @@ export const ModalBackdrop = styled.div`
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(244, 230, 193);
+  background-color: rgb(156, 165, 182);
   position: fixed;
 `;
 
@@ -68,6 +68,7 @@ export const ModalView = styled.div.attrs((props) => ({
     position: absolute;
     bottom: 290px;
     left: 17rem;
+    font-size: 22px;
     cursor: pointer;
   }
 `;
@@ -157,10 +158,10 @@ const ReadNumber = () => {
             <TableHead>
               <TableRow>
                 <TableCell>기수명</TableCell>
-                <TableCell align='right'>시작일(start date)</TableCell>
-                <TableCell align='right'>종료일(end date)</TableCell>
-                <TableCell align='right'>기타사항(comment)</TableCell>
-                <TableCell align='right'>기수종료여부</TableCell>
+                <TableCell align='center'>시작일(start date)</TableCell>
+                <TableCell align='center'>종료일(end date)</TableCell>
+                <TableCell align='center'>기타사항(comment)</TableCell>
+                <TableCell align='center'>기수종료여부</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -169,10 +170,10 @@ const ReadNumber = () => {
                   <TableCell component='th' scope='row'>
                     <Link to='/admin/management/number/:id'>{`seb_${row.number_name}`}</Link>
                   </TableCell>
-                  <TableCell align='right'>{row.start_date}</TableCell>
-                  <TableCell align='right'>{row.end_date}</TableCell>
-                  <TableCell align='right'>{row.comment}</TableCell>
-                  <TableCell align='right'>{row.is_closed}</TableCell>
+                  <TableCell align='center'>{row.start_date}</TableCell>
+                  <TableCell align='center'>{row.end_date}</TableCell>
+                  <TableCell align='center'>{row.comment}</TableCell>
+                  <TableCell align='center'>{row.is_closed}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

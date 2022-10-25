@@ -19,7 +19,7 @@ export const HeaderContainer = styled.header`
   height: 100px;
   position: relative;
   z-index: 10;
-  background-color: rgb(234, 211, 172);
+  background-color: rgb(53, 62, 87);
 `;
 
 const NavBlock = styled.div`
@@ -33,7 +33,7 @@ const NavBlock = styled.div`
 export const LogoStyle = styled(NavLink)`
   position: relative;
   bottom: 10px;
-  color: black;
+  color: white;
   font-size: 20px;
   &:link {
     transition: 0.5s;
@@ -49,7 +49,7 @@ export const NavButton = styled(NavLink)`
   position: relative;
   bottom: 10px;
   h5 {
-    color: black;
+    color: white;
     font-size: 30px;
     font-weight: 500;
     text-decoration: none;

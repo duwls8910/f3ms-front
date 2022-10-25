@@ -4,8 +4,18 @@ import Loading from 'utils/LoadingIndicator';
 import UpdateModals from 'components/Modal/team/UpdateModals';
 import DeleteModals from 'components/Modal/team/DeleteModals';
 import { Box, Stack, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
+import {
+  TableContainer,
+  TableHead,
+  Table,
+  TableRow,
+  TableBody,
+  TableCell,
+  StylesProvider,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
+import { nanoid } from 'nanoid';
 
 export const TeamButton = styled(Button)`
   display: flex;
@@ -38,7 +48,7 @@ export const ModalBackdrop = styled.div`
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(244, 230, 193);
+  background-color: rgb(156, 165, 182);
   position: fixed;
 `;
 
@@ -54,7 +64,7 @@ export const DeleteModalBackDrop = styled.div`
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(244, 230, 193);
+  background-color: rgb(156, 165, 182);
   position: fixed;
 `;
 
@@ -73,6 +83,7 @@ export const ModalView = styled.div.attrs((props) => ({
     position: absolute;
     bottom: 290px;
     left: 17rem;
+    font-size: 22px;
     cursor: pointer;
   }
 `;
@@ -92,24 +103,34 @@ export const DeleteModalView = styled.div.attrs((props) => ({
     position: absolute;
     bottom: 150px;
     left: 16rem;
+    font-size: 22px;
     cursor: pointer;
   }
 `;
 
-const SpecificNumber = () => {
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+});
+
+const SpecificTeam = () => {
   const [loading, setLoading] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [teamData, setTeamData] = useState([]);
+
+  const classes = useStyles();
 
   useEffect(() => {
-    const getSpecNumber = async () => {
+    const getSpecTeam = async () => {
       const response = await axios(
-        `${process.env.REACT_APP_URL}/admin/management/number/:id`
+        `${process.env.REACT_APP_URL}/admin/management/team/:id`
       );
-      getSpecNumber(response.data);
+      getSpecTeam(response.data);
       setLoading(false);
     };
-    getSpecNumber();
+    getSpecTeam();
   }, []);
 
   const openModalHandler = () => {
@@ -132,6 +153,36 @@ const SpecificNumber = () => {
     <>
       {loading ? <Loading /> : null}
       <Box>
+        {teamData ? (
+          <TableContainer>
+            <Table className={classes.table} aria-label='simple table'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>팀 이름</TableCell>
+                  <TableCell align='center'>제목</TableCell>
+                  <TableCell align='center'>이슈 내용</TableCell>
+                  <TableCell align='center'>해결 여부</TableCell>
+                  <TableCell align='center'>완료 날짜</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {teamData.map((row) => (
+                  <TableRow key={nanoid()}>
+                    <TableCell component='th' scope='row'>
+                      {row.id}
+                    </TableCell>
+                    <TableCell align='center'>{row.title}</TableCell>
+                    <TableCell align='center'>{row.content}</TableCell>
+                    <TableCell align='center'>{row.is_completed}</TableCell>
+                    <TableCell align='center'>{row.completed_date}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          '해당 기수의 정보를 찾을 수 없습니다'
+        )}
         <Stack spacing={1} direction='row'>
           <StylesProvider injectFirst>
             <TeamButton variant='contained' onClick={openModalHandler}>
@@ -183,4 +234,4 @@ const SpecificNumber = () => {
   );
 };
 
-export default SpecificNumber;
+export default SpecificTeam;

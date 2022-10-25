@@ -98,7 +98,7 @@ const UpdateModals = ({ setModalOpen }) => {
           />
         )}
       /> */}
-      <h4>프로젝트 기간(필수 선택)</h4>
+      <h4>프로젝트 기간</h4>
       <div>프로젝트 진행 기간을 선택해주세요</div>
       <br />
       <div>프로젝트 시작일</div>
@@ -123,7 +123,7 @@ const UpdateModals = ({ setModalOpen }) => {
         endDate={endDate}
         minDate={startDate}
       />
-      <h4>기타 코멘트(선택사항)</h4>
+      <h4>기타 코멘트</h4>
       <TextField
         id='standard-basic'
         label='특이사항 작성'

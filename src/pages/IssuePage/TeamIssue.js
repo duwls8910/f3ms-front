@@ -55,7 +55,7 @@ export const ModalBackdrop = styled.div`
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(244, 230, 193);
+  background-color: rgb(156, 165, 182);
   position: fixed;
 `;
 
@@ -74,6 +74,7 @@ export const ModalView = styled.div.attrs((props) => ({
     position: absolute;
     bottom: 320px;
     left: 17rem;
+    font-size: 22px;
     cursor: pointer;
   }
 `;
@@ -125,10 +126,10 @@ const TeamIssue = () => {
             <TableHead>
               <TableRow>
                 <TableCell>팀 명</TableCell>
-                <TableCell align='right'>이슈 등록일</TableCell>
-                <TableCell align='right'>이슈 등록자</TableCell>
-                <TableCell align='right'>이슈 내용</TableCell>
-                <TableCell align='right'>해결여부</TableCell>
+                <TableCell align='center'>이슈 등록일</TableCell>
+                <TableCell align='center'>이슈 등록자</TableCell>
+                <TableCell align='center'>이슈 내용</TableCell>
+                <TableCell align='center'>해결여부</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -137,10 +138,10 @@ const TeamIssue = () => {
                   <TableCell component='th' scope='row'>
                     {row.name}
                   </TableCell>
-                  <TableCell align='right'>{row.issue_date}</TableCell>
-                  <TableCell align='right'>{row.issue_writer}</TableCell>
-                  <TableCell align='right'>{row.issue_comment}</TableCell>
-                  <TableCell align='right'>{row.is_closed}</TableCell>
+                  <TableCell align='center'>{row.issue_date}</TableCell>
+                  <TableCell align='center'>{row.issue_writer}</TableCell>
+                  <TableCell align='center'>{row.issue_comment}</TableCell>
+                  <TableCell align='center'>{row.is_closed}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

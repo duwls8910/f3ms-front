@@ -51,7 +51,7 @@ export const ModalBackdrop = styled.div`
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(244, 230, 193);
+  background-color: rgb(156, 165, 182);
   position: fixed;
 `;
 
@@ -67,7 +67,7 @@ export const DeleteModalBackDrop = styled.div`
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(244, 230, 193);
+  background-color: rgb(156, 165, 182);
   position: fixed;
 `;
 
@@ -86,6 +86,7 @@ export const ModalView = styled.div.attrs((props) => ({
     position: absolute;
     bottom: 290px;
     left: 17rem;
+    font-size: 22px;
     cursor: pointer;
   }
 `;
@@ -105,6 +106,7 @@ export const DeleteModalView = styled.div.attrs((props) => ({
     position: absolute;
     bottom: 150px;
     left: 16rem;
+    font-size: 22px;
     cursor: pointer;
   }
 `;
@@ -164,10 +166,10 @@ const SpecificMember = ({ id }) => {
               <TableHead>
                 <TableRow>
                   <TableCell>팀원 이름</TableCell>
-                  <TableCell align='right'>제목</TableCell>
-                  <TableCell align='right'>이슈 내용</TableCell>
-                  <TableCell align='right'>해결 여부</TableCell>
-                  <TableCell align='right'>완료 날짜</TableCell>
+                  <TableCell align='center'>제목</TableCell>
+                  <TableCell align='center'>이슈 내용</TableCell>
+                  <TableCell align='center'>해결 여부</TableCell>
+                  <TableCell align='center'>완료 날짜</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -176,10 +178,10 @@ const SpecificMember = ({ id }) => {
                     <TableCell component='th' scope='row'>
                       {row.id}
                     </TableCell>
-                    <TableCell align='right'>{row.title}</TableCell>
-                    <TableCell align='right'>{row.content}</TableCell>
-                    <TableCell align='right'>{row.is_completed}</TableCell>
-                    <TableCell align='right'>{row.completed_date}</TableCell>
+                    <TableCell align='center'>{row.title}</TableCell>
+                    <TableCell align='center'>{row.content}</TableCell>
+                    <TableCell align='center'>{row.is_completed}</TableCell>
+                    <TableCell align='center'>{row.completed_date}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

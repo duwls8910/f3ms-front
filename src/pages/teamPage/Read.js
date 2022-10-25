@@ -62,7 +62,7 @@ export const ModalBackdrop = styled.div`
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(244, 230, 193);
+  background-color: rgb(156, 165, 182);
   position: fixed;
 `;
 
@@ -79,8 +79,9 @@ export const ModalView = styled.div.attrs((props) => ({
 
   > div.close-btn {
     position: absolute;
-    bottom: 300px;
+    bottom: 290px;
     left: 17rem;
+    font-size: 22px;
     cursor: pointer;
   }
 `;
@@ -88,25 +89,21 @@ export const ModalView = styled.div.attrs((props) => ({
 const teamRows = [
   {
     name: '40_pre_001',
-    issue_id: '',
     comment: '001 pre test',
     is_opened: 'O',
   },
   {
     name: '40_pre_002',
-    issue_id: '',
     comment: '',
     is_opened: 'O',
   },
   {
     name: '40_pre_003',
-    issue_id: '',
     comment: '',
     is_opened: 'O',
   },
   {
     name: '40_pre_004',
-    issue_id: '',
     comment: '',
     is_opened: 'O',
   },
@@ -151,9 +148,8 @@ const ReadTeam = () => {
             <TableHead>
               <TableRow>
                 <TableCell>팀 명</TableCell>
-                <TableCell align='right'>팀 이슈</TableCell>
-                <TableCell align='right'>기타사항(comment)</TableCell>
-                <TableCell align='right'>팀종료여부</TableCell>
+                <TableCell align='center'>기타사항(comment)</TableCell>
+                <TableCell align='center'>팀종료여부</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -162,9 +158,8 @@ const ReadTeam = () => {
                   <TableCell component='th' scope='row'>
                     <Link to='/admin/management/team/:id'>{`seb_${row.team_name}`}</Link>
                   </TableCell>
-                  <TableCell align='right'>{row.team_issue_id}</TableCell>
-                  <TableCell align='right'>{row.comment}</TableCell>
-                  <TableCell align='right'>{row.is_opened}</TableCell>
+                  <TableCell align='center'>{row.comment}</TableCell>
+                  <TableCell align='center'>{row.is_opened}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

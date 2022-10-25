@@ -35,7 +35,7 @@ export const ModalBackdrop = styled.div`
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(244, 230, 193);
+  background-color: rgb(156, 165, 182);
   position: fixed;
 `;
 
@@ -54,6 +54,7 @@ export const ModalView = styled.div.attrs((props) => ({
     position: absolute;
     bottom: 320px;
     left: 17rem;
+    font-size: 22px;
     cursor: pointer;
   }
 `;

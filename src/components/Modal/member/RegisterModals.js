@@ -85,14 +85,15 @@ const MemberRegister = ({ setModalOpen }) => {
       {loading ? <Loading /> : null}
       <h4>수강생</h4>
       <br />
-      <TextField
+      {/* <TextField
         id='outlined-basic'
         label='이름'
         variant='outlined'
         autoFocus
         value={name}
         onChange={handleMember}
-      />
+      /> */}
+      <input value={name} onChange={handleMember}></input>
       <br />
       <br />
       <div>포지션</div>

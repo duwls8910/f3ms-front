@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-// import axios from "axios";
+import axios from 'axios';
 import { Autocomplete, TextField, Button } from '@mui/material';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
   position: absolute;
-  top: 220%;
+  top: 200%;
   right: 60%;
   transform: translateX(50%);
   margin: 4rem 0;
@@ -20,8 +20,21 @@ export const MyButton = styled(Button)`
 
 const position_data = [{ label: '프론트엔드' }, { label: '백엔드' }];
 
-const MemberRegister = () => {
-  const [name, setName] = useState('');
+const MemberRegister = ({ setModalOpen }) => {
+  const [newMember, setNewMember] = useState({
+    member_id: '',
+    new_member_id: '',
+    position_cd: '',
+    new_position_cd: '',
+    comment: '',
+    new_comment: '',
+    is_closed: false,
+    new_is_closed: false,
+  });
+  const [memberName, setMemberName] = useState('');
+  const [position, setPosition] = useState('');
+  const [comment, setComment] = useState('');
+  const [inputStatus, setInputStatus] = useState('');
   const [selectedDropValue, setSelectedDropValue] =
     useState('포지션을 선택하세요');
 
@@ -32,39 +45,37 @@ const MemberRegister = () => {
     );
   };
 
-  // const handleInputValue = (key) => (e) => {
-  // setName({ ...name, [key]: e.target.value });
-  // };
+  const handleMember = (e) => {
+    const { value } = e.target;
+    // setSelectedDropValue(member_data.filter((el) => el.value === value)[0].id);
+    setMemberName(value);
+  };
 
-  // const onSubmit = async () => {
-  //   try {
-  //     await axios.post(``, {}).then((res) => {});
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const handleChange = (key) => (e) => {
+    setNewMember({ ...newMember, [key]: e.target.value });
+  };
+
+  const handleComment = (e) => {
+    const { value } = e.target;
+    setComment(value);
+  };
 
   const onSubmit = async () => {
-    const data = {
-      member_name: '김코딩',
-      position_cd: 'backend',
-      is_active: true,
-    };
-    await fetch(`${process.env.REACT_APP_URL}/admin/management/member`, {
-      method: 'PATCH',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(data),
-    })
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err));
-    console.log(data);
+    try {
+      await axios.put(
+        `${process.env.REACT_APP_URL}/admin/management/member/${memberName}`,
+        {
+          position: position,
+          comment: comment,
+          is_closed: inputStatus,
+        }
+      );
+      setModalOpen(false);
+      setMemberName('');
+      setComment('');
+    } catch (err) {
+      console.log(err);
+    }
     // if (!number) {
     //   setNumberError(true);
     //   alert('기수명을 작성해주세요');
@@ -92,17 +103,20 @@ const MemberRegister = () => {
 
   return (
     <>
-      <div>수강생</div>
+      <h4>수강생</h4>
       <br />
-      <TextField
+      {/* <TextField
         id='outlined-basic'
         label='이름'
         variant='outlined'
+        value={memberName}
+        onChange={handleMember}
         autoFocus
-      />
+      /> */}
+      <input value={memberName} onChange={handleMember}></input>
       <br />
       <br />
-      <div>포지션</div>
+      <h4>포지션</h4>
       <Autocomplete
         id='combo-box-demo'
         options={position_data}
@@ -116,8 +130,13 @@ const MemberRegister = () => {
         )}
       />
       <br />
-      <div>기타 코멘트(선택사항)</div>
-      <TextField id='standard-basic' label='특이사항 작성' variant='standard' />
+      <h4>기타 코멘트</h4>
+      <TextField
+        id='standard-basic'
+        label='특이사항 작성'
+        variant='standard'
+        onChange={handleComment}
+      />
       <br />
       <ButtonPosition>
         <MyButton variant='contained' onClick={onSubmit}>

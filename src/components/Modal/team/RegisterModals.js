@@ -1,5 +1,6 @@
 import { useState } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
+import Loading from 'utils/LoadingIndicator';
 import { TextField, Autocomplete, Button } from '@mui/material';
 import { StylesProvider } from '@material-ui/core';
 import styled from 'styled-components';
@@ -30,12 +31,11 @@ const semester = [
   { id: 1, data: 'main' },
 ];
 
-const RegisterModals = () => {
-  const [team, setTeam] = useState({
-    team_id: 'seb_40_pre_001',
-    comment: '',
-    is_closed: false,
-  });
+const RegisterModals = ({ setModalOpen }) => {
+  const [team, setTeam] = useState('');
+  const [teamIssue, setTeamIssue] = useState('');
+  const [comment, setComment] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const [selectedDropValue, setSelectedDropValue] =
     useState('해당하는 팀 번호를 선택하세요');
@@ -73,32 +73,40 @@ const RegisterModals = () => {
   //   setTeam({ ...team, [key]: e.target.value });
   // };
 
+  const handleTeam = (e) => {
+    const { value } = e.target;
+    // setSelectedDropValue(number_data.filter((el) => el.value === value)[0].id);
+    setTeam(value);
+  };
+
+  const handleComment = (e) => {
+    const { value } = e.target;
+    setComment(value);
+  };
+
   // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
-    const data = {
-      team_name: 'seb_40_pre_001',
-      is_closed: false,
-    };
-    await fetch(`${process.env.REACT_APP_URL}/admin/management/team`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(data),
-    })
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err));
+    try {
+      await axios.post(`${process.env.REACT_APP_URL}/admin/management/number`, {
+        team_name: team,
+        team_issue: teamIssue,
+        comment: comment,
+      });
+      setLoading(false);
+      setModalOpen(false);
+      setTeam('');
+      setTeamIssue('');
+      setComment('');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <>
-      <h4>팀명(필수 입력)</h4>
-      <Autocomplete
+      {loading ? <Loading /> : null}
+      <h4>팀 명</h4>
+      {/* <Autocomplete
         id='combo-box-demo'
         options={team_data}
         sx={{ width: 300 }}
@@ -109,7 +117,8 @@ const RegisterModals = () => {
             onChange={handleDropTeam}
           />
         )}
-      />
+      /> */}
+      <input value={team} onChange={handleTeam}></input>
       <div>
         {isChecked.length === 0 && <div>{'pre/main을 선택해주세요'}</div>}
         {semester.map((id) => {
@@ -140,6 +149,7 @@ const RegisterModals = () => {
         item='standard-basic'
         label='특이사항 작성'
         variant='standard'
+        onChange={handleComment}
       />
       <br />
       <StylesProvider injectFirst>

@@ -65,6 +65,7 @@ export const ModalView = styled.div.attrs((props) => ({
   > div.close-btn {
     position: relative;
     bottom: 10px;
+    font-size: 22px;
     cursor: pointer;
   }
 `;

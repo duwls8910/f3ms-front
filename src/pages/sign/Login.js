@@ -1,81 +1,3 @@
-// import React from 'react';
-// import { useState } from 'react';
-// import axios from 'axios';
-// import { TextField, Button, FormControlLabel, Checkbox } from '@mui/material';
-// import Loading from 'utils/LoadingIndicator';
-
-// const Login = () => {
-//   const [loginInfo, setLoginInfo] = useState({
-//     userEmail: '',
-//     password: '',
-//   });
-//   const [loading, setLoading] = useState(false);
-
-//   const handleInputValue = (key) => (e) => {
-//     setLoginInfo({ ...loginInfo, [key]: e.target.value });
-//   };
-
-//   const handleLogin = () => {
-//     setLoading(true);
-//     const { userEmail, password } = loginInfo;
-//     axios
-//       .post(
-//         `${process.env.REACT_APP_URL}`,
-//         { userEmail: userEmail, password: password },
-//         {
-//           headers: { 'Content-Type': 'application/json' },
-//           withCredentials: true,
-//         }
-//       )
-//       .then((res) => {
-//         if (res.data.data.accessToken) {
-//           localStorage.setItem('user', res.data.data.accessToken);
-//         }
-//         setLoading(false);
-//         console.log('로그인 성공');
-//       })
-//       .catch((err) => {
-//         setLoading(false);
-//       });
-//   };
-
-//   return (
-//     <>
-//       {loading ? <Loading /> : null}
-//       <div className='email'>
-//         <TextField
-//           margin='normal'
-//           required
-//           id='email'
-//           label='Email Address'
-//           name='email'
-//           autoComplete='email'
-//           autoFocus
-//           onChange={handleInputValue('userEmail')}
-//         />
-//       </div>
-//       <div className='password'>
-//         <TextField
-//           margin='normal'
-//           required
-//           id='outlined-password-input'
-//           label='Password'
-//           type='password'
-//           autoComplete='current-password'
-//         />
-//       </div>
-//       <FormControlLabel
-//         control={<Checkbox value='remember' color='primary' />}
-//         label='계정 저장하기'
-//       />
-//       <br />
-//       <Button variant='contained' type='submit' onClick={handleLogin}>
-//         로그인
-//       </Button>
-//     </>
-//   );
-// };
-
 import * as React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
@@ -170,7 +92,7 @@ const Login = () => {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: 'rgb(53,62,87)' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component='h1' variant='h5'>
