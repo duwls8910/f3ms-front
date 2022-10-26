@@ -87,7 +87,7 @@ const RegisterModals = ({ setModalOpen }) => {
   // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
     try {
-      await axios.post(`${process.env.REACT_APP_URL}/admin/management/number`, {
+      await axios.post(`${process.env.REACT_APP_URL}/admin/management/team`, {
         team_name: team,
         team_issue: teamIssue,
         comment: comment,

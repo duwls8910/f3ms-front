@@ -108,7 +108,7 @@ const ReadMember = ({ id }) => {
   useEffect(() => {
     const getMember = async () => {
       const response = await axios(
-        `${process.env.REACT_APP_URL}/admin/management/number`
+        `${process.env.REACT_APP_URL}/admin/management/member`
       );
       setMember(response.data);
       setRows(response.data);

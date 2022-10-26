@@ -83,7 +83,7 @@ const DeleteModals = () => {
   const handleClick = async () => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_URL}/admin/management/number/${numberName}`
+        `${process.env.REACT_APP_URL}/admin/management/member/${numberName}`
       );
       openDeleteModal(false);
     } catch (err) {

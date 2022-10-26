@@ -66,7 +66,7 @@ const MemberRegister = ({ setModalOpen }) => {
     // } else {
     // }
     try {
-      await axios.post(`${process.env.REACT_APP_URL}/admin/management/number`, {
+      await axios.post(`${process.env.REACT_APP_URL}/admin/management/member`, {
         member_name: name,
         position_cd: selectedDropValue,
         comment: comment,

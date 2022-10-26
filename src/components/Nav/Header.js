@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 import teamDummy from 'static/teamDummy';
+import Loading from 'utils/LoadingIndicator';
 import styled from 'styled-components';
 import { Typography } from '@mui/material';
 import SearchBar from 'material-ui-search-bar';
-
-// export const HeaderContainer = styled.header`
-//   width: 100%;
-//   height: 100px;
-//   overflow: hidden;
-//   position: relative;
-//   z-index: 1;
-//   background-color: rgb(234, 211, 172);
-// `;
 
 export const HeaderContainer = styled.header`
   width: 100%;
@@ -70,23 +63,49 @@ export const SearchContainer = styled.div`
 const Header = () => {
   const [data, setData] = useState(teamDummy);
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [complete, setComplete] = useState(false);
+  const [date, setDate] = useState(new Date());
 
-  const requestSearch = (searchedVal) => {
+  const searchFilter = (searchedVal) => {
     const filteredValue = teamDummy.filter((data) => {
-      return data.team_name.toLowerCase().includes(searchedVal.toLowerCase());
+      return data.team_name
+        .toLocaleLowerCase()
+        .includes(searchedVal.toLocaleLowerCase());
     });
     setData(filteredValue);
   };
 
   const cancelSearch = () => {
     setSearch('');
-    requestSearch(search);
+    searchFilter(search);
+  };
+
+  // 엔터를 눌렀을 때 검색 결과에 해당하는 페이지가 나올 수 있도록 함
+  // e.g. seb_40_pre_001을 검색했을 때 001팀에 해당하는 정보 페이지가 로드됨
+  // 엔터를 눌렀을 때 -> onKeyUp()?
+  // 페이지는 /admin/management/team/:id?
+  const onSubmitSearch = (e) => {
+    if (e.key === 'Enter') {
+      axios.post(`${process.env.REACT_APP_URL}/admin/management/team/:id`, {
+        team_name: name,
+        title: title,
+        content: content,
+        is_completed: complete,
+        complete_date: date,
+      });
+      setLoading(false);
+    }
   };
 
   if (window.location.pathname === '/') return null;
 
   return (
     <>
+      {loading ? <Loading /> : null}
       <HeaderContainer>
         <NavBlock>
           <div>
@@ -111,8 +130,9 @@ const Header = () => {
           <div>
             <SearchContainer>
               <SearchBar
-                value={search}
-                onChange={(searchVal) => requestSearch(searchVal)}
+                placeholder='기수, 팀, 수강생 검색'
+                onChange={searchFilter}
+                onKeyPress={onSubmitSearch}
                 onCancelSearch={() => cancelSearch()}
               />
               {data.map((el) => (
