@@ -1,6 +1,7 @@
 // 해당 수강생을 클릭했을 때 나오는 수강생의 정보
 // 수강생의 정보에는 포지션과 하차 여부, 그 수강생에 해당하는 이슈 내용이 나오게 함
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import UpdateModals from 'components/Modal/member/UpdateModals';
@@ -31,7 +32,6 @@ export const MemberButton = styled(Button)`
 
 export const ModalContainer = styled.div`
   display: flex;
-import { Link } from 'react-router-dom';
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -117,20 +117,31 @@ const useStyles = makeStyles({
   },
 });
 
-const SpecificMember = ({ id }) => {
+const SpecificMember = () => {
+  let { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [memberData, setMemberData] = useState([]);
+  const [memberData, setMemberData] = useState([
+    {
+      id: '',
+      member_name: '',
+      number_id: '',
+      position_cd: '',
+      pre_team_id: '',
+      main_team_id: '',
+      is_active: '',
+    },
+  ]);
 
   const classes = useStyles();
-
   useEffect(() => {
     const getSpecMember = async () => {
       const response = await axios(
-        `${process.env.REACT_APP_URL}/admin/management/member/:id`
+        `${process.env.REACT_APP_URL}/admin/management/member/${id}`
       );
-      getSpecMember(response.data);
+      setMemberData(response.data);
+      console.log(response.data);
       setLoading(false);
     };
     getSpecMember();

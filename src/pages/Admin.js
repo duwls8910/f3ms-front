@@ -54,7 +54,7 @@ const Admin = () => {
   const [team, setTeam] = useState('');
 
   try {
-    fetch(`${process.env.REACT_APP_URL}/admin/management/team`)
+    fetch(`${process.env.REACT_APP_URL}/admin/management/pre-team`)
       .then((res) => {
         console.log(res);
         return res.json();

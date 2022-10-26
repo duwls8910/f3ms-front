@@ -2,6 +2,7 @@
 // 전체 조회하는 페이지에서 기수를 클릭했을 때 보여질 조회 페이지
 // 여기서 기수 정보를 수정하고 삭제하는 모달 띄우기
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import UpdateModals from 'components/Modal/number/UpdateModals';
@@ -117,7 +118,7 @@ const useStyles = makeStyles({
   },
 });
 
-const SpecificNumber = ({ id }) => {
+const SpecificNumber = () => {
   const [loading, setLoading] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -125,13 +126,15 @@ const SpecificNumber = ({ id }) => {
 
   const classes = useStyles();
 
+  let { id } = useParams();
+
   // 해당 기수 조회 시
   useEffect(() => {
     const getSpecNumber = async () => {
       const response = await axios(
-        `${process.env.REACT_APP_URL}/admin/management/number/:id`
+        `${process.env.REACT_APP_URL}/admin/management/number/${id}`
       );
-      getSpecNumber(response.data);
+      setNumberData(response.data);
       setLoading(false);
     };
     getSpecNumber();

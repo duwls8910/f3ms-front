@@ -8,7 +8,7 @@
 //         <div>
 //           {numberDummy.map((number) => (
 //             <div>
-//               <Link to='/admin/management/team' key={number.id}>
+//               <Link to='/admin/management/pre-team' key={number.id}>
 //                 {number.number_id}
 //               </Link>
 //             </div>

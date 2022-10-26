@@ -1,6 +1,6 @@
 // 해당하는 팀의 멤버 조회 페이지
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Loading from 'utils/LoadingIndicator';
 import RegisterModals from 'components/Modal/member/RegisterModals';
 import { Box, Stack, Button } from '@mui/material';
@@ -74,18 +74,13 @@ export const ModalView = styled.div.attrs((props) => ({
 
 const memberRows = [
   {
-    name: 'kimcoding',
-    team_id: 'seb_40_pre_001',
-    position_cd: '프론트엔드',
-    comment: 'test',
-    is_closed: 'X',
-  },
-  {
-    name: 'parkhacker',
-    team_id: 'seb_40_pre_001',
-    position_cd: '백엔드',
-    comment: 'test1',
-    is_closed: 'X',
+    id: '',
+    name: '',
+    pre_team_id: '',
+    main_team_id: '',
+    position_cd: '',
+    comment: '',
+    is_active: '',
   },
 ];
 
@@ -95,12 +90,12 @@ const useStyles = makeStyles({
   },
 });
 
-const ReadMember = ({ id }) => {
+const ReadMember = () => {
+  let { id } = useParams();
   const [member, setMember] = useState([]);
   const [rows, setRows] = useState(memberRows);
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  // const navigate = useNavigate();
 
   const classes = useStyles();
 
@@ -108,10 +103,11 @@ const ReadMember = ({ id }) => {
   useEffect(() => {
     const getMember = async () => {
       const response = await axios(
-        `${process.env.REACT_APP_URL}/admin/management/member`
+        `${process.env.REACT_APP_URL}/admin/management/member/number/${id}`
       );
       setMember(response.data);
       setRows(response.data);
+      //console.log(response.data);
       setLoading(false);
     };
     getMember();
@@ -135,7 +131,8 @@ const ReadMember = ({ id }) => {
             <TableHead>
               <TableRow>
                 <TableCell>팀원 이름</TableCell>
-                <TableCell align='center'>팀 이름</TableCell>
+                <TableCell align='center'>pre팀이름</TableCell>
+                <TableCell align='center'>main팀이름</TableCell>
                 <TableCell align='center'>포지션</TableCell>
                 <TableCell align='center'>하차여부</TableCell>
               </TableRow>
@@ -144,13 +141,14 @@ const ReadMember = ({ id }) => {
               {rows.map((row) => (
                 <TableRow key={nanoid()}>
                   <TableCell component='th' scope='row'>
-                    <Link to='/admin/management/member/:id'>
+                    <Link to={`/admin/management/member/number/${row.id}`}>
                       {row.member_name}
                     </Link>
                   </TableCell>
-                  <TableCell align='center'>{row.team_id}</TableCell>
+                  <TableCell align='center'>{row.pre_team_id}</TableCell>
+                  <TableCell align='center'>{row.main_team_id}</TableCell>
                   <TableCell align='center'>{row.position_cd}</TableCell>
-                  <TableCell align='center'>{row.is_closed}</TableCell>
+                  <TableCell align='center'>{row.is_active}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import UpdateModals from 'components/Modal/team/UpdateModals';
@@ -122,12 +123,14 @@ const SpecificTeam = () => {
 
   const classes = useStyles();
 
+  let { id } = useParams();
+
   useEffect(() => {
     const getSpecTeam = async () => {
       const response = await axios(
-        `${process.env.REACT_APP_URL}/admin/management/team/:id`
+        `${process.env.REACT_APP_URL}/admin/management/pre-team/${id}`
       );
-      getSpecTeam(response.data);
+      setTeamData(response.data);
       setLoading(false);
     };
     getSpecTeam();

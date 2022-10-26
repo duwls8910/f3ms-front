@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import axios from 'axios';
 import teamDummy from 'static/teamDummy';
 import Loading from 'utils/LoadingIndicator';
@@ -70,6 +70,8 @@ const Header = () => {
   const [complete, setComplete] = useState(false);
   const [date, setDate] = useState(new Date());
 
+  let { id } = useParams();
+
   const searchFilter = (searchedVal) => {
     const filteredValue = teamDummy.filter((data) => {
       return data.team_name
@@ -87,16 +89,21 @@ const Header = () => {
   // 엔터를 눌렀을 때 검색 결과에 해당하는 페이지가 나올 수 있도록 함
   // e.g. seb_40_pre_001을 검색했을 때 001팀에 해당하는 정보 페이지가 로드됨
   // 엔터를 눌렀을 때 -> onKeyUp()?
-  // 페이지는 /admin/management/team/:id?
+  // 페이지는 /admin/management/pre-team/:id?
   const onSubmitSearch = (e) => {
     if (e.key === 'Enter') {
-      axios.post(`${process.env.REACT_APP_URL}/admin/management/team/:id`, {
+      axios.post(`${process.env.REACT_APP_URL}/admin/management/pre-team/:id`, {
         team_name: name,
         title: title,
         content: content,
         is_completed: complete,
         complete_date: date,
       });
+      setName('');
+      setTitle('');
+      setContent('');
+      setComplete('');
+      setDate('');
       setLoading(false);
     }
   };
@@ -121,10 +128,10 @@ const Header = () => {
           <NavButton to='/admin/management/number'>
             <h5>기수</h5>
           </NavButton>
-          <NavButton to='/admin/management/team'>
+          <NavButton to='/admin/management/pre-team'>
             <h5>팀</h5>
           </NavButton>
-          <NavButton to='/admin/management/member'>
+          <NavButton to={`/admin/management/member/number/${id}`}>
             <h5>수강생</h5>
           </NavButton>
           <div>

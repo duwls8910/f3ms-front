@@ -102,7 +102,7 @@
 //                 <NavLink to='/admin/management/number' className='desc'>
 //                   <div>기수</div>
 //                 </NavLink>
-//                 <NavLink to='/admin/management/team' className='desc'>
+//                 <NavLink to='/admin/management/pre-team' className='desc'>
 //                   <div>팀</div>
 //                 </NavLink>
 //                 <NavLink to='/admin/management/member' className='desc'>

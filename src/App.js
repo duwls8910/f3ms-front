@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 import Header from 'components/Nav/Header';
 import Login from 'pages/sign/Login';
 import Admin from 'pages/Admin';
@@ -15,6 +15,7 @@ import SpecificMember from 'pages/memberPage/SpecificMember';
 // import TeamIssue from 'pages/IssuePage/TeamIssue';
 
 function App() {
+  let { id } = useParams();
   return (
     <BrowserRouter>
       <Header />
@@ -23,16 +24,23 @@ function App() {
         <Route path='/admin/management' element={<Admin />} />
 
         <Route path='/admin/management/number' element={<ReadNumber />} />
-        <Route path='/admin/management/team' element={<ReadTeam />} />
-        <Route path='/admin/management/member' element={<ReadMember />} />
+        <Route path='/admin/management/pre-team' element={<ReadTeam />} />
+        <Route
+          path={`/admin/management/member/number/${id}`}
+          element={<ReadMember />}
+        />
+        {/* <Route path='/admin/management/member' element={<ReadMember />} /> */}
 
         <Route
-          path='/admin/management/number/:id'
+          path={`/admin/management/number/${id}`}
           element={<SpecificNumber />}
         />
-        <Route path='/admin/management/team/:id' element={<SpecificTeam />} />
         <Route
-          path='/admin/management/member/:id'
+          path={`/admin/management/pre-team/${id}`}
+          element={<SpecificTeam />}
+        />
+        <Route
+          path={`/admin/management/member/${id}`}
           element={<SpecificMember />}
         />
       </Routes>

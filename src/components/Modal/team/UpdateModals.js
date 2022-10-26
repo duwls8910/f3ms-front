@@ -87,7 +87,7 @@ const RegisterModals = () => {
   const onSubmit = async () => {
     try {
       await axios.put(
-        `${process.env.REACT_APP_URL}/admin/management/team/${teamName}`,
+        `${process.env.REACT_APP_URL}/admin/management/pre-team/${teamName}`,
         {
           comment: comment,
           is_closed: inputStatus,

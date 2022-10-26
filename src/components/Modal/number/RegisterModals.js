@@ -41,6 +41,8 @@ const RegisterModals = ({ setModalOpen }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [comment, setComment] = useState('');
+  const [createdDate, setCreatedDate] = useState(new Date());
+  const [updatedDate, setUpdatedDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
 
   // 기수 선택을 위한 input value
@@ -86,11 +88,15 @@ const RegisterModals = ({ setModalOpen }) => {
         start_date: startDate,
         end_date: endDate,
         comment: comment,
+        created_date: createdDate,
+        updated_date: updatedDate,
       });
       setLoading(false);
       setModalOpen(false);
       setNumberName('');
       setComment('');
+      setStartDate('');
+      setEndDate('');
     } catch (err) {
       console.log(err);
     }

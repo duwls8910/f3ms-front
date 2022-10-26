@@ -8,9 +8,10 @@
 // pre / main (드롭다운, 드롭다운의 value가 나올 때 화면에서 보여지는 출력만 _pre_로 보일 수 있게)
 // 000 (int값으로)
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { nanoid } from 'nanoid';
+import Loading from 'utils/LoadingIndicator';
 import RegisterModals from 'components/Modal/team/RegisterModals';
 import { Box, Stack, Button } from '@mui/material';
 import {
@@ -88,24 +89,10 @@ export const ModalView = styled.div.attrs((props) => ({
 
 const teamRows = [
   {
-    name: '40_pre_001',
-    comment: '001 pre test',
-    is_opened: 'O',
-  },
-  {
-    name: '40_pre_002',
-    comment: '',
-    is_opened: 'O',
-  },
-  {
-    name: '40_pre_003',
-    comment: '',
-    is_opened: 'O',
-  },
-  {
-    name: '40_pre_004',
-    comment: '',
-    is_opened: 'O',
+    id: '',
+    team_name: '',
+    number_id: '',
+    is_opened: '',
   },
 ];
 
@@ -119,15 +106,19 @@ const ReadTeam = () => {
   const [team, setTeam] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [rows, setRows] = useState(teamRows);
+  const [loading, setLoading] = useState(false);
   const classes = useStyles();
+
+  let { id } = useParams();
 
   useEffect(() => {
     const getTeam = async () => {
       const response = await axios(
-        `${process.env.REACT_APP_URL}/admin/management/team`
+        `${process.env.REACT_APP_URL}/admin/management/pre-team`
       );
       setTeam(response.data);
       setRows(response.data);
+      setLoading(false);
     };
     getTeam();
   }, []);
@@ -142,13 +133,13 @@ const ReadTeam = () => {
 
   return (
     <>
+      {loading ? <Loading /> : null}
       <Box>
         <TableContainer>
           <Table className={classes.table} aria-label='simple table'>
             <TableHead>
               <TableRow>
                 <TableCell>팀 명</TableCell>
-                <TableCell align='center'>기타사항(comment)</TableCell>
                 <TableCell align='center'>팀종료여부</TableCell>
               </TableRow>
             </TableHead>
@@ -156,9 +147,10 @@ const ReadTeam = () => {
               {rows.map((row) => (
                 <TableRow key={nanoid()}>
                   <TableCell component='th' scope='row'>
-                    <Link to='/admin/management/team/:id'>{`seb_${row.team_name}`}</Link>
+                    <Link
+                      to={`/admin/management/pre-team/${id}`}
+                    >{`seb_${row.number_id}_pre_${row.team_name}`}</Link>
                   </TableCell>
-                  <TableCell align='center'>{row.comment}</TableCell>
                   <TableCell align='center'>{row.is_opened}</TableCell>
                 </TableRow>
               ))}

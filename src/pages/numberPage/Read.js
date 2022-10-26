@@ -1,6 +1,6 @@
 // 전체 기수 조회 페이지
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Loading from 'utils/LoadingIndicator';
 import RegisterModals from 'components/Modal/number/RegisterModals';
 import { Box, Stack, Button } from '@mui/material';
@@ -80,18 +80,14 @@ export const ModalView = styled.div.attrs((props) => ({
 
 export const numberRows = [
   {
-    name: 'seb_40',
-    start_date: '2022-10-20',
-    end_date: '2022-11-04',
-    comment: 'test',
-    is_closed: 'X',
-  },
-  {
-    name: 'seb_41',
-    start_date: '2022-10-20',
-    end_date: '2022-11-04',
-    comment: 'test1',
-    is_closed: 'X',
+    id: '',
+    name: '',
+    start_date: '',
+    end_date: '',
+    comment: '',
+    is_closed: '',
+    created_date: '',
+    updated_date: '',
   },
 ];
 
@@ -109,6 +105,8 @@ const ReadNumber = () => {
   // const [searched, setSearched] = useState('');
   const classes = useStyles();
   const [modalOpen, setModalOpen] = useState(false);
+
+  let { id } = useParams();
 
   // 전체 기수 데이터 조회 시
   useEffect(() => {
@@ -162,18 +160,24 @@ const ReadNumber = () => {
                 <TableCell align='center'>종료일(end date)</TableCell>
                 <TableCell align='center'>기타사항(comment)</TableCell>
                 <TableCell align='center'>기수종료여부</TableCell>
+                <TableCell align='center'>생성날짜</TableCell>
+                <TableCell align='center'>수정날짜</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map((row) => (
                 <TableRow key={nanoid()}>
                   <TableCell component='th' scope='row'>
-                    <Link to='/admin/management/number/:id'>{`seb_${row.number_name}`}</Link>
+                    <Link
+                      to={`/admin/management/number/${id}`}
+                    >{`seb_${row.number_name}`}</Link>
                   </TableCell>
                   <TableCell align='center'>{row.start_date}</TableCell>
                   <TableCell align='center'>{row.end_date}</TableCell>
                   <TableCell align='center'>{row.comment}</TableCell>
                   <TableCell align='center'>{row.is_closed}</TableCell>
+                  <TableCell align='center'>{row.created_date}</TableCell>
+                  <TableCell align='center'>{row.updated_date}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
