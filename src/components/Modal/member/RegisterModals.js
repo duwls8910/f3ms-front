@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import { Autocomplete, TextField, Button } from '@mui/material';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
   position: absolute;
-  top: 200%;
-  right: 60%;
+  top: 70%;
+  right: 55%;
   transform: translateX(50%);
   margin: 4rem 0;
 `;
@@ -65,38 +67,48 @@ const MemberRegister = ({ setModalOpen }) => {
     //   alert('기수 종료 여부를 선택해주세요');
     // } else {
     // }
-    try {
-      await axios.post(`${process.env.REACT_APP_URL}/admin/management/member`, {
-        member_name: name,
-        position_cd: selectedDropValue,
-        comment: comment,
-      });
-      setLoading(false);
-      setModalOpen(false);
-      setName('');
-      setComment('');
-    } catch (err) {
-      console.log(err);
+    if (name === '') {
+      alert('수강생명을 입력해주세요');
+    } else {
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_URL}/admin/management/member`,
+          {
+            member_name: name,
+            position_cd: selectedDropValue,
+            comment: comment,
+          }
+        );
+        setLoading(false);
+        setModalOpen(false);
+        setName('');
+        setComment('');
+      } catch (err) {
+        console.log(err);
+      }
     }
+  };
+
+  const handleExit = () => {
+    setModalOpen(false);
   };
 
   return (
     <>
       {loading ? <Loading /> : null}
       <h4>수강생</h4>
-      <br />
-      {/* <TextField
+      <TextField
         id='outlined-basic'
         label='이름'
         variant='outlined'
         autoFocus
         value={name}
         onChange={handleMember}
-      /> */}
-      <input value={name} onChange={handleMember}></input>
+      />
+      {/* <input value={name} onChange={handleMember}></input> */}
       <br />
       <br />
-      <div>포지션</div>
+      <div>학습 코스 구분</div>
       <Autocomplete
         id='combo-box-demo'
         options={position_data}
@@ -104,13 +116,13 @@ const MemberRegister = ({ setModalOpen }) => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label='포지션을 선택하세요'
+            label='해당하는 학습 코스를 선택하세요'
             onChange={handleDropPosition}
           />
         )}
       />
       <br />
-      <div>기타 코멘트(선택사항)</div>
+      <div>기타사항</div>
       <TextField
         id='standard-basic'
         label='특이사항 작성'
@@ -119,7 +131,24 @@ const MemberRegister = ({ setModalOpen }) => {
       />
       <br />
       <ButtonPosition>
-        <MyButton variant='contained' onClick={onSubmit}>
+        <MyButton
+          variant='contained'
+          onClick={() =>
+            confirmAlert({
+              message: '해당 수강생의 정보를 등록하시겠습니까?',
+              buttons: [
+                {
+                  label: '네',
+                  onClick: () => onSubmit(),
+                },
+                {
+                  label: '아니오',
+                  onClick: () => handleExit(),
+                },
+              ],
+            })
+          }
+        >
           등록
         </MyButton>
       </ButtonPosition>

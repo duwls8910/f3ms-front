@@ -96,7 +96,7 @@ const DeleteModals = () => {
         <div>
           해당 팀의 정보를
           <br />
-          삭제하시겠습니까?
+          비활성화하시겠습니까?
         </div>
         <Stack spacing={1} direction='row'>
           <div>

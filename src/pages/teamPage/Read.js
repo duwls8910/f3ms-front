@@ -55,33 +55,35 @@ export const ModalBackdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 400px;
-  height: 550px;
+  width: 100%;
+  height: 100%;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(156, 165, 182);
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
 `;
 
 export const ModalView = styled.div.attrs((props) => ({
-  role: `dialog`,
+  role: 'dialog',
 }))`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 100px;
+  background-color: rgb(156, 165, 182);
+  width: 400px;
+  height: 550px;
+  border-radius: 0.5rem;
   position: relative;
 
   > div.close-btn {
     position: absolute;
-    bottom: 290px;
-    left: 17rem;
+    bottom: 500px;
+    left: 22rem;
     font-size: 22px;
     cursor: pointer;
   }
@@ -93,6 +95,9 @@ const teamRows = [
     team_name: '',
     number_id: '',
     is_opened: '',
+    comment: '',
+    created_date: '',
+    updated_date: '',
   },
 ];
 
@@ -141,6 +146,9 @@ const ReadTeam = () => {
               <TableRow>
                 <TableCell>팀 명</TableCell>
                 <TableCell align='center'>팀종료여부</TableCell>
+                <TableCell align='center'>기타사항</TableCell>
+                <TableCell align='center'>생성일</TableCell>
+                <TableCell align='center'>수정일</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -152,6 +160,9 @@ const ReadTeam = () => {
                     >{`seb_${row.number_id}_pre_${row.team_name}`}</Link>
                   </TableCell>
                   <TableCell align='center'>{row.is_opened}</TableCell>
+                  <TableCell align='center'>{row.comment}</TableCell>
+                  <TableCell align='center'>{row.created_date}</TableCell>
+                  <TableCell align='center'>{row.updated_date}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -2,12 +2,14 @@ import { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button } from '@mui/material';
 import { StylesProvider } from '@material-ui/core';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
   position: absolute;
-  top: 200%;
-  right: 50%;
+  top: 77%;
+  right: 60%;
   transform: translateX(50%);
   margin: 4rem 0;
 `;
@@ -19,12 +21,7 @@ export const MyButton = styled(Button)`
   padding: 0 30px;
 `;
 
-const semester = [
-  { item: 0, data: 'pre' },
-  { item: 1, data: 'main' },
-];
-
-const RegisterModals = () => {
+const UpdateModals = ({ setModalOpen }) => {
   const [newTeam, setNewTeam] = useState({
     team_id: '',
     new_team_id: '',
@@ -38,8 +35,6 @@ const RegisterModals = () => {
   const [content, setContent] = useState('');
   const [comment, setComment] = useState('');
   const [inputStatus, setInputStatus] = useState('');
-  // pre/main 체크 여부를 위한 상태변경
-  const [isChecked, setCheck] = useState([]);
 
   // const handleClickRadioButton = (e) => {
   //   setInputStatus(e.target.value);
@@ -70,19 +65,6 @@ const RegisterModals = () => {
     setComment(value);
   };
 
-  // pre/main체크 이벤트
-  const handleChecked = (checked, item) => {
-    if (checked) {
-      setCheck([...isChecked, item]);
-    } else if (!checked) {
-      setCheck(isChecked.filter((el) => el !== item));
-    }
-  };
-
-  const removeCheck = (item) => {
-    setCheck(isChecked.filter((el) => el !== item));
-  };
-
   // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
     try {
@@ -100,6 +82,10 @@ const RegisterModals = () => {
     }
   };
 
+  const handleExit = () => {
+    setModalOpen(false);
+  };
+
   return (
     <>
       <h4>팀 명</h4>
@@ -111,36 +97,11 @@ const RegisterModals = () => {
         onChange={handleInputValue}
       /> */}
       <input value={teamName} onChange={handleTeam}></input>
-      <div>
-        {isChecked.length === 0 && <div>{'pre/main을 선택해주세요'}</div>}
-        {semester.map((item) => {
-          return (
-            <input
-              type='checkbox'
-              value={item.data}
-              onChange={(e) => handleChecked(e.target.checked, e.target.value)}
-              checked={isChecked.includes(item.data) ? true : false}
-            />
-          );
-        })}
-      </div>
-      <div>
-        {isChecked.map((item) => {
-          return (
-            <div>
-              <div key={item}>
-                <div>{item}</div>
-              </div>
-              <div onClick={() => removeCheck(item)} />
-            </div>
-          );
-        })}
-      </div>
       <h4>제목</h4>
       <input value={title} onChange={handleTitle}></input>
       <h4>내용</h4>
       <input value={content} onChange={handleContent}></input>
-      <h4>기타 코멘트</h4>
+      <h4>기타사항</h4>
       <TextField
         item='standard-basic'
         label='특이사항 작성'
@@ -150,7 +111,24 @@ const RegisterModals = () => {
       <br />
       <StylesProvider injectFirst>
         <ButtonPosition>
-          <MyButton variant='contained' onClick={onSubmit}>
+          <MyButton
+            variant='contained'
+            onClick={() =>
+              confirmAlert({
+                message: '해당 기수의 정보를 수정하시겠습니까?',
+                buttons: [
+                  {
+                    label: '네',
+                    onClick: () => onSubmit(),
+                  },
+                  {
+                    label: '아니오',
+                    onClick: () => handleExit(),
+                  },
+                ],
+              })
+            }
+          >
             수정
           </MyButton>
         </ButtonPosition>
@@ -159,4 +137,4 @@ const RegisterModals = () => {
   );
 };
 
-export default RegisterModals;
+export default UpdateModals;

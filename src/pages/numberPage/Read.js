@@ -41,33 +41,35 @@ export const ModalBackdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 400px;
-  height: 550px;
+  width: 100%;
+  height: 100%;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(156, 165, 182);
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
 `;
 
 export const ModalView = styled.div.attrs((props) => ({
-  role: `dialog`,
+  role: 'dialog',
 }))`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 100px;
+  background-color: rgb(156, 165, 182);
+  width: 400px;
+  height: 550px;
+  border-radius: 0.5rem;
   position: relative;
 
   > div.close-btn {
     position: absolute;
-    bottom: 290px;
-    left: 17rem;
+    bottom: 500px;
+    left: 22rem;
     font-size: 22px;
     cursor: pointer;
   }
@@ -156,9 +158,9 @@ const ReadNumber = () => {
             <TableHead>
               <TableRow>
                 <TableCell>기수명</TableCell>
-                <TableCell align='center'>시작일(start date)</TableCell>
-                <TableCell align='center'>종료일(end date)</TableCell>
-                <TableCell align='center'>기타사항(comment)</TableCell>
+                <TableCell align='center'>시작일</TableCell>
+                <TableCell align='center'>종료일</TableCell>
+                <TableCell align='center'>기타사항</TableCell>
                 <TableCell align='center'>기수종료여부</TableCell>
                 <TableCell align='center'>생성날짜</TableCell>
                 <TableCell align='center'>수정날짜</TableCell>

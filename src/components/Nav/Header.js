@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import axios from 'axios';
 import teamDummy from 'static/teamDummy';
@@ -72,6 +72,8 @@ const Header = () => {
 
   let { id } = useParams();
 
+  if (window.location.pathname === '/') return null;
+
   const searchFilter = (searchedVal) => {
     const filteredValue = teamDummy.filter((data) => {
       return data.team_name
@@ -92,13 +94,16 @@ const Header = () => {
   // 페이지는 /admin/management/pre-team/:id?
   const onSubmitSearch = (e) => {
     if (e.key === 'Enter') {
-      axios.post(`${process.env.REACT_APP_URL}/admin/management/pre-team/:id`, {
-        team_name: name,
-        title: title,
-        content: content,
-        is_completed: complete,
-        complete_date: date,
-      });
+      axios.post(
+        `${process.env.REACT_APP_URL}/admin/management/pre-team/${id}`,
+        {
+          team_name: name,
+          title: title,
+          content: content,
+          is_completed: complete,
+          complete_date: date,
+        }
+      );
       setName('');
       setTitle('');
       setContent('');
@@ -107,8 +112,6 @@ const Header = () => {
       setLoading(false);
     }
   };
-
-  if (window.location.pathname === '/') return null;
 
   return (
     <>
@@ -121,7 +124,7 @@ const Header = () => {
               to='/'
             >
               <Typography component='h1' variant='h3'>
-                F3MS
+                📊
               </Typography>
             </LogoStyle>
           </div>

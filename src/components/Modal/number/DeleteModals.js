@@ -85,6 +85,7 @@ const DeleteModals = () => {
       .then((res) => {
         console.log(res);
       });
+    setOpenDeleteModal(true);
   };
 
   const closeModal = () => {
@@ -98,7 +99,7 @@ const DeleteModals = () => {
         <span>
           해당 기수 정보를
           <br />
-          삭제하시겠습니까?
+          비활성화하시겠습니까?
         </span>
         <Stack spacing={1} direction='row'>
           <div>

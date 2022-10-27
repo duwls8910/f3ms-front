@@ -1,7 +1,7 @@
 // 해당 수강생을 클릭했을 때 나오는 수강생의 정보
 // 수강생의 정보에는 포지션과 하차 여부, 그 수강생에 해당하는 이슈 내용이 나오게 함
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import UpdateModals from 'components/Modal/member/UpdateModals';
@@ -43,49 +43,35 @@ export const ModalBackdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 400px;
-  height: 550px;
+  width: 100%;
+  height: 100%;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(156, 165, 182);
-  position: fixed;
-`;
-
-export const DeleteModalBackDrop = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 400px;
-  height: 300px;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  z-index: 1;
-  background-color: rgb(156, 165, 182);
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
 `;
 
 export const ModalView = styled.div.attrs((props) => ({
-  role: `dialog`,
+  role: 'dialog',
 }))`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 100px;
+  background-color: rgb(156, 165, 182);
+  width: 400px;
+  height: 550px;
+  border-radius: 0.5rem;
   position: relative;
 
   > div.close-btn {
     position: absolute;
-    bottom: 290px;
-    left: 17rem;
+    bottom: 500px;
+    left: 22rem;
     font-size: 22px;
     cursor: pointer;
   }
@@ -98,13 +84,15 @@ export const DeleteModalView = styled.div.attrs((props) => ({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 100px;
+  width: 300px;
+  height: 300px;
   position: relative;
+  background-color: rgb(156, 165, 182);
+  border-radius: 0.5rem;
 
   > div.close-btn {
     position: absolute;
-    bottom: 150px;
+    bottom: 240px;
     left: 16rem;
     font-size: 22px;
     cursor: pointer;
@@ -118,7 +106,6 @@ const useStyles = makeStyles({
 });
 
 const SpecificMember = () => {
-  let { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -135,6 +122,10 @@ const SpecificMember = () => {
   ]);
 
   const classes = useStyles();
+
+  let { id } = useParams();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const getSpecMember = async () => {
       const response = await axios(
@@ -167,6 +158,10 @@ const SpecificMember = () => {
     setDeleteOpen(false);
   };
 
+  const handleNavigate = () => {
+    navigate(-1);
+  };
+
   return (
     <>
       {loading ? <Loading /> : null}
@@ -177,22 +172,28 @@ const SpecificMember = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>팀원 이름</TableCell>
-                  <TableCell align='center'>제목</TableCell>
-                  <TableCell align='center'>이슈 내용</TableCell>
-                  <TableCell align='center'>해결 여부</TableCell>
-                  <TableCell align='center'>완료 날짜</TableCell>
+                  <TableCell align='center'>학습 코스 구분</TableCell>
+                  <TableCell align='center'>pre팀명</TableCell>
+                  <TableCell align='center'>main팀명</TableCell>
+                  <TableCell align='center'>하차여부</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {memberData.map((row) => (
                   <TableRow key={nanoid()}>
                     <TableCell component='th' scope='row'>
-                      {row.id}
+                      {memberData.member_name}
                     </TableCell>
-                    <TableCell align='center'>{row.title}</TableCell>
-                    <TableCell align='center'>{row.content}</TableCell>
-                    <TableCell align='center'>{row.is_completed}</TableCell>
-                    <TableCell align='center'>{row.completed_date}</TableCell>
+                    <TableCell align='center'>
+                      {memberData.position_cd}
+                    </TableCell>
+                    <TableCell align='center'>
+                      {memberData.pre_team_id}
+                    </TableCell>
+                    <TableCell align='center'>
+                      {memberData.main_team_id}
+                    </TableCell>
+                    <TableCell align='center'>{memberData.is_active}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -206,48 +207,49 @@ const SpecificMember = () => {
             <MemberButton variant='contained' onClick={openModalHandler}>
               수정
             </MemberButton>
-          </StylesProvider>
-          <ModalContainer>
-            {updateOpen ? (
-              <ModalBackdrop onClick={openModalHandler}>
-                <ModalView
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <div className='close-btn' onClick={closeModalHandler}>
-                    &times;
-                  </div>
-                  <div className='desc'>
-                    <UpdateModals setModalOpen={setUpdateOpen} />
-                  </div>
-                </ModalView>
-              </ModalBackdrop>
-            ) : null}
-          </ModalContainer>
-          <StylesProvider injectFirst>
+            <ModalContainer>
+              {updateOpen ? (
+                <ModalBackdrop onClick={openModalHandler}>
+                  <ModalView
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
+                  >
+                    <div className='close-btn' onClick={closeModalHandler}>
+                      &times;
+                    </div>
+                    <div className='desc'>
+                      <UpdateModals setModalOpen={setUpdateOpen} />
+                    </div>
+                  </ModalView>
+                </ModalBackdrop>
+              ) : null}
+            </ModalContainer>
             <MemberButton variant='contained' onClick={openDeleteHandler}>
-              삭제
+              비활성
+            </MemberButton>
+            <ModalContainer>
+              {deleteOpen ? (
+                <ModalBackdrop onClick={openDeleteHandler}>
+                  <DeleteModalView
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
+                  >
+                    <div className='close-btn' onClick={closeDeleteHandler}>
+                      &times;
+                    </div>
+                    <div className='desc'>
+                      <DeleteModals />
+                    </div>
+                  </DeleteModalView>
+                </ModalBackdrop>
+              ) : null}
+            </ModalContainer>
+            <MemberButton variant='contained' onClick={handleNavigate}>
+              뒤로가기
             </MemberButton>
           </StylesProvider>
-          <ModalContainer>
-            {deleteOpen ? (
-              <DeleteModalBackDrop onClick={openDeleteHandler}>
-                <DeleteModalView
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <div className='close-btn' onClick={closeDeleteHandler}>
-                    &times;
-                  </div>
-                  <div className='desc'>
-                    <DeleteModals />
-                  </div>
-                </DeleteModalView>
-              </DeleteModalBackDrop>
-            ) : null}
-          </ModalContainer>
         </Stack>
       </Box>
     </>

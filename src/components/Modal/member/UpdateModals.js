@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Autocomplete, TextField, Button } from '@mui/material';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
   position: absolute;
-  top: 200%;
+  top: 77%;
   right: 60%;
   transform: translateX(50%);
   margin: 4rem 0;
@@ -36,7 +38,7 @@ const MemberRegister = ({ setModalOpen }) => {
   const [comment, setComment] = useState('');
   const [inputStatus, setInputStatus] = useState('');
   const [selectedDropValue, setSelectedDropValue] =
-    useState('포지션을 선택하세요');
+    useState('해당하는 학습 코스를 선택하세요');
 
   const handleDropPosition = (e) => {
     const { value } = e.target;
@@ -101,6 +103,10 @@ const MemberRegister = ({ setModalOpen }) => {
     //   .catch((err) => console.log(err));
   };
 
+  const handleExit = () => {
+    setModalOpen(false);
+  };
+
   return (
     <>
       <h4>수강생</h4>
@@ -116,7 +122,7 @@ const MemberRegister = ({ setModalOpen }) => {
       <input value={memberName} onChange={handleMember}></input>
       <br />
       <br />
-      <h4>포지션</h4>
+      <h4>학습 코스 구분</h4>
       <Autocomplete
         id='combo-box-demo'
         options={position_data}
@@ -124,13 +130,13 @@ const MemberRegister = ({ setModalOpen }) => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label='포지션을 선택하세요'
+            label='해당하는 학습 코스를 선택하세요'
             onChange={handleDropPosition}
           />
         )}
       />
       <br />
-      <h4>기타 코멘트</h4>
+      <h4>기타사항</h4>
       <TextField
         id='standard-basic'
         label='특이사항 작성'
@@ -139,7 +145,24 @@ const MemberRegister = ({ setModalOpen }) => {
       />
       <br />
       <ButtonPosition>
-        <MyButton variant='contained' onClick={onSubmit}>
+        <MyButton
+          variant='contained'
+          onClick={() =>
+            confirmAlert({
+              message: '해당 수강생의 정보를 수정하시겠습니까?',
+              buttons: [
+                {
+                  label: '네',
+                  onClick: () => onSubmit(),
+                },
+                {
+                  label: '아니오',
+                  onClick: () => handleExit(),
+                },
+              ],
+            })
+          }
+        >
           수정
         </MyButton>
       </ButtonPosition>

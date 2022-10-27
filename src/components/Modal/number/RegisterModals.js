@@ -6,12 +6,14 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
 import { TextField, Button } from '@mui/material';
 import { StylesProvider } from '@material-ui/core';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
   position: absolute;
-  top: 200%;
-  right: 60%;
+  top: 76%;
+  right: 55%;
   transform: translateX(50%);
   margin: 4rem 0;
 `;
@@ -45,7 +47,7 @@ const RegisterModals = ({ setModalOpen }) => {
   const [updatedDate, setUpdatedDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
 
-  // 기수 선택을 위한 input value
+  // 기수 작성을 위한 input value
   const handleNumber = (e) => {
     const { value } = e.target;
     // setSelectedDropValue(number_data.filter((el) => el.value === value)[0].id);
@@ -82,24 +84,37 @@ const RegisterModals = ({ setModalOpen }) => {
     // } else {
     // }
     // console.log(numberName, startDate, endDate, comment);
-    try {
-      await axios.post(`${process.env.REACT_APP_URL}/admin/management/number`, {
-        number_name: numberName,
-        start_date: startDate,
-        end_date: endDate,
-        comment: comment,
-        created_date: createdDate,
-        updated_date: updatedDate,
-      });
-      setLoading(false);
-      setModalOpen(false);
-      setNumberName('');
-      setComment('');
-      setStartDate('');
-      setEndDate('');
-    } catch (err) {
-      console.log(err);
+    if (numberName === '') {
+      alert('기수명을 입력해주세요');
+    } else {
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_URL}/admin/management/number`,
+          {
+            number_name: numberName,
+            start_date: startDate,
+            end_date: endDate,
+            comment: comment,
+            created_date: createdDate,
+            updated_date: updatedDate,
+          }
+        );
+        setLoading(false);
+        setModalOpen(false);
+        setNumberName('');
+        setComment('');
+        setStartDate('');
+        setEndDate('');
+        setCreatedDate('');
+        setUpdatedDate('');
+      } catch (err) {
+        console.log(err);
+      }
     }
+  };
+
+  const handleExit = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -145,7 +160,7 @@ const RegisterModals = ({ setModalOpen }) => {
         endDate={endDate}
         minDate={startDate}
       />
-      <h4>기타 코멘트</h4>
+      <h4>기타사항</h4>
       <TextField
         id='standard-basic'
         label='특이사항 작성'
@@ -155,7 +170,24 @@ const RegisterModals = ({ setModalOpen }) => {
       <br />
       <StylesProvider injectFirst>
         <ButtonPosition>
-          <MyButton variant='contained' onClick={onSubmit}>
+          <MyButton
+            variant='contained'
+            onClick={() =>
+              confirmAlert({
+                message: '해당 기수의 정보를 등록하시겠습니까?',
+                buttons: [
+                  {
+                    label: '네',
+                    onClick: () => onSubmit(),
+                  },
+                  {
+                    label: '아니오',
+                    onClick: () => handleExit(),
+                  },
+                ],
+              })
+            }
+          >
             등록
           </MyButton>
         </ButtonPosition>

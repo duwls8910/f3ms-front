@@ -5,11 +5,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
 import { TextField, Button } from '@mui/material';
 import { StylesProvider } from '@material-ui/core';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
   position: absolute;
-  top: 200%;
+  top: 77%;
   right: 60%;
   transform: translateX(50%);
   margin: 4rem 0;
@@ -82,6 +84,10 @@ const UpdateModals = ({ setModalOpen }) => {
     }
   };
 
+  const handleExit = () => {
+    setModalOpen(false);
+  };
+
   return (
     <>
       <h4>기수</h4>
@@ -123,7 +129,7 @@ const UpdateModals = ({ setModalOpen }) => {
         endDate={endDate}
         minDate={startDate}
       />
-      <h4>기타 코멘트</h4>
+      <h4>기타사항</h4>
       <TextField
         id='standard-basic'
         label='특이사항 작성'
@@ -133,7 +139,24 @@ const UpdateModals = ({ setModalOpen }) => {
       <br />
       <StylesProvider injectFirst>
         <ButtonPosition>
-          <MyButton variant='contained' onClick={onSubmit}>
+          <MyButton
+            variant='contained'
+            onClick={() =>
+              confirmAlert({
+                message: '해당 기수의 정보를 수정하시겠습니까?',
+                buttons: [
+                  {
+                    label: '네',
+                    onClick: () => onSubmit(),
+                  },
+                  {
+                    label: '아니오',
+                    onClick: () => handleExit(),
+                  },
+                ],
+              })
+            }
+          >
             수정
           </MyButton>
         </ButtonPosition>

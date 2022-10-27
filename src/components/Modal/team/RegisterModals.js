@@ -3,6 +3,8 @@ import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import { TextField, Autocomplete, Button } from '@mui/material';
 import { StylesProvider } from '@material-ui/core';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 const ButtonPosition = styled.div`
@@ -19,50 +21,13 @@ const MyButton = styled(Button)`
   padding: 0 30px;
 `;
 
-const team_data = [
-  { label: '001' },
-  { label: '002' },
-  { label: '003' },
-  { label: '004' },
-];
-
-const semester = [
-  { id: 0, data: 'pre' },
-  { id: 1, data: 'main' },
-];
-
 const RegisterModals = ({ setModalOpen }) => {
   const [team, setTeam] = useState('');
   const [teamIssue, setTeamIssue] = useState('');
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const [selectedDropValue, setSelectedDropValue] =
-    useState('해당하는 팀 번호를 선택하세요');
-
-  // pre/main 체크 여부를 위한 상태변경
-  const [isChecked, setCheck] = useState([]);
-
   // 라디오 버튼 상태변경
   // const [inputStatus, setInputStatus] = useState('');
-
-  const handleDropTeam = (e) => {
-    const { value } = e.target;
-    setSelectedDropValue(team_data.filter((el) => el.value === value)[0].id);
-  };
-
-  // pre/main체크 이벤트
-  const handleChecked = (checked, id) => {
-    if (checked) {
-      setCheck([...isChecked, id]);
-    } else if (!checked) {
-      setCheck(isChecked.filter((el) => el !== id));
-    }
-  };
-
-  const removeCheck = (id) => {
-    setCheck(isChecked.filter((el) => el !== id));
-  };
 
   // 팀 등록 여부에 따른 라디오 버튼 이벤트
   // const handleClickRadioButton = (e) => {
@@ -86,23 +51,31 @@ const RegisterModals = ({ setModalOpen }) => {
 
   // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
-    try {
-      await axios.post(
-        `${process.env.REACT_APP_URL}/admin/management/pre-team`,
-        {
-          team_name: team,
-          team_issue: teamIssue,
-          comment: comment,
-        }
-      );
-      setLoading(false);
-      setModalOpen(false);
-      setTeam('');
-      setTeamIssue('');
-      setComment('');
-    } catch (err) {
-      console.log(err);
+    if (team === '') {
+      alert('팀명을 입력해주세요');
+    } else {
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_URL}/admin/management/pre-team`,
+          {
+            team_name: team,
+            team_issue: teamIssue,
+            comment: comment,
+          }
+        );
+        setLoading(false);
+        setModalOpen(false);
+        setTeam('');
+        setTeamIssue('');
+        setComment('');
+      } catch (err) {
+        console.log(err);
+      }
     }
+  };
+
+  const handleExit = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -110,44 +83,19 @@ const RegisterModals = ({ setModalOpen }) => {
       {loading ? <Loading /> : null}
       <h4>팀 명</h4>
       {/* <Autocomplete
-        id='combo-box-demo'
-        options={team_data}
-        sx={{ width: 300 }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label='해당하는 팀 번호를 선택하세요'
-            onChange={handleDropTeam}
-          />
-        )}
-      /> */}
+      id='combo-box-demo'
+      options={team_data}
+      sx={{ width: 300 }}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label='해당하는 팀 번호를 선택하세요'
+          onChange={handleDropTeam}
+        />
+      )}
+    /> */}
       <input value={team} onChange={handleTeam}></input>
-      <div>
-        {isChecked.length === 0 && <div>{'pre/main을 선택해주세요'}</div>}
-        {semester.map((id) => {
-          return (
-            <input
-              type='checkbox'
-              value={id.data}
-              onChange={(e) => handleChecked(e.target.checked, e.target.value)}
-              checked={isChecked.includes(id.data) ? true : false}
-            />
-          );
-        })}
-      </div>
-      <div>
-        {isChecked.map((id) => {
-          return (
-            <div>
-              <div key={id}>
-                <div>{id}</div>
-              </div>
-              <div onClick={() => removeCheck(id)} />
-            </div>
-          );
-        })}
-      </div>
-      <h4>기타 코멘트(선택사항)</h4>
+      <h4>기타사항</h4>
       <TextField
         item='standard-basic'
         label='특이사항 작성'
@@ -157,7 +105,24 @@ const RegisterModals = ({ setModalOpen }) => {
       <br />
       <StylesProvider injectFirst>
         <ButtonPosition>
-          <MyButton variant='contained' onClick={onSubmit}>
+          <MyButton
+            variant='contained'
+            onClick={() =>
+              confirmAlert({
+                message: '해당 팀의 정보를 등록하시겠습니까?',
+                buttons: [
+                  {
+                    label: '네',
+                    onClick: () => onSubmit(),
+                  },
+                  {
+                    label: '아니오',
+                    onClick: () => handleExit(),
+                  },
+                ],
+              })
+            }
+          >
             등록
           </MyButton>
         </ButtonPosition>
