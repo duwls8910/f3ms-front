@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
@@ -31,8 +28,6 @@ const UpdateModals = ({ setModalOpen }) => {
     new_is_closed: false,
   });
   const [teamName, setTeamName] = useState('');
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
   const [comment, setComment] = useState('');
   const [inputStatus, setInputStatus] = useState('');
 
@@ -44,16 +39,6 @@ const UpdateModals = ({ setModalOpen }) => {
     const { value } = e.target;
     // setSelectedDropValue(member_data.filter((el) => el.value === value)[0].id);
     setTeamName(value);
-  };
-
-  const handleTitle = (e) => {
-    const { value } = e.target;
-    setTitle(value);
-  };
-
-  const handleContent = (e) => {
-    const { value } = e.target;
-    setContent(value);
   };
 
   const handleInputValue = (key) => (e) => {
@@ -71,12 +56,14 @@ const UpdateModals = ({ setModalOpen }) => {
       await axios.put(
         `${process.env.REACT_APP_URL}/admin/management/pre-team/${teamName}`,
         {
+          team_name: teamName,
           comment: comment,
           is_closed: inputStatus,
         }
       );
       setTeamName('');
       setComment('');
+      setInputStatus(false);
     } catch (err) {
       console.log(err);
     }
@@ -88,19 +75,17 @@ const UpdateModals = ({ setModalOpen }) => {
 
   return (
     <>
+      <h2>팀 정보 수정</h2>
       <h4>팀 명</h4>
-      {/* <TextField
+      <TextField
         item='outlined-basic'
         label='팀명(seb_00_pre(main)_000)'
         variant='outlined'
         autoFocus
-        onChange={handleInputValue}
-      /> */}
-      <input value={teamName} onChange={handleTeam}></input>
-      <h4>제목</h4>
-      <input value={title} onChange={handleTitle}></input>
-      <h4>내용</h4>
-      <input value={content} onChange={handleContent}></input>
+        value={teamName}
+        onChange={handleTeam}
+      />
+      {/* <input value={teamName} onChange={handleTeam}></input> */}
       <h4>기타사항</h4>
       <TextField
         item='standard-basic'
@@ -109,30 +94,9 @@ const UpdateModals = ({ setModalOpen }) => {
         onChange={handleComment}
       />
       <br />
-      <StylesProvider injectFirst>
-        <ButtonPosition>
-          <MyButton
-            variant='contained'
-            onClick={() =>
-              confirmAlert({
-                message: '해당 기수의 정보를 수정하시겠습니까?',
-                buttons: [
-                  {
-                    label: '네',
-                    onClick: () => onSubmit(),
-                  },
-                  {
-                    label: '아니오',
-                    onClick: () => handleExit(),
-                  },
-                ],
-              })
-            }
-          >
-            수정
-          </MyButton>
-        </ButtonPosition>
-      </StylesProvider>
+      <ButtonPosition>
+        <MyButton variant='contained'>수정</MyButton>
+      </ButtonPosition>
     </>
   );
 };

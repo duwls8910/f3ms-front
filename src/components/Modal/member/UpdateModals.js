@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Autocomplete, TextField, Button } from '@mui/material';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
   position: absolute;
-  top: 77%;
-  right: 60%;
+  top: 83%;
+  right: 50%;
   transform: translateX(50%);
   margin: 4rem 0;
 `;
@@ -35,6 +33,8 @@ const MemberRegister = ({ setModalOpen }) => {
   });
   const [memberName, setMemberName] = useState('');
   const [position, setPosition] = useState('');
+  const [preTeam, setPreTeam] = useState('');
+  const [mainTeam, setMainTeam] = useState('');
   const [comment, setComment] = useState('');
   const [inputStatus, setInputStatus] = useState('');
   const [selectedDropValue, setSelectedDropValue] =
@@ -62,6 +62,16 @@ const MemberRegister = ({ setModalOpen }) => {
     setComment(value);
   };
 
+  const handlePreTeam = (e) => {
+    const { value } = e.target;
+    setPreTeam(value);
+  };
+
+  const handleMainTeam = (e) => {
+    const { value } = e.target;
+    setMainTeam(value);
+  };
+
   const onSubmit = async () => {
     try {
       await axios.put(
@@ -75,53 +85,30 @@ const MemberRegister = ({ setModalOpen }) => {
       setModalOpen(false);
       setMemberName('');
       setComment('');
+      setPreTeam('');
+      setMainTeam('');
     } catch (err) {
       console.log(err);
     }
-    // if (!number) {
-    //   setNumberError(true);
-    //   alert('기수명을 작성해주세요');
-    // }
-    // if (!isStart && !isEnd) {
-    //   setDateError(true);
-    //   alert('프로젝트의 시작일과 종료일을 선택해주세요');
-    // }
-    // if (!isClosed) {
-    //   setIsClosedError(true);
-    //   alert('기수 종료 여부를 선택해주세요');
-    // } else {
-    // await axios
-    //   .patch(
-    //     `${process.env.REACT_APP_URL}/admin/management/member`,
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         withCredentials: true,
-    //       },
-    //     }.then((res) => console.log(res))
-    //   )
-    //   .catch((err) => console.log(err));
   };
 
-  const handleExit = () => {
-    setModalOpen(false);
-  };
+  // const handleExit = () => {
+  //   setModalOpen(false);
+  // };
 
   return (
     <>
+      <h2>수강생 정보 수정</h2>
       <h4>수강생</h4>
-      <br />
-      {/* <TextField
+      <TextField
         id='outlined-basic'
         label='이름'
         variant='outlined'
         value={memberName}
         onChange={handleMember}
         autoFocus
-      /> */}
-      <input value={memberName} onChange={handleMember}></input>
-      <br />
-      <br />
+      />
+      {/* <input value={memberName} onChange={handleMember}></input> */}
       <h4>학습 코스 구분</h4>
       <Autocomplete
         id='combo-box-demo'
@@ -135,7 +122,22 @@ const MemberRegister = ({ setModalOpen }) => {
           />
         )}
       />
-      <br />
+      <h4>pre팀명</h4>
+      <TextField
+        id='standard-basic'
+        label='pre팀명'
+        variant='standard'
+        value={preTeam}
+        onChange={handlePreTeam}
+      />
+      <h4>main팀명</h4>
+      <TextField
+        id='standard-basic'
+        label='main팀명'
+        variant='standard'
+        value={mainTeam}
+        onChange={handleMainTeam}
+      />
       <h4>기타사항</h4>
       <TextField
         id='standard-basic'
@@ -143,26 +145,8 @@ const MemberRegister = ({ setModalOpen }) => {
         variant='standard'
         onChange={handleComment}
       />
-      <br />
       <ButtonPosition>
-        <MyButton
-          variant='contained'
-          onClick={() =>
-            confirmAlert({
-              message: '해당 수강생의 정보를 수정하시겠습니까?',
-              buttons: [
-                {
-                  label: '네',
-                  onClick: () => onSubmit(),
-                },
-                {
-                  label: '아니오',
-                  onClick: () => handleExit(),
-                },
-              ],
-            })
-          }
-        >
+        <MyButton variant='contained' onClick={onSubmit}>
           수정
         </MyButton>
       </ButtonPosition>

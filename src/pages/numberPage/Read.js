@@ -11,7 +11,6 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  StylesProvider,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
@@ -60,9 +59,9 @@ export const ModalView = styled.div.attrs((props) => ({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(156, 165, 182);
+  background-color: rgb(255, 255, 255);
   width: 400px;
-  height: 550px;
+  height: 600px;
   border-radius: 0.5rem;
   position: relative;
 
@@ -187,11 +186,9 @@ const ReadNumber = () => {
         </TableContainer>
         <div>
           <Stack spacing={1} direction='row'>
-            <StylesProvider injectFirst>
-              <NumberButton variant='contained' onClick={openModalHandler}>
-                등록
-              </NumberButton>
-            </StylesProvider>
+            <NumberButton variant='contained' onClick={openModalHandler}>
+              등록
+            </NumberButton>
             <ModalContainer>
               {modalOpen ? (
                 <ModalBackdrop onClick={openModalHandler}>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import DeleteModals from 'components/Modal/number/DeleteModals';
 import { Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
 import styled from 'styled-components';
 
 export const NumberButton = styled(Button)`
@@ -73,29 +72,27 @@ const NumberDetail = () => {
   return (
     <>
       <div>
-        <StylesProvider injectFirst>
-          <NumberButton variant='contained' onClick={openDeleteHandler}>
-            기수 삭제
-          </NumberButton>
-          <ModalContainer>
-            {deleteOpen ? (
-              <ModalBackdrop onClick={openDeleteHandler}>
-                <ModalView
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <div className='close-btn' onClick={closeDeleteHandler}>
-                    &times;
-                  </div>
-                  <div className='desc'>
-                    <DeleteModals />
-                  </div>
-                </ModalView>
-              </ModalBackdrop>
-            ) : null}
-          </ModalContainer>
-        </StylesProvider>
+        <NumberButton variant='contained' onClick={openDeleteHandler}>
+          기수 삭제
+        </NumberButton>
+        <ModalContainer>
+          {deleteOpen ? (
+            <ModalBackdrop onClick={openDeleteHandler}>
+              <ModalView
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+              >
+                <div className='close-btn' onClick={closeDeleteHandler}>
+                  &times;
+                </div>
+                <div className='desc'>
+                  <DeleteModals />
+                </div>
+              </ModalView>
+            </ModalBackdrop>
+          ) : null}
+        </ModalContainer>
       </div>
     </>
   );

@@ -2,9 +2,6 @@ import { useState } from 'react';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import { TextField, Autocomplete, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 const ButtonPosition = styled.div`
@@ -23,7 +20,7 @@ const MyButton = styled(Button)`
 
 const RegisterModals = ({ setModalOpen }) => {
   const [team, setTeam] = useState('');
-  const [teamIssue, setTeamIssue] = useState('');
+  const [numberId, setNumberId] = useState('');
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
   // 라디오 버튼 상태변경
@@ -59,14 +56,14 @@ const RegisterModals = ({ setModalOpen }) => {
           `${process.env.REACT_APP_URL}/admin/management/pre-team`,
           {
             team_name: team,
-            team_issue: teamIssue,
+            number_id: numberId,
             comment: comment,
           }
         );
         setLoading(false);
         setModalOpen(false);
         setTeam('');
-        setTeamIssue('');
+        setNumberId('');
         setComment('');
       } catch (err) {
         console.log(err);
@@ -81,6 +78,7 @@ const RegisterModals = ({ setModalOpen }) => {
   return (
     <>
       {loading ? <Loading /> : null}
+      <h2>팀 정보 등록</h2>
       <h4>팀 명</h4>
       {/* <Autocomplete
       id='combo-box-demo'
@@ -94,7 +92,15 @@ const RegisterModals = ({ setModalOpen }) => {
         />
       )}
     /> */}
-      <input value={team} onChange={handleTeam}></input>
+      <TextField
+        item='outlined-basic'
+        label='팀명(seb_00_pre(main)_000)'
+        variant='outlined'
+        autoFocus
+        value={team}
+        onChange={handleTeam}
+      />
+      {/* <input value={team} onChange={handleTeam}></input> */}
       <h4>기타사항</h4>
       <TextField
         item='standard-basic'
@@ -103,30 +109,9 @@ const RegisterModals = ({ setModalOpen }) => {
         onChange={handleComment}
       />
       <br />
-      <StylesProvider injectFirst>
-        <ButtonPosition>
-          <MyButton
-            variant='contained'
-            onClick={() =>
-              confirmAlert({
-                message: '해당 팀의 정보를 등록하시겠습니까?',
-                buttons: [
-                  {
-                    label: '네',
-                    onClick: () => onSubmit(),
-                  },
-                  {
-                    label: '아니오',
-                    onClick: () => handleExit(),
-                  },
-                ],
-              })
-            }
-          >
-            등록
-          </MyButton>
-        </ButtonPosition>
-      </StylesProvider>
+      <ButtonPosition>
+        <MyButton variant='contained'>등록</MyButton>
+      </ButtonPosition>
     </>
   );
 };

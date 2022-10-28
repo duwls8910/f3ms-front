@@ -21,7 +21,6 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  StylesProvider,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
@@ -74,7 +73,7 @@ export const ModalView = styled.div.attrs((props) => ({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(156, 165, 182);
+  background-color: rgb(255, 255, 255);
   width: 400px;
   height: 550px;
   border-radius: 0.5rem;
@@ -145,8 +144,8 @@ const ReadTeam = () => {
             <TableHead>
               <TableRow>
                 <TableCell>팀 명</TableCell>
-                <TableCell align='center'>팀종료여부</TableCell>
-                <TableCell align='center'>기타사항</TableCell>
+                <TableCell align='center'>팀 종료 여부</TableCell>
+                <TableCell align='center'>기타 사항</TableCell>
                 <TableCell align='center'>생성일</TableCell>
                 <TableCell align='center'>수정일</TableCell>
               </TableRow>
@@ -170,30 +169,27 @@ const ReadTeam = () => {
         </TableContainer>
         <div>
           <Stack spacing={1} direction='row'>
-            <StylesProvider injectFirst>
-              <TeamButton variant='contained' onClick={openModalHandler}>
-                등록
-              </TeamButton>
-              <StylesProvider />
-              <ModalContainer>
-                {modalOpen ? (
-                  <ModalBackdrop onClick={openModalHandler}>
-                    <ModalView
-                      onClick={(event) => {
-                        event.stopPropagation();
-                      }}
-                    >
-                      <div className='close-btn' onClick={closeModalHandler}>
-                        &times;
-                      </div>
-                      <div className='desc'>
-                        <RegisterModals />
-                      </div>
-                    </ModalView>
-                  </ModalBackdrop>
-                ) : null}
-              </ModalContainer>
-            </StylesProvider>
+            <TeamButton variant='contained' onClick={openModalHandler}>
+              등록
+            </TeamButton>
+            <ModalContainer>
+              {modalOpen ? (
+                <ModalBackdrop onClick={openModalHandler}>
+                  <ModalView
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
+                  >
+                    <div className='close-btn' onClick={closeModalHandler}>
+                      &times;
+                    </div>
+                    <div className='desc'>
+                      <RegisterModals />
+                    </div>
+                  </ModalView>
+                </ModalBackdrop>
+              ) : null}
+            </ModalContainer>
           </Stack>
         </div>
       </Box>

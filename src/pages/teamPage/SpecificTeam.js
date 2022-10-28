@@ -12,7 +12,6 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  StylesProvider,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
@@ -59,7 +58,7 @@ export const ModalView = styled.div.attrs((props) => ({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(156, 165, 182);
+  background-color: rgb(255, 255, 255);
   width: 400px;
   height: 550px;
   border-radius: 0.5rem;
@@ -84,7 +83,7 @@ export const DeleteModalView = styled.div.attrs((props) => ({
   width: 300px;
   height: 300px;
   position: relative;
-  background-color: rgb(156, 165, 182);
+  background-color: rgb(255, 255, 255);
   border-radius: 0.5rem;
 
   > div.close-btn {
@@ -173,53 +172,51 @@ const SpecificTeam = () => {
           '해당 기수의 정보를 찾을 수 없습니다'
         )}
         <Stack spacing={1} direction='row'>
-          <StylesProvider injectFirst>
-            <TeamButton variant='contained' onClick={openModalHandler}>
-              수정
-            </TeamButton>
-            <ModalContainer>
-              {updateOpen ? (
-                <ModalBackdrop onClick={openModalHandler}>
-                  <ModalView
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    <div className='close-btn' onClick={closeModalHandler}>
-                      &times;
-                    </div>
-                    <div className='desc'>
-                      <UpdateModals />
-                    </div>
-                  </ModalView>
-                </ModalBackdrop>
-              ) : null}
-            </ModalContainer>
-            <TeamButton variant='contained' onClick={openDeleteHandler}>
-              비활성
-            </TeamButton>
-            <ModalContainer>
-              {deleteOpen ? (
-                <ModalBackdrop onClick={openDeleteHandler}>
-                  <DeleteModalView
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    <div className='close-btn' onClick={closeDeleteHandler}>
-                      &times;
-                    </div>
-                    <div className='desc'>
-                      <DeleteModals />
-                    </div>
-                  </DeleteModalView>
-                </ModalBackdrop>
-              ) : null}
-            </ModalContainer>
-            <TeamButton variant='contained' onClick={handleNavigate}>
-              뒤로가기
-            </TeamButton>
-          </StylesProvider>
+          <TeamButton variant='contained' onClick={openModalHandler}>
+            수정
+          </TeamButton>
+          <ModalContainer>
+            {updateOpen ? (
+              <ModalBackdrop onClick={openModalHandler}>
+                <ModalView
+                  onClick={(event) => {
+                    event.stopPropagation();
+                  }}
+                >
+                  <div className='close-btn' onClick={closeModalHandler}>
+                    &times;
+                  </div>
+                  <div className='desc'>
+                    <UpdateModals />
+                  </div>
+                </ModalView>
+              </ModalBackdrop>
+            ) : null}
+          </ModalContainer>
+          <TeamButton variant='contained' onClick={openDeleteHandler}>
+            비활성
+          </TeamButton>
+          <ModalContainer>
+            {deleteOpen ? (
+              <ModalBackdrop onClick={openDeleteHandler}>
+                <DeleteModalView
+                  onClick={(event) => {
+                    event.stopPropagation();
+                  }}
+                >
+                  <div className='close-btn' onClick={closeDeleteHandler}>
+                    &times;
+                  </div>
+                  <div className='desc'>
+                    <DeleteModals />
+                  </div>
+                </DeleteModalView>
+              </ModalBackdrop>
+            ) : null}
+          </ModalContainer>
+          <TeamButton variant='contained' onClick={handleNavigate}>
+            뒤로가기
+          </TeamButton>
         </Stack>
       </Box>
     </>

@@ -4,15 +4,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
 import { TextField, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
   position: absolute;
-  top: 77%;
-  right: 60%;
+  top: 78%;
+  right: 55%;
   transform: translateX(50%);
   margin: 4rem 0;
 `;
@@ -90,6 +87,7 @@ const UpdateModals = ({ setModalOpen }) => {
 
   return (
     <>
+      <h2>기수 정보 수정</h2>
       <h4>기수</h4>
       <input value={numberName} onChange={handleNumber}></input>
       {/* <Autocomplete
@@ -137,30 +135,9 @@ const UpdateModals = ({ setModalOpen }) => {
         onChange={handleComment}
       />
       <br />
-      <StylesProvider injectFirst>
-        <ButtonPosition>
-          <MyButton
-            variant='contained'
-            onClick={() =>
-              confirmAlert({
-                message: '해당 기수의 정보를 수정하시겠습니까?',
-                buttons: [
-                  {
-                    label: '네',
-                    onClick: () => onSubmit(),
-                  },
-                  {
-                    label: '아니오',
-                    onClick: () => handleExit(),
-                  },
-                ],
-              })
-            }
-          >
-            수정
-          </MyButton>
-        </ButtonPosition>
-      </StylesProvider>
+      <ButtonPosition>
+        <MyButton variant='contained'>수정</MyButton>
+      </ButtonPosition>
     </>
   );
 };

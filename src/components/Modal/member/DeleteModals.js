@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Loading from 'utils/LoadingIndicator';
 import styled from 'styled-components';
 import { Stack, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
 
 export const ModalContainer = styled.div`
   display: flex;
@@ -36,7 +34,6 @@ export const ModalView = styled.div.attrs((props) => ({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* background-color: white; */
   width: 200px;
   height: 100px;
   border-radius: 0.5rem;
@@ -72,33 +69,41 @@ export const MyButton = styled(Button)`
 `;
 
 const DeleteModals = () => {
-  const [loading, setLoading] = useState(false);
   const [numberName, setNumberName] = useState('');
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  // 삭제 버튼을 눌렀을 때 작용할 클릭 이벤트
-  // 사용자에게는 삭제처럼 보이지만 실제로는 비활성화임(true / false)
-  // 완료처리 버튼을 만들자
-
-  const handleClick = async () => {
-    try {
-      await axios.delete(
-        `${process.env.REACT_APP_URL}/admin/management/member/${numberName}`
-      );
-      openDeleteModal(false);
-    } catch (err) {
-      console.log(err);
-    }
+  const handleClick = () => {
+    axios
+      .patch(
+        `${process.env.REACT_APP_URL}/admin/management/member/${numberName}`,
+        {
+          is_active: false,
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      });
+    setOpenDeleteModal(openDeleteModal);
   };
 
   const closeModal = () => {
-    setLoading(false);
-    setOpenDeleteModal(false);
+    axios
+      .patch(
+        `${process.env.REACT_APP_URL}/admin/management/member/${numberName}`,
+        {
+          is_active: true,
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      });
+    setOpenDeleteModal(!openDeleteModal);
   };
 
   return (
     <>
-      {loading ? <Loading /> : null}
       <ModalContainer>
         <div>
           해당 수강생의 정보를
@@ -107,18 +112,16 @@ const DeleteModals = () => {
         </div>
         <Stack spacing={1} direction='row'>
           <div>
-            <StylesProvider injectFirst>
-              <OkButtonPosition>
-                <MyButton variant='contained' onClick={handleClick}>
-                  예
-                </MyButton>
-              </OkButtonPosition>
-              <NoButtonPosition>
-                <MyButton variant='contained' onClick={closeModal}>
-                  아니오
-                </MyButton>
-              </NoButtonPosition>
-            </StylesProvider>
+            <OkButtonPosition>
+              <MyButton variant='contained' onClick={handleClick}>
+                예
+              </MyButton>
+            </OkButtonPosition>
+            <NoButtonPosition>
+              <MyButton variant='contained' onClick={closeModal}>
+                아니오
+              </MyButton>
+            </NoButtonPosition>
           </div>
         </Stack>
       </ModalContainer>

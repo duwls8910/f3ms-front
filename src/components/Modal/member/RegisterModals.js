@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import { Autocomplete, TextField, Button } from '@mui/material';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
   position: absolute;
-  top: 70%;
+  top: 76%;
   right: 55%;
   transform: translateX(50%);
   margin: 4rem 0;
@@ -96,6 +94,7 @@ const MemberRegister = ({ setModalOpen }) => {
   return (
     <>
       {loading ? <Loading /> : null}
+      <h2>수강생 정보 등록</h2>
       <h4>수강생</h4>
       <TextField
         id='outlined-basic'
@@ -131,24 +130,7 @@ const MemberRegister = ({ setModalOpen }) => {
       />
       <br />
       <ButtonPosition>
-        <MyButton
-          variant='contained'
-          onClick={() =>
-            confirmAlert({
-              message: '해당 수강생의 정보를 등록하시겠습니까?',
-              buttons: [
-                {
-                  label: '네',
-                  onClick: () => onSubmit(),
-                },
-                {
-                  label: '아니오',
-                  onClick: () => handleExit(),
-                },
-              ],
-            })
-          }
-        >
+        <MyButton variant='contained' onClick={() => onSubmit()}>
           등록
         </MyButton>
       </ButtonPosition>

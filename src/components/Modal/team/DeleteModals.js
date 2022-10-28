@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Stack, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
 
 export const ModalContainer = styled.div`
   display: flex;
@@ -72,21 +71,27 @@ export const MyButton = styled(Button)`
 
 const DeleteModals = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-
-  // 삭제 버튼을 눌렀을 때 작용할 클릭 이벤트
-  // 사용자에게는 삭제처럼 보이지만 실제로는 비활성화임(true / false)
-  // 완료처리 버튼을 만들자
   const handleClick = () => {
     axios
-      .delete(`${process.env.REACT_APP_URL}/admin/management`, {
+      .patch(`${process.env.REACT_APP_URL}/admin/management`, {
+        is_opened: false,
         withCredentials: true,
       })
       .then((res) => {
         console.log(res);
       });
+    setOpenDeleteModal(openDeleteModal);
   };
 
   const closeModal = () => {
+    axios
+      .patch(`${process.env.REACT_APP_URL}/admin/management`, {
+        is_opened: false,
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+      });
     setOpenDeleteModal(!openDeleteModal);
   };
 
@@ -100,18 +105,16 @@ const DeleteModals = () => {
         </div>
         <Stack spacing={1} direction='row'>
           <div>
-            <StylesProvider injectFirst>
-              <OkButtonPosition>
-                <MyButton variant='contained' onClick={handleClick}>
-                  예
-                </MyButton>
-              </OkButtonPosition>
-              <NoButtonPosition>
-                <MyButton variant='contained' onClick={closeModal}>
-                  아니오
-                </MyButton>
-              </NoButtonPosition>
-            </StylesProvider>
+            <OkButtonPosition>
+              <MyButton variant='contained' onClick={handleClick}>
+                예
+              </MyButton>
+            </OkButtonPosition>
+            <NoButtonPosition>
+              <MyButton variant='contained' onClick={closeModal}>
+                아니오
+              </MyButton>
+            </NoButtonPosition>
           </div>
         </Stack>
       </ModalContainer>

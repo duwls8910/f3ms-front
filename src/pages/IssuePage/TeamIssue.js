@@ -13,7 +13,6 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  StylesProvider,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
@@ -55,7 +54,7 @@ export const ModalBackdrop = styled.div`
   right: 0;
   margin: auto;
   z-index: 1;
-  background-color: rgb(156, 165, 182);
+  background-color: rgb(255, 255, 255);
   position: fixed;
 `;
 
@@ -149,11 +148,9 @@ const TeamIssue = () => {
         </TableContainer>
         <div>
           <Stack spacing={1} direction='row'>
-            <StylesProvider injectFirst>
-              <NumberButton variant='contained' onClick={openModalHandler}>
-                등록
-              </NumberButton>
-            </StylesProvider>
+            <NumberButton variant='contained' onClick={openModalHandler}>
+              등록
+            </NumberButton>
             <ModalContainer>
               {modalOpen ? (
                 <ModalBackdrop onClick={openModalHandler}>
@@ -172,11 +169,9 @@ const TeamIssue = () => {
                 </ModalBackdrop>
               ) : null}
             </ModalContainer>
-            <StylesProvider injectFirst>
-              <NumberButton variant='contained' onClick={openUpdateHandler}>
-                수정
-              </NumberButton>
-            </StylesProvider>
+            <NumberButton variant='contained' onClick={openUpdateHandler}>
+              수정
+            </NumberButton>
             <ModalContainer>
               {updateOpen ? (
                 <ModalBackdrop onClick={openUpdateHandler}>

@@ -5,14 +5,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
 import { TextField, Button } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import Swal from 'sweetalert2';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
   position: absolute;
-  top: 76%;
+  top: 79%;
   right: 55%;
   transform: translateX(50%);
   margin: 4rem 0;
@@ -20,7 +18,7 @@ export const ButtonPosition = styled.div`
 
 export const MyButton = styled(Button)`
   border: 0;
-  border-radius: 3px;
+  border-radius: 0.5rem;
   height: 48px;
   padding: 0 30px;
 `;
@@ -70,46 +68,25 @@ const RegisterModals = ({ setModalOpen }) => {
 
   // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
-    // if (!numberName) {
-    //   setNumberError(true);
-    //   alert('기수명을 작성해주세요');
-    // }
-    // if (!isStart && !isEnd) {
-    //   setDateError(true);
-    //   alert('프로젝트의 시작일과 종료일을 선택해주세요');
-    // }
-    // if (!isClosed) {
-    //   setIsClosedError(true);
-    //   alert('기수 종료 여부를 선택해주세요');
-    // } else {
-    // }
-    // console.log(numberName, startDate, endDate, comment);
-    if (numberName === '') {
-      alert('기수명을 입력해주세요');
-    } else {
-      try {
-        await axios.post(
-          `${process.env.REACT_APP_URL}/admin/management/number`,
-          {
-            number_name: numberName,
-            start_date: startDate,
-            end_date: endDate,
-            comment: comment,
-            created_date: createdDate,
-            updated_date: updatedDate,
-          }
-        );
-        setLoading(false);
-        setModalOpen(false);
-        setNumberName('');
-        setComment('');
-        setStartDate('');
-        setEndDate('');
-        setCreatedDate('');
-        setUpdatedDate('');
-      } catch (err) {
-        console.log(err);
-      }
+    try {
+      await axios.post(`${process.env.REACT_APP_URL}/admin/management/number`, {
+        number_name: numberName,
+        start_date: startDate,
+        end_date: endDate,
+        comment: comment,
+        created_date: createdDate,
+        updated_date: updatedDate,
+      });
+      setLoading(false);
+      setModalOpen(false);
+      setNumberName('');
+      setComment('');
+      setStartDate('');
+      setEndDate('');
+      setCreatedDate('');
+      setUpdatedDate('');
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -120,21 +97,16 @@ const RegisterModals = ({ setModalOpen }) => {
   return (
     <>
       {loading ? <Loading /> : null}
+      <h2>기수 정보 등록</h2>
       <h4>기수</h4>
-      <input value={numberName} onChange={handleNumber} required></input>
-      {/* <Autocomplete
-        id='combo-box-demo'
-        options={number_data}
-        sx={{ width: 300 }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label='기수를 선택하세요'
-            value={numberName}
-            onChange={handleDropNumber}
-          />
-        )}
-      /> */}
+      <TextField
+        item='outlined-basic'
+        label='팀명(seb_00_pre(main)_000)'
+        variant='outlined'
+        autoFocus
+        value={numberName}
+        onChange={handleNumber}
+      />
       <h4>프로젝트 기간</h4>
       <div>프로젝트 진행 기간을 선택해주세요</div>
       <br />
@@ -168,30 +140,42 @@ const RegisterModals = ({ setModalOpen }) => {
         onChange={handleComment}
       />
       <br />
-      <StylesProvider injectFirst>
-        <ButtonPosition>
-          <MyButton
-            variant='contained'
-            onClick={() =>
-              confirmAlert({
-                message: '해당 기수의 정보를 등록하시겠습니까?',
-                buttons: [
-                  {
-                    label: '네',
-                    onClick: () => onSubmit(),
-                  },
-                  {
-                    label: '아니오',
-                    onClick: () => handleExit(),
-                  },
-                ],
-              })
-            }
-          >
-            등록
-          </MyButton>
-        </ButtonPosition>
-      </StylesProvider>
+      <ButtonPosition>
+        <MyButton
+          variant='contained'
+          onClick={() => {
+            Swal.fire({
+              title: '기수 정보를 등록하시겠습니까?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: '네',
+              cancelButtonText: '아니오',
+              reverseButtons: false,
+            }).then((result) => {
+              if (numberName === '') {
+                Swal.fire({
+                  title: '기수명을 입력하지 않았습니다',
+                  text: '기수명을 입력해주세요',
+                  icon: 'warning',
+                });
+                result.isDenied();
+              } else if (result.isConfirmed) {
+                onSubmit();
+                Swal.fire({
+                  title: '기수 정보가 등록되었습니다.',
+                  confirmButtonText: 'Ok',
+                });
+              } else if (result.isDismissed) {
+                handleExit();
+              }
+            });
+          }}
+        >
+          등록
+        </MyButton>
+      </ButtonPosition>
     </>
   );
 };

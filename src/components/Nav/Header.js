@@ -72,8 +72,6 @@ const Header = () => {
 
   let { id } = useParams();
 
-  if (window.location.pathname === '/') return null;
-
   const searchFilter = (searchedVal) => {
     const filteredValue = teamDummy.filter((data) => {
       return data.team_name
@@ -116,42 +114,44 @@ const Header = () => {
   return (
     <>
       {loading ? <Loading /> : null}
-      <HeaderContainer>
-        <NavBlock>
-          <div>
-            <LogoStyle
-              className={({ isActive }) => (isActive ? 'active' : '')}
-              to='/'
-            >
-              <Typography component='h1' variant='h3'>
-                📊
-              </Typography>
-            </LogoStyle>
-          </div>
-          <NavButton to='/admin/management/number'>
-            <h5>기수</h5>
-          </NavButton>
-          <NavButton to='/admin/management/pre-team'>
-            <h5>팀</h5>
-          </NavButton>
-          <NavButton to={`/admin/management/member/number/${id}`}>
-            <h5>수강생</h5>
-          </NavButton>
-          <div>
-            <SearchContainer>
-              <SearchBar
-                placeholder='기수, 팀, 수강생 검색'
-                onChange={searchFilter}
-                onKeyPress={onSubmitSearch}
-                onCancelSearch={() => cancelSearch()}
-              />
-              {data.map((el) => (
-                <div key={el.team_name} />
-              ))}
-            </SearchContainer>
-          </div>
-        </NavBlock>
-      </HeaderContainer>
+      {window.location.pathname === '/' ? null : (
+        <HeaderContainer>
+          <NavBlock>
+            <div>
+              <LogoStyle
+                className={({ isActive }) => (isActive ? 'active' : '')}
+                to='/'
+              >
+                <Typography component='h1' variant='h3'>
+                  📊
+                </Typography>
+              </LogoStyle>
+            </div>
+            <NavButton to='/admin/management/number'>
+              <h5>기수</h5>
+            </NavButton>
+            <NavButton to='/admin/management/pre-team'>
+              <h5>팀</h5>
+            </NavButton>
+            <NavButton to={`/admin/management/member/number/${id}`}>
+              <h5>수강생</h5>
+            </NavButton>
+            <div>
+              <SearchContainer>
+                <SearchBar
+                  placeholder='기수, 팀, 수강생 검색'
+                  onChange={searchFilter}
+                  onKeyPress={onSubmitSearch}
+                  onCancelSearch={() => cancelSearch()}
+                />
+                {data.map((el) => (
+                  <div key={el.team_name} />
+                ))}
+              </SearchContainer>
+            </div>
+          </NavBlock>
+        </HeaderContainer>
+      )}
     </>
   );
 };

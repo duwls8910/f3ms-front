@@ -10,7 +10,6 @@ import {
   FormControlLabel,
   FormLabel,
 } from '@mui/material';
-import { StylesProvider } from '@material-ui/core';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`

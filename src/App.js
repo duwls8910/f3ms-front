@@ -18,7 +18,7 @@ function App() {
   let { id } = useParams();
   return (
     <BrowserRouter>
-      <Header />
+      {window.location.path === '/' ? null : <Header />}
       <Routes>
         <Route exact path='/' element={<Login />} />
         <Route path='/admin/management' element={<Admin />} />
