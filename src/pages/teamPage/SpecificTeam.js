@@ -16,6 +16,11 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 
+export const PageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 export const TeamButton = styled(Button)`
   display: flex;
   flex-direction: row;
@@ -106,6 +111,7 @@ const SpecificTeam = () => {
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [teamData, setTeamData] = useState({});
+  const [memberData, setMemberDate] = useState({});
 
   const classes = useStyles();
 
@@ -121,6 +127,17 @@ const SpecificTeam = () => {
       setLoading(false);
     };
     getSpecTeam();
+  }, []);
+
+  useEffect(() => {
+    const getTeamMembers = async () => {
+      const response = await axios(
+        `${process.env.REACT_APP_URL}/admin/management/pre-team/${id}`
+      );
+      setMemberDate(response.data);
+      setLoading(false);
+    };
+    getTeamMembers();
   }, []);
 
   const openModalHandler = () => {
@@ -147,30 +164,64 @@ const SpecificTeam = () => {
     <>
       {loading ? <Loading /> : null}
       <Box>
-        {teamData ? (
-          <TableContainer>
-            <Table className={classes.table} aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>팀 이름</TableCell>
-                  <TableCell align='center'>진행중인 프로젝트</TableCell>
-                  <TableCell align='center'>진행여부</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableCell component='th' scope='row'>
-                  {teamData.team_name}
-                </TableCell>
-                <TableCell align='center'>{teamData.p_group}</TableCell>
-                <TableCell align='center'>
-                  {teamData.is_opened ? '진행중' : '미진행'}
-                </TableCell>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ) : (
-          '해당 기수의 정보를 찾을 수 없습니다'
-        )}
+        <PageContainer>
+          {teamData ? (
+            <TableContainer>
+              <Table className={classes.table} aria-label='simple table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>팀 이름</TableCell>
+                    <TableCell align='center'>진행중인 프로젝트</TableCell>
+                    <TableCell align='center'>진행여부</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableCell component='th' scope='row'>
+                    {teamData.team_name}
+                  </TableCell>
+                  <TableCell align='center'>{teamData.p_group}</TableCell>
+                  <TableCell align='center'>
+                    {teamData.is_opened ? '진행중' : '미진행'}
+                  </TableCell>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            '해당 기수의 정보를 찾을 수 없습니다'
+          )}
+          {memberData ? (
+            <TableContainer>
+              <Table className={classes.table} aria-label='simple table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>팀원 이름</TableCell>
+                    <TableCell align='center'>학습 코스 구분</TableCell>
+                    <TableCell align='center'>하차여부</TableCell>
+                    <TableCell align='center'>생성일</TableCell>
+                    <TableCell align='center'>수정일</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableCell component='th' scope='row'>
+                    {teamData.team_name}
+                  </TableCell>
+                  <TableCell align='center'>{memberData.position_cd}</TableCell>
+                  <TableCell align='center'>
+                    {memberData.is_active ? '수강중' : '하차'}
+                  </TableCell>
+                  <TableCell align='center'>
+                    {memberData.created_date}
+                  </TableCell>
+                  <TableCell align='center'>
+                    {memberData.updated_date}
+                  </TableCell>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            '해당 수강생의 정보를 찾을 수 없습니다'
+          )}
+        </PageContainer>
         <Stack spacing={1} direction='row'>
           <TeamButton variant='contained' onClick={openModalHandler}>
             수정
