@@ -4,7 +4,7 @@ import axios from 'axios';
 import teamDummy from 'static/teamDummy';
 import Loading from 'utils/LoadingIndicator';
 import styled from 'styled-components';
-import { Typography } from '@mui/material';
+import Logo from 'assets/F3MS_Logo.png';
 import SearchBar from 'material-ui-search-bar';
 
 export const HeaderContainer = styled.header`
@@ -23,11 +23,10 @@ const NavBlock = styled.div`
   justify-content: space-around;
 `;
 
-export const LogoStyle = styled(NavLink)`
-  position: relative;
-  bottom: 10px;
-  color: white;
-  font-size: 20px;
+export const LogoStyle = styled.div`
+  img {
+    background-size: 50% 50%;
+  }
   &:link {
     transition: 0.5s;
     text-decoration: none;
@@ -111,47 +110,42 @@ const Header = () => {
     }
   };
 
+  if (window.location.pathname === '/') return null;
+
   return (
     <>
       {loading ? <Loading /> : null}
-      {window.location.pathname === '/' ? null : (
-        <HeaderContainer>
-          <NavBlock>
-            <div>
-              <LogoStyle
-                className={({ isActive }) => (isActive ? 'active' : '')}
-                to='/'
-              >
-                <Typography component='h1' variant='h3'>
-                  📊
-                </Typography>
-              </LogoStyle>
-            </div>
-            <NavButton to='/admin/management/number'>
-              <h5>기수</h5>
-            </NavButton>
-            <NavButton to='/admin/management/pre-team'>
-              <h5>팀</h5>
-            </NavButton>
-            <NavButton to={`/admin/management/member/number/${id}`}>
-              <h5>수강생</h5>
-            </NavButton>
-            <div>
-              <SearchContainer>
-                <SearchBar
-                  placeholder='기수, 팀, 수강생 검색'
-                  onChange={searchFilter}
-                  onKeyPress={onSubmitSearch}
-                  onCancelSearch={() => cancelSearch()}
-                />
-                {data.map((el) => (
-                  <div key={el.team_name} />
-                ))}
-              </SearchContainer>
-            </div>
-          </NavBlock>
-        </HeaderContainer>
-      )}
+      <HeaderContainer>
+        <NavBlock>
+          <NavLink to='/'>
+            <LogoStyle>
+              <img src={Logo} alt='logo' />
+            </LogoStyle>
+          </NavLink>
+          <NavButton to='/admin/management/number'>
+            <h5>기수</h5>
+          </NavButton>
+          <NavButton to='/admin/management/pre-team'>
+            <h5>팀</h5>
+          </NavButton>
+          <NavButton to='/admin/management/member'>
+            <h5>수강생</h5>
+          </NavButton>
+          <div>
+            <SearchContainer>
+              <SearchBar
+                placeholder='기수, 팀, 수강생 검색'
+                onChange={searchFilter}
+                onKeyPress={onSubmitSearch}
+                onCancelSearch={() => cancelSearch()}
+              />
+              {data.map((el) => (
+                <div key={el.team_name} />
+              ))}
+            </SearchContainer>
+          </div>
+        </NavBlock>
+      </HeaderContainer>
     </>
   );
 };

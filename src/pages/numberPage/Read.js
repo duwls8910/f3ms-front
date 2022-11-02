@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 // 전체 기수 조회 페이지
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -107,8 +108,7 @@ const ReadNumber = () => {
   const classes = useStyles();
   const [modalOpen, setModalOpen] = useState(false);
 
-  let { id } = useParams();
-
+  const { id } = useParams();
   // 전체 기수 데이터 조회 시
   useEffect(() => {
     const getNumber = async () => {
@@ -143,47 +143,11 @@ const ReadNumber = () => {
   //   setSelectedNumber(selectedNumber.filter((el) => el !== id));
   // };
 
-  // active 기수 / 종료 기수 구분
-  // active한 기수의 경우 수정을 할 수 있어야함 => 팀 이름은 고유한 데이터 값이기 때문에 당연히 수정되면 안됨
-  // 삭제 === 비활성화 개념
-
   // validation check(필수 조건을 입력했을 때만 넘어갈 수 있게끔)
   return (
     <>
       {loading ? <Loading /> : null}
       <Box>
-        <TableContainer>
-          <Table className={classes.table} aria-label='simple table'>
-            <TableHead>
-              <TableRow>
-                <TableCell>기수명</TableCell>
-                <TableCell align='center'>시작일</TableCell>
-                <TableCell align='center'>종료일</TableCell>
-                <TableCell align='center'>기타사항</TableCell>
-                <TableCell align='center'>기수종료여부</TableCell>
-                <TableCell align='center'>생성날짜</TableCell>
-                <TableCell align='center'>수정날짜</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={nanoid()}>
-                  <TableCell component='th' scope='row'>
-                    <Link
-                      to={`/admin/management/number/${id}`}
-                    >{`seb_${row.number_name}`}</Link>
-                  </TableCell>
-                  <TableCell align='center'>{row.start_date}</TableCell>
-                  <TableCell align='center'>{row.end_date}</TableCell>
-                  <TableCell align='center'>{row.comment}</TableCell>
-                  <TableCell align='center'>{row.is_closed}</TableCell>
-                  <TableCell align='center'>{row.created_date}</TableCell>
-                  <TableCell align='center'>{row.updated_date}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
         <div>
           <Stack spacing={1} direction='row'>
             <NumberButton variant='contained' onClick={openModalHandler}>
@@ -209,9 +173,52 @@ const ReadNumber = () => {
             </ModalContainer>
           </Stack>
         </div>
+        {number ? (
+          <TableContainer>
+            <Table className={classes.table} aria-label='simple table'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>기수명</TableCell>
+                  <TableCell align='center'>시작일</TableCell>
+                  <TableCell align='center'>종료일</TableCell>
+                  <TableCell align='center'>기타사항</TableCell>
+                  <TableCell align='center'>기수종료여부</TableCell>
+                  <TableCell align='center'>생성날짜</TableCell>
+                  <TableCell align='center'>수정날짜</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow key={nanoid()}>
+                    <TableCell component='th' scope='row'>
+                      <Link
+                        to={`/admin/management/number/${row.id}`}
+                      >{`seb_${row.number_name}`}</Link>
+                    </TableCell>
+                    <TableCell align='center'>{row.start_date}</TableCell>
+                    <TableCell align='center'>{row.end_date}</TableCell>
+                    <TableCell align='center'>
+                      {row.comment ? row.comment : '-'}
+                    </TableCell>
+                    <TableCell align='center'>{row.is_closed}</TableCell>
+                    <TableCell align='center'>{row.created_date}</TableCell>
+                    <TableCell align='center'>{row.updated_date}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : null}
       </Box>
     </>
   );
 };
 
 export default ReadNumber;
+
+{
+  /* <TableCell component='th' scope='row'>
+  <Link
+    to={`/admin/management/number/${row.id}`}
+  >{`seb_${row.number_name}`}</Link> */
+}

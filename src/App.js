@@ -25,11 +25,7 @@ function App() {
 
         <Route path='/admin/management/number' element={<ReadNumber />} />
         <Route path='/admin/management/pre-team' element={<ReadTeam />} />
-        <Route
-          path={`/admin/management/member/number/${id}`}
-          element={<ReadMember />}
-        />
-        {/* <Route path='/admin/management/member' element={<ReadMember />} /> */}
+        <Route path='/admin/management/member' element={<ReadMember />} />
 
         <Route
           path={`/admin/management/number/${id}`}

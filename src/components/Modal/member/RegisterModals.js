@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import { Autocomplete, TextField, Button } from '@mui/material';
+import Swal from 'sweetalert2';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
@@ -22,9 +23,6 @@ export const MyButton = styled(Button)`
 const position_data = [{ label: '프론트엔드' }, { label: '백엔드' }];
 
 const MemberRegister = ({ setModalOpen }) => {
-  // 팀원을 등록할 때 필요한 것
-  // 1. 각 팀에 대한 팀원 이름
-  // 2. 팀원의 포지션(프/백)
   const [selectedDropValue, setSelectedDropValue] =
     useState('포지션을 선택하세요');
   const [loading, setLoading] = useState(false);
@@ -52,38 +50,18 @@ const MemberRegister = ({ setModalOpen }) => {
   };
 
   const onSubmit = async () => {
-    // if (!number) {
-    //   setNumberError(true);
-    //   alert('기수명을 작성해주세요');
-    // }
-    // if (!isStart && !isEnd) {
-    //   setDateError(true);
-    //   alert('프로젝트의 시작일과 종료일을 선택해주세요');
-    // }
-    // if (!isClosed) {
-    //   setIsClosedError(true);
-    //   alert('기수 종료 여부를 선택해주세요');
-    // } else {
-    // }
-    if (name === '') {
-      alert('수강생명을 입력해주세요');
-    } else {
-      try {
-        await axios.post(
-          `${process.env.REACT_APP_URL}/admin/management/member`,
-          {
-            member_name: name,
-            position_cd: selectedDropValue,
-            comment: comment,
-          }
-        );
-        setLoading(false);
-        setModalOpen(false);
-        setName('');
-        setComment('');
-      } catch (err) {
-        console.log(err);
-      }
+    try {
+      await axios.post(`${process.env.REACT_APP_URL}/admin/management/member`, {
+        member_name: name,
+        position_cd: selectedDropValue,
+        comment: comment,
+      });
+      setLoading(false);
+      setModalOpen(false);
+      setName('');
+      setComment('');
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -104,7 +82,6 @@ const MemberRegister = ({ setModalOpen }) => {
         value={name}
         onChange={handleMember}
       />
-      {/* <input value={name} onChange={handleMember}></input> */}
       <br />
       <br />
       <div>학습 코스 구분</div>
@@ -130,7 +107,46 @@ const MemberRegister = ({ setModalOpen }) => {
       />
       <br />
       <ButtonPosition>
-        <MyButton variant='contained' onClick={() => onSubmit()}>
+        <MyButton
+          variant='contained'
+          onClick={() => {
+            Swal.fire({
+              title: '수강생의 정보를 등록하시겠습니까?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: '네',
+              cancelButtonText: '아니오',
+              reverseButtons: false,
+            }).then((result) => {
+              if (result.isDismissed) {
+                handleExit();
+              } else if (name === '') {
+                Swal.fire({
+                  title: '수강생의 이름을 입력하지 않았습니다',
+                  text: '이름을 입력해주세요',
+                  icon: 'error',
+                });
+                result.isDenied();
+              } else if (selectedDropValue === '포지션을 선택하세요') {
+                Swal.fire({
+                  title: '학습 코스를 선택하지 않았습니다',
+                  text: '학습 코스를 선택해주세요',
+                  icon: 'error',
+                });
+                result.isDenied();
+              } else if (result.isConfirmed) {
+                onSubmit();
+                Swal.fire({
+                  title: '수강생의 정보가 등록되었습니다.',
+                  confirmButtonText: 'OK',
+                  icon: 'success',
+                });
+              }
+            });
+          }}
+        >
           등록
         </MyButton>
       </ButtonPosition>

@@ -1,6 +1,3 @@
-// 해당 기수 조회 페이지
-// 전체 조회하는 페이지에서 기수를 클릭했을 때 보여질 조회 페이지
-// 여기서 기수 정보를 수정하고 삭제하는 모달 띄우기
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -15,9 +12,15 @@ import {
   TableRow,
   TableBody,
   TableCell,
+  StylesProvider,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
+
+export const PageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 export const NumberButton = styled(Button)`
   display: flex;
@@ -105,35 +108,60 @@ const useStyles = makeStyles({
 });
 
 const SpecificNumber = () => {
+  let data = [
+    {
+      id: '',
+      number_name: '',
+      start_date: '',
+      end_date: '',
+      comment: '',
+      is_closed: '',
+      created_date: '',
+      updated_date: '',
+    },
+  ];
+
+  let tData = [
+    {
+      id: '',
+      team_name: '',
+      is_opened: '',
+      comment: '',
+      created_date: '',
+      updated_date: '',
+    },
+  ];
+
   const [loading, setLoading] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [numberData, setNumberData] = useState({
-    id: '',
-    name: '',
-    start_date: '',
-    end_date: '',
-    comment: '',
-    is_closed: '',
-    created_date: '',
-    updated_date: '',
-  });
-
-  const classes = useStyles();
+  const [numberData, setNumberData] = useState(data);
+  const [teamData, setTeamData] = useState(tData);
 
   let { id } = useParams();
   const navigate = useNavigate();
+  const classes = useStyles();
 
-  // 해당 기수 조회 시
   useEffect(() => {
     const getSpecNumber = async () => {
-      const response = await axios(
+      const response = await axios.get(
         `${process.env.REACT_APP_URL}/admin/management/number/${id}`
       );
       setNumberData(response.data);
       setLoading(false);
     };
-    getSpecNumber();
+    getSpecNumber().then((r) => r);
+  }, []);
+
+  useEffect(() => {
+    const getNumberTeamData = async () => {
+      const response = await axios(
+        `${process.env.REACT_APP_URL}/admin/management/number/${data.id}`
+      );
+      setTeamData(response.data);
+      setLoading(false);
+    };
+    getNumberTeamData();
   }, []);
 
   const openModalHandler = () => {
@@ -160,40 +188,44 @@ const SpecificNumber = () => {
     <>
       {loading ? <Loading /> : null}
       <Box>
-        {numberData ? (
-          <TableContainer>
-            <Table className={classes.table} aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>기수명</TableCell>
-                  <TableCell align='center'>시작일</TableCell>
-                  <TableCell align='center'>종료일</TableCell>
-                  <TableCell align='center'>기타사항</TableCell>
-                  <TableCell align='center'>기수종료여부</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableCell component='th' scope='row'>
-                  {numberData.number_name}
-                </TableCell>
-                <TableCell align='center'>{numberData.start_date}</TableCell>
-                <TableCell align='center'>{numberData.end_date}</TableCell>
-                <TableCell align='center'>
-                  {numberData.comment ? numberData.comment : '-'}
-                </TableCell>
-                <TableCell align='center'>
-                  {numberData.is_closed ? '수료' : '진행중'}
-                </TableCell>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ) : (
-          '해당 기수의 정보를 찾을 수 없습니다'
-        )}
+        <PageContainer>
+          {numberData ? (
+            <TableContainer>
+              <Table className={classes.table} aria-label='simple table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>기수명</TableCell>
+                    <TableCell align='center'>시작일</TableCell>
+                    <TableCell align='center'>종료일</TableCell>
+                    <TableCell align='center'>기타사항</TableCell>
+                    <TableCell align='center'>기수종료여부</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableCell component='th' scope='row'>
+                    {numberData.number_name}
+                  </TableCell>
+                  <TableCell align='center'>{numberData.start_date}</TableCell>
+                  <TableCell align='center'>{numberData.end_date}</TableCell>
+                  <TableCell align='center'>
+                    {numberData.comment ? numberData.comment : '-'}
+                  </TableCell>
+                  <TableCell align='center'>
+                    {numberData.is_closed ? '수료' : '진행중'}
+                  </TableCell>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            '해당 기수의 정보를 찾을 수 없습니다'
+          )}
+        </PageContainer>
         <Stack spacing={1} direction='row'>
-          <NumberButton variant='contained' onClick={openModalHandler}>
-            수정
-          </NumberButton>
+          <StylesProvider injectFirst>
+            <NumberButton variant='contained' onClick={openModalHandler}>
+              수정
+            </NumberButton>
+          </StylesProvider>
           <ModalContainer>
             {updateOpen ? (
               <ModalBackdrop onClick={openModalHandler}>
@@ -212,9 +244,11 @@ const SpecificNumber = () => {
               </ModalBackdrop>
             ) : null}
           </ModalContainer>
-          <NumberButton variant='contained' onClick={openDeleteHandler}>
-            비활성
-          </NumberButton>
+          <StylesProvider injectFirst>
+            <NumberButton variant='contained' onClick={openDeleteHandler}>
+              비활성
+            </NumberButton>
+          </StylesProvider>
           <ModalContainer>
             {deleteOpen ? (
               <ModalBackdrop onClick={openDeleteHandler}>
@@ -237,6 +271,38 @@ const SpecificNumber = () => {
             뒤로가기
           </NumberButton>
         </Stack>
+        <PageContainer>
+          {teamData ? (
+            <TableContainer>
+              <Table className={classes.table} aria-label='simple table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>팀 명</TableCell>
+                    <TableCell align='center'>팀 종료 여부</TableCell>
+                    <TableCell align='center'>기타사항</TableCell>
+                    <TableCell align='center'>생성일</TableCell>
+                    <TableCell align='center'>종료일</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableCell component='th' scope='row'>
+                    {teamData.team_name}
+                  </TableCell>
+                  <TableCell align='center'>
+                    {teamData.is_opened ? '종료' : '진행중'}
+                  </TableCell>
+                  <TableCell align='center'>
+                    {teamData.comment ? teamData.comment : '-'}
+                  </TableCell>
+                  <TableCell align='center'>{teamData.created_date}</TableCell>
+                  <TableCell align='center'>{teamData.updated_date}</TableCell>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            '해당 팀의 정보를 찾을 수 없습니다'
+          )}
+        </PageContainer>
       </Box>
     </>
   );

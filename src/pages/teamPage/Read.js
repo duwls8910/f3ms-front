@@ -139,34 +139,6 @@ const ReadTeam = () => {
     <>
       {loading ? <Loading /> : null}
       <Box>
-        <TableContainer>
-          <Table className={classes.table} aria-label='simple table'>
-            <TableHead>
-              <TableRow>
-                <TableCell>팀 명</TableCell>
-                <TableCell align='center'>팀 종료 여부</TableCell>
-                <TableCell align='center'>기타 사항</TableCell>
-                <TableCell align='center'>생성일</TableCell>
-                <TableCell align='center'>수정일</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={nanoid()}>
-                  <TableCell component='th' scope='row'>
-                    <Link
-                      to={`/admin/management/pre-team/${id}`}
-                    >{`seb_${row.number_id}_pre_${row.team_name}`}</Link>
-                  </TableCell>
-                  <TableCell align='center'>{row.is_opened}</TableCell>
-                  <TableCell align='center'>{row.comment}</TableCell>
-                  <TableCell align='center'>{row.created_date}</TableCell>
-                  <TableCell align='center'>{row.updated_date}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
         <div>
           <Stack spacing={1} direction='row'>
             <TeamButton variant='contained' onClick={openModalHandler}>
@@ -192,6 +164,34 @@ const ReadTeam = () => {
             </ModalContainer>
           </Stack>
         </div>
+        <TableContainer>
+          <Table className={classes.table} aria-label='simple table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>팀 명</TableCell>
+                <TableCell align='center'>팀 종료 여부</TableCell>
+                <TableCell align='center'>기타사항</TableCell>
+                <TableCell align='center'>생성일</TableCell>
+                <TableCell align='center'>수정일</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={nanoid()}>
+                  <TableCell component='th' scope='row'>
+                    <Link
+                      to={`/admin/management/pre-team/${id}`}
+                    >{`seb_${row.number_id}_pre_${row.team_name}`}</Link>
+                  </TableCell>
+                  <TableCell align='center'>{row.is_opened}</TableCell>
+                  <TableCell align='center'>{row.comment}</TableCell>
+                  <TableCell align='center'>{row.created_date}</TableCell>
+                  <TableCell align='center'>{row.updated_date}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     </>
   );

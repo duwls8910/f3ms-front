@@ -104,7 +104,7 @@ const ReadMember = () => {
   useEffect(() => {
     const getMember = async () => {
       const response = await axios(
-        `${process.env.REACT_APP_URL}/admin/management/member/number/${id}`
+        `${process.env.REACT_APP_URL}/admin/management/member`
       );
       setMember(response.data);
       setRows(response.data);
@@ -127,34 +127,6 @@ const ReadMember = () => {
     <>
       {loading ? <Loading /> : null}
       <Box>
-        <TableContainer>
-          <Table className={classes.table} aria-label='simple table'>
-            <TableHead>
-              <TableRow>
-                <TableCell>팀원 이름</TableCell>
-                <TableCell align='center'>pre팀이름</TableCell>
-                <TableCell align='center'>main팀이름</TableCell>
-                <TableCell align='center'>학습 코스 구분</TableCell>
-                <TableCell align='center'>하차여부</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={nanoid()}>
-                  <TableCell component='th' scope='row'>
-                    <Link to={`/admin/management/member/number/${row.id}`}>
-                      {row.member_name}
-                    </Link>
-                  </TableCell>
-                  <TableCell align='center'>{row.pre_team_id}</TableCell>
-                  <TableCell align='center'>{row.main_team_id}</TableCell>
-                  <TableCell align='center'>{row.position_cd}</TableCell>
-                  <TableCell align='center'>{row.is_active}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
         <div>
           <Stack spacing={1} direction='row'>
             <MemberButton variant='contained' onClick={openModalHandler}>
@@ -180,6 +152,32 @@ const ReadMember = () => {
             </ModalContainer>
           </Stack>
         </div>
+        <TableContainer>
+          <Table className={classes.table} aria-label='simple table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>팀원 이름</TableCell>
+                <TableCell align='center'>pre팀이름</TableCell>
+                <TableCell align='center'>main팀이름</TableCell>
+                <TableCell align='center'>학습 코스 구분</TableCell>
+                <TableCell align='center'>하차여부</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={nanoid()}>
+                  <TableCell component='th' scope='row'>
+                    <Link to='admin/management/member'>{row.member_name}</Link>
+                  </TableCell>
+                  <TableCell align='center'>{row.pre_team_id}</TableCell>
+                  <TableCell align='center'>{row.main_team_id}</TableCell>
+                  <TableCell align='center'>{row.position_cd}</TableCell>
+                  <TableCell align='center'>{row.is_active}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     </>
   );

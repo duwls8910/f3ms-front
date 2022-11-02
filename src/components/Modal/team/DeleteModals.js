@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Stack, Button } from '@mui/material';
+import Swal from 'sweetalert2';
 
 export const ModalContainer = styled.div`
   display: flex;
@@ -70,10 +72,12 @@ export const MyButton = styled(Button)`
 `;
 
 const DeleteModals = () => {
+  let { id } = useParams();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
   const handleClick = () => {
     axios
-      .patch(`${process.env.REACT_APP_URL}/admin/management`, {
+      .patch(`${process.env.REACT_APP_URL}/admin/management/pre-team/${id}`, {
         is_opened: false,
         withCredentials: true,
       })
@@ -85,14 +89,14 @@ const DeleteModals = () => {
 
   const closeModal = () => {
     axios
-      .patch(`${process.env.REACT_APP_URL}/admin/management`, {
+      .patch(`${process.env.REACT_APP_URL}/admin/management/pre-team/${id}`, {
         is_opened: false,
         withCredentials: true,
       })
       .then((res) => {
         console.log(res);
       });
-    setOpenDeleteModal(!openDeleteModal);
+    setOpenDeleteModal(openDeleteModal);
   };
 
   return (
@@ -106,7 +110,32 @@ const DeleteModals = () => {
         <Stack spacing={1} direction='row'>
           <div>
             <OkButtonPosition>
-              <MyButton variant='contained' onClick={handleClick}>
+              <MyButton
+                variant='contained'
+                onClick={() => {
+                  Swal.fire({
+                    title: '정말 비활성화 하시겠습니까?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '네',
+                    cancelButtonText: '아니오',
+                    reverseButtons: false,
+                  }).then((result) => {
+                    if (result.isDismissed) {
+                      closeModal();
+                    } else if (result.isConfirmed) {
+                      handleClick();
+                      Swal.fire({
+                        title: '해당 팀은 비활성화되었습니다.',
+                        confirmButtonText: 'OK',
+                        icon: 'success',
+                      });
+                    }
+                  });
+                }}
+              >
                 예
               </MyButton>
             </OkButtonPosition>

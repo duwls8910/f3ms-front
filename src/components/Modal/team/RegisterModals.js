@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
-import { TextField, Autocomplete, Button } from '@mui/material';
+import { TextField, Button } from '@mui/material';
+import Swal from 'sweetalert2';
 import styled from 'styled-components';
 
 const ButtonPosition = styled.div`
@@ -48,26 +49,22 @@ const RegisterModals = ({ setModalOpen }) => {
 
   // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
-    if (team === '') {
-      alert('팀명을 입력해주세요');
-    } else {
-      try {
-        await axios.post(
-          `${process.env.REACT_APP_URL}/admin/management/pre-team`,
-          {
-            team_name: team,
-            number_id: numberId,
-            comment: comment,
-          }
-        );
-        setLoading(false);
-        setModalOpen(false);
-        setTeam('');
-        setNumberId('');
-        setComment('');
-      } catch (err) {
-        console.log(err);
-      }
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_URL}/admin/management/pre-team`,
+        {
+          team_name: team,
+          number_id: numberId,
+          comment: comment,
+        }
+      );
+      setLoading(false);
+      setModalOpen(false);
+      setTeam('');
+      setNumberId('');
+      setComment('');
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -80,18 +77,6 @@ const RegisterModals = ({ setModalOpen }) => {
       {loading ? <Loading /> : null}
       <h2>팀 정보 등록</h2>
       <h4>팀 명</h4>
-      {/* <Autocomplete
-      id='combo-box-demo'
-      options={team_data}
-      sx={{ width: 300 }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label='해당하는 팀 번호를 선택하세요'
-          onChange={handleDropTeam}
-        />
-      )}
-    /> */}
       <TextField
         item='outlined-basic'
         label='팀명(seb_00_pre(main)_000)'
@@ -110,7 +95,41 @@ const RegisterModals = ({ setModalOpen }) => {
       />
       <br />
       <ButtonPosition>
-        <MyButton variant='contained'>등록</MyButton>
+        <MyButton
+          variant='contained'
+          onClick={() => {
+            Swal.fire({
+              title: 'pre-team 정보를 등록하시겠습니까?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: '네',
+              cancelButtonText: '아니오',
+              reverseButtons: false,
+            }).then((result) => {
+              if (result.isDismissed) {
+                handleExit();
+              } else if (team === '') {
+                Swal.fire({
+                  title: '팀명을 입력하지 않았습니다',
+                  text: '팀명을 입력해주세요',
+                  icon: 'error',
+                });
+                result.isDenied();
+              } else if (result.isConfirmed) {
+                onSubmit();
+                Swal.fire({
+                  title: 'pre-team의 정보가 등록되었습니다.',
+                  confirmButtonText: 'OK',
+                  icon: 'success',
+                });
+              }
+            });
+          }}
+        >
+          등록
+        </MyButton>
       </ButtonPosition>
     </>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Autocomplete, TextField, Button } from '@mui/material';
+import Swal from 'sweetalert2';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
@@ -26,17 +27,18 @@ const MemberRegister = ({ setModalOpen }) => {
     new_member_id: '',
     position_cd: '',
     new_position_cd: '',
+    pre_team_id: '',
+    new_pre_team_id: '',
+    main_team_id: '',
+    new_main_team_id: '',
     comment: '',
     new_comment: '',
-    is_closed: false,
-    new_is_closed: false,
   });
   const [memberName, setMemberName] = useState('');
   const [position, setPosition] = useState('');
   const [preTeam, setPreTeam] = useState('');
   const [mainTeam, setMainTeam] = useState('');
   const [comment, setComment] = useState('');
-  const [inputStatus, setInputStatus] = useState('');
   const [selectedDropValue, setSelectedDropValue] =
     useState('해당하는 학습 코스를 선택하세요');
 
@@ -47,15 +49,15 @@ const MemberRegister = ({ setModalOpen }) => {
     );
   };
 
-  const handleMember = (e) => {
-    const { value } = e.target;
-    // setSelectedDropValue(member_data.filter((el) => el.value === value)[0].id);
-    setMemberName(value);
-  };
+  // const handleMember = (e) => {
+  //   const { value } = e.target;
+  //   // setSelectedDropValue(member_data.filter((el) => el.value === value)[0].id);
+  //   setMemberName(value);
+  // };
 
-  const handleChange = (key) => (e) => {
-    setNewMember({ ...newMember, [key]: e.target.value });
-  };
+  // const handleChange = (key) => (e) => {
+  //   setNewMember({ ...newMember, [key]: e.target.value });
+  // };
 
   const handleComment = (e) => {
     const { value } = e.target;
@@ -77,13 +79,13 @@ const MemberRegister = ({ setModalOpen }) => {
       await axios.put(
         `${process.env.REACT_APP_URL}/admin/management/member/${memberName}`,
         {
-          position: position,
-          comment: comment,
-          is_closed: inputStatus,
+          position: position.position,
+          comment: comment.comment,
         }
       );
       setModalOpen(false);
-      setMemberName('');
+      setNewMember('');
+      setPosition('');
       setComment('');
       setPreTeam('');
       setMainTeam('');
@@ -92,64 +94,91 @@ const MemberRegister = ({ setModalOpen }) => {
     }
   };
 
-  // const handleExit = () => {
-  //   setModalOpen(false);
-  // };
+  const handleExit = () => {
+    setModalOpen(false);
+  };
 
   return (
     <>
-      <h2>수강생 정보 수정</h2>
-      <h4>수강생</h4>
-      <TextField
-        id='outlined-basic'
-        label='이름'
-        variant='outlined'
-        value={memberName}
-        onChange={handleMember}
-        autoFocus
-      />
-      {/* <input value={memberName} onChange={handleMember}></input> */}
-      <h4>학습 코스 구분</h4>
-      <Autocomplete
-        id='combo-box-demo'
-        options={position_data}
-        sx={{ width: 300 }}
-        renderInput={(params) => (
+      {newMember ? (
+        <div>
+          <h2>수강생 정보 수정</h2>
+          <h4>수강생</h4>
           <TextField
-            {...params}
-            label='해당하는 학습 코스를 선택하세요'
-            onChange={handleDropPosition}
+            id='outlined-basic'
+            label='이름'
+            variant='outlined'
+            value={memberName}
+            readOnly
           />
-        )}
-      />
-      <h4>pre팀명</h4>
-      <TextField
-        id='standard-basic'
-        label='pre팀명'
-        variant='standard'
-        value={preTeam}
-        onChange={handlePreTeam}
-      />
-      <h4>main팀명</h4>
-      <TextField
-        id='standard-basic'
-        label='main팀명'
-        variant='standard'
-        value={mainTeam}
-        onChange={handleMainTeam}
-      />
-      <h4>기타사항</h4>
-      <TextField
-        id='standard-basic'
-        label='특이사항 작성'
-        variant='standard'
-        onChange={handleComment}
-      />
-      <ButtonPosition>
-        <MyButton variant='contained' onClick={onSubmit}>
-          수정
-        </MyButton>
-      </ButtonPosition>
+          <h4>학습 코스 구분</h4>
+          {selectedDropValue ? (
+            <Autocomplete
+              id='combo-box-demo'
+              options={position_data}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label='해당하는 학습 코스를 선택하세요'
+                  onChange={handleDropPosition}
+                />
+              )}
+            />
+          ) : null}
+          <h4>pre팀명</h4>
+          <TextField
+            id='standard-basic'
+            variant='standard'
+            value={preTeam}
+            onChange={handlePreTeam}
+          />
+          <h4>main팀명</h4>
+          <TextField
+            id='standard-basic'
+            variant='standard'
+            value={mainTeam}
+            onChange={handleMainTeam}
+          />
+          <h4>기타사항</h4>
+          <TextField
+            id='standard-basic'
+            label='특이사항 작성'
+            variant='standard'
+            onChange={handleComment}
+          />
+          <ButtonPosition>
+            <MyButton
+              variant='contained'
+              onClick={() => {
+                Swal.fire({
+                  title: '수강생의 정보를 수정하시겠습니까?',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: '네',
+                  cancelButtonText: '아니오',
+                  reverseButtons: false,
+                }).then((result) => {
+                  if (result.isDismissed) {
+                    handleExit();
+                  } else if (result.isConfirmed) {
+                    onSubmit();
+                    Swal.fire({
+                      title: '수강생 정보가 수정되었습니다.',
+                      confirmButtonText: 'OK',
+                      icon: 'success',
+                    });
+                  }
+                });
+              }}
+            >
+              수정
+            </MyButton>
+          </ButtonPosition>
+        </div>
+      ) : null}
     </>
   );
 };

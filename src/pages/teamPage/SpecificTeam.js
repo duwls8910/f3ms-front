@@ -189,38 +189,6 @@ const SpecificTeam = () => {
           ) : (
             '해당 기수의 정보를 찾을 수 없습니다'
           )}
-          {memberData ? (
-            <TableContainer>
-              <Table className={classes.table} aria-label='simple table'>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>팀원 이름</TableCell>
-                    <TableCell align='center'>학습 코스 구분</TableCell>
-                    <TableCell align='center'>하차여부</TableCell>
-                    <TableCell align='center'>생성일</TableCell>
-                    <TableCell align='center'>수정일</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableCell component='th' scope='row'>
-                    {teamData.team_name}
-                  </TableCell>
-                  <TableCell align='center'>{memberData.position_cd}</TableCell>
-                  <TableCell align='center'>
-                    {memberData.is_active ? '수강중' : '하차'}
-                  </TableCell>
-                  <TableCell align='center'>
-                    {memberData.created_date}
-                  </TableCell>
-                  <TableCell align='center'>
-                    {memberData.updated_date}
-                  </TableCell>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          ) : (
-            '해당 수강생의 정보를 찾을 수 없습니다'
-          )}
         </PageContainer>
         <Stack spacing={1} direction='row'>
           <TeamButton variant='contained' onClick={openModalHandler}>
@@ -269,6 +237,40 @@ const SpecificTeam = () => {
             뒤로가기
           </TeamButton>
         </Stack>
+        <PageContainer>
+          {memberData ? (
+            <TableContainer>
+              <Table className={classes.table} aria-label='simple table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>팀원 이름</TableCell>
+                    <TableCell align='center'>학습 코스 구분</TableCell>
+                    <TableCell align='center'>하차여부</TableCell>
+                    <TableCell align='center'>생성일</TableCell>
+                    <TableCell align='center'>수정일</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableCell component='th' scope='row'>
+                    {teamData.team_name}
+                  </TableCell>
+                  <TableCell align='center'>{memberData.position_cd}</TableCell>
+                  <TableCell align='center'>
+                    {memberData.is_active ? '수강중' : '하차'}
+                  </TableCell>
+                  <TableCell align='center'>
+                    {memberData.created_date}
+                  </TableCell>
+                  <TableCell align='center'>
+                    {memberData.updated_date}
+                  </TableCell>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            '해당 수강생의 정보를 찾을 수 없습니다'
+          )}
+        </PageContainer>
       </Box>
     </>
   );

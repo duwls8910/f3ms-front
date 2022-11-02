@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button } from '@mui/material';
+import Swal from 'sweetalert2';
 import styled from 'styled-components';
 
 export const ButtonPosition = styled.div`
@@ -24,12 +25,9 @@ const UpdateModals = ({ setModalOpen }) => {
     new_team_id: '',
     comment: '',
     new_comment: '',
-    is_closed: false,
-    new_is_closed: false,
   });
   const [teamName, setTeamName] = useState('');
   const [comment, setComment] = useState('');
-  const [inputStatus, setInputStatus] = useState('');
 
   // const handleClickRadioButton = (e) => {
   //   setInputStatus(e.target.value);
@@ -58,12 +56,10 @@ const UpdateModals = ({ setModalOpen }) => {
         {
           team_name: teamName,
           comment: comment,
-          is_closed: inputStatus,
         }
       );
       setTeamName('');
       setComment('');
-      setInputStatus(false);
     } catch (err) {
       console.log(err);
     }
@@ -83,7 +79,7 @@ const UpdateModals = ({ setModalOpen }) => {
         variant='outlined'
         autoFocus
         value={teamName}
-        onChange={handleTeam}
+        readOnly
       />
       {/* <input value={teamName} onChange={handleTeam}></input> */}
       <h4>기타사항</h4>
@@ -95,7 +91,34 @@ const UpdateModals = ({ setModalOpen }) => {
       />
       <br />
       <ButtonPosition>
-        <MyButton variant='contained'>수정</MyButton>
+        <MyButton
+          variant='contained'
+          onClick={() => {
+            Swal.fire({
+              title: 'pre-team 정보를 수정하시겠습니까?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: '네',
+              cancelButtonText: '아니오',
+              reverseButtons: false,
+            }).then((result) => {
+              if (result.isDismissed) {
+                handleExit();
+              } else if (result.isConfirmed) {
+                onSubmit();
+                Swal.fire({
+                  title: 'pre-team의 정보가 수정되었습니다.',
+                  confirmButtonText: 'OK',
+                  icon: 'success',
+                });
+              }
+            });
+          }}
+        >
+          수정
+        </MyButton>
       </ButtonPosition>
     </>
   );

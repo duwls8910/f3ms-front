@@ -23,19 +23,7 @@ export const MyButton = styled(Button)`
   padding: 0 30px;
 `;
 
-// 기수 선택을 위한 드롭다운 상수 데이터
-// const number_data = [
-//   { label: 'seb_40' },
-//   { label: 'seb_41' },
-//   { label: 'seb_42' },
-//   { label: 'seb_43' },
-// ];
-
-// // 기수 이름은 seb_은 지정된 값. 숫자는 마지막 숫자 +1로 자동으로 추가되도록(=> number_name)?
 const RegisterModals = ({ setModalOpen }) => {
-  // // 기수 선택 드롭다운 상태 관리
-  // const [selectedDropValue, setSelectedDropValue] =
-  //   useState('기수를 선택하세요');
   // const [inputStatus, setInputStatus] = useState('');
   const [numberName, setNumberName] = useState('');
   const [startDate, setStartDate] = useState(new Date());
@@ -101,7 +89,7 @@ const RegisterModals = ({ setModalOpen }) => {
       <h4>기수</h4>
       <TextField
         item='outlined-basic'
-        label='팀명(seb_00_pre(main)_000)'
+        label='기수(seb_00)'
         variant='outlined'
         autoFocus
         value={numberName}
@@ -154,21 +142,22 @@ const RegisterModals = ({ setModalOpen }) => {
               cancelButtonText: '아니오',
               reverseButtons: false,
             }).then((result) => {
-              if (numberName === '') {
+              if (result.isDismissed) {
+                handleExit();
+              } else if (numberName === '') {
                 Swal.fire({
                   title: '기수명을 입력하지 않았습니다',
                   text: '기수명을 입력해주세요',
-                  icon: 'warning',
+                  icon: 'error',
                 });
                 result.isDenied();
               } else if (result.isConfirmed) {
                 onSubmit();
                 Swal.fire({
                   title: '기수 정보가 등록되었습니다.',
-                  confirmButtonText: 'Ok',
+                  confirmButtonText: 'OK',
+                  icon: 'success',
                 });
-              } else if (result.isDismissed) {
-                handleExit();
               }
             });
           }}

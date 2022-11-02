@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Stack, Button } from '@mui/material';
+import Swal from 'sweetalert2';
 
 const OkButtonPosition = styled.div`
   position: absolute;
@@ -69,12 +71,13 @@ export const ModalView = styled.div.attrs((props) => ({
 `;
 
 const DeleteModals = () => {
+  let { id } = useParams();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  // 비활성 버튼을 눌렀을 때 작용할 클릭 이벤트
-  // 완료처리 버튼을 만들자
+
+  // 비활성화 버튼 클릭 -> 예 버튼을 눌렀을 때 해당 기수는 비활성화되는 클릭 이벤트
   const handleClick = () => {
     axios
-      .patch(`${process.env.REACT_APP_URL}/admin/management/`, {
+      .patch(`${process.env.REACT_APP_URL}/admin/management/number/${id}`, {
         is_closed: true,
       })
       .then((res) => {
@@ -83,16 +86,17 @@ const DeleteModals = () => {
     setOpenDeleteModal(openDeleteModal);
   };
 
+  // 비활성화 버튼 클릭 -> 아니오 버튼을 눌렀을 때 해당 기수는 비활성화되지 않는 클릭 이벤트
   const closeModal = () => {
     axios
-      .patch(`${process.env.REACT_APP_URL}/admin/management/`, {
+      .patch(`${process.env.REACT_APP_URL}/admin/management/number/${id}`, {
         is_closed: false,
         withCredentials: true,
       })
       .then((res) => {
         console.log(res);
       });
-    setOpenDeleteModal(!openDeleteModal);
+    setOpenDeleteModal(openDeleteModal);
   };
 
   return (
@@ -106,7 +110,32 @@ const DeleteModals = () => {
         <Stack spacing={1} direction='row'>
           <div>
             <OkButtonPosition>
-              <MyButton variant='contained' onClick={handleClick}>
+              <MyButton
+                variant='contained'
+                onClick={() => {
+                  Swal.fire({
+                    title: '정말 비활성화 하시겠습니까?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '네',
+                    cancelButtonText: '아니오',
+                    reverseButtons: false,
+                  }).then((result) => {
+                    if (result.isDismissed) {
+                      closeModal();
+                    } else if (result.isConfirmed) {
+                      handleClick();
+                      Swal.fire({
+                        title: '해당 기수는 비활성화되었습니다.',
+                        confirmButtonText: 'OK',
+                        icon: 'success',
+                      });
+                    }
+                  });
+                }}
+              >
                 예
               </MyButton>
             </OkButtonPosition>
