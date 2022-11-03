@@ -1,16 +1,6 @@
-// 각 팀 조회 시 p.p인지 m.p인지 구분할 수 있어야함
-// 기본적으로 p.p를 먼저 띄우고 사용자가 라디오버튼(체크박스)를 누르면 m.p팀이 나오게 함
-// 기수 api(정보)만 받아옴 -> 이벤트 클릭 시점에 아이디에 해당하는 팀만 받아옴
-// (call횟수를 늘리는 대신 한번에 처리할 데이터의 양(사이즈)을 줄임)
-
-// seb_ 고정값으로 두고
-// 00 기수 숫자(number값이 들어감)
-// pre / main (드롭다운, 드롭다운의 value가 나올 때 화면에서 보여지는 출력만 _pre_로 보일 수 있게)
-// 000 (int값으로)
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { nanoid } from 'nanoid';
 import Loading from 'utils/LoadingIndicator';
 import RegisterModals from 'components/Modal/team/RegisterModals';
 import { Box, Stack, Button } from '@mui/material';
@@ -23,6 +13,7 @@ import {
   TableCell,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { nanoid } from 'nanoid';
 import styled from 'styled-components';
 
 export const TeamPageView = styled.div`
@@ -93,7 +84,6 @@ const teamRows = [
     id: '',
     team_name: '',
     number_id: '',
-    is_opened: '',
     comment: '',
     created_date: '',
     updated_date: '',
@@ -180,7 +170,7 @@ const ReadTeam = () => {
                 <TableRow key={nanoid()}>
                   <TableCell component='th' scope='row'>
                     <Link
-                      to={`/admin/management/pre-team/${id}`}
+                      to={`/admin/management/pre-team/${row.id}`}
                     >{`seb_${row.number_id}_pre_${row.team_name}`}</Link>
                   </TableCell>
                   <TableCell align='center'>{row.is_opened}</TableCell>

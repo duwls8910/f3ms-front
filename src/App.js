@@ -12,13 +12,11 @@ import SpecificNumber from 'pages/numberPage/SpecificNumber';
 import SpecificTeam from 'pages/teamPage/SpecificTeam';
 import SpecificMember from 'pages/memberPage/SpecificMember';
 
-// import TeamIssue from 'pages/IssuePage/TeamIssue';
-
 function App() {
-  let { id } = useParams();
+  // let { id } = useParams();
   return (
     <BrowserRouter>
-      {window.location.path === '/' ? null : <Header />}
+      <Header />
       <Routes>
         <Route exact path='/' element={<Login />} />
         <Route path='/admin/management' element={<Admin />} />
@@ -28,15 +26,15 @@ function App() {
         <Route path='/admin/management/member' element={<ReadMember />} />
 
         <Route
-          path={`/admin/management/number/${id}`}
+          path='/admin/management/number/:id'
           element={<SpecificNumber />}
         />
         <Route
-          path={`/admin/management/pre-team/${id}`}
+          path='/admin/management/pre-team/:id'
           element={<SpecificTeam />}
         />
         <Route
-          path={`/admin/management/member/${id}`}
+          path='/admin/management/member/:id'
           element={<SpecificMember />}
         />
       </Routes>

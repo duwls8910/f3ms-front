@@ -167,7 +167,9 @@ const ReadMember = () => {
               {rows.map((row) => (
                 <TableRow key={nanoid()}>
                   <TableCell component='th' scope='row'>
-                    <Link to='admin/management/member'>{row.member_name}</Link>
+                    <Link to={`/admin/management/member/${row.id}`}>
+                      {row.member_name}
+                    </Link>
                   </TableCell>
                   <TableCell align='center'>{row.pre_team_id}</TableCell>
                   <TableCell align='center'>{row.main_team_id}</TableCell>

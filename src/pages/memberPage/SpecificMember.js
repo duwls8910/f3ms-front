@@ -1,28 +1,61 @@
-// 해당 수강생을 클릭했을 때 나오는 수강생의 정보
-// 수강생의 정보에는 포지션과 하차 여부, 그 수강생에 해당하는 이슈 내용이 나오게 함
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import UpdateModals from 'components/Modal/member/UpdateModals';
 import DeleteModals from 'components/Modal/member/DeleteModals';
-import { Box, Stack, Button } from '@mui/material';
-import {
-  TableContainer,
-  TableHead,
-  Table,
-  TableRow,
-  TableBody,
-  TableCell,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Stack, Button } from '@mui/material';
 import styled from 'styled-components';
-import { nanoid } from 'nanoid';
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+export const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 2rem;
+  width: 80%;
+  background-color: rgb(240, 240, 240);
+  border-radius: 5px;
+  box-shadow: 5px 5px 3px 3px grey;
+`;
+
+export const Row1 = styled.div`
+  align-self: center;
+  font-size: 2rem;
+  padding: 2rem;
+  width: 90%;
+`;
+
+export const Row2 = styled.div`
+  display: flex;
+  align-self: center;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 2rem;
+  width: 90%;
+  border-bottom: 1px solid lightgray;
+`;
+
+export const Title = styled.span`
+  flex-basis: 40%;
+  font-size: 1rem;
+`;
+
+export const Content = styled.span`
+  flex-basis: 60%;
+  font-size: 1rem;
+`;
 
 export const MemberButton = styled(Button)`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  text-align: center;
   border: 0;
   border-radius: 3px;
   height: 48px;
@@ -54,6 +87,22 @@ export const ModalBackdrop = styled.div`
   position: fixed;
 `;
 
+export const DeleteModalBackDrop = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  height: 300px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 1;
+  background-color: rgb(156, 165, 182);
+  position: fixed;
+`;
+
 export const ModalView = styled.div.attrs((props) => ({
   role: 'dialog',
 }))`
@@ -69,8 +118,8 @@ export const ModalView = styled.div.attrs((props) => ({
 
   > div.close-btn {
     position: absolute;
-    bottom: 600px;
-    left: 23rem;
+    bottom: 620px;
+    left: 22rem;
     font-size: 22px;
     cursor: pointer;
   }
@@ -83,55 +132,34 @@ export const DeleteModalView = styled.div.attrs((props) => ({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 100px;
   position: relative;
-  background-color: rgb(255, 255, 255);
-  border-radius: 0.5rem;
 
   > div.close-btn {
     position: absolute;
-    bottom: 240px;
+    bottom: 150px;
     left: 16rem;
     font-size: 22px;
     cursor: pointer;
   }
 `;
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
-
 const SpecificMember = () => {
-  const [loading, setLoading] = useState(false);
-  const [updateOpen, setUpdateOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [memberData, setMemberData] = useState([
-    {
-      id: '',
-      member_name: '',
-      number_id: '',
-      position_cd: '',
-      pre_team_id: '',
-      main_team_id: '',
-      is_active: '',
-    },
-  ]);
-
-  const classes = useStyles();
-
   let { id } = useParams();
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
+  const [updateOpen, setUpdateOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [memberData, setMemberData] = useState([]);
+
   useEffect(() => {
     const getSpecMember = async () => {
-      const response = await axios(
+      const response = await axios.get(
         `${process.env.REACT_APP_URL}/admin/management/member/${id}`
       );
       setMemberData(response.data);
-      console.log(response.data);
       setLoading(false);
     };
     getSpecMember();
@@ -162,44 +190,53 @@ const SpecificMember = () => {
   };
 
   return (
-    <>
+    <Container>
       {loading ? <Loading /> : null}
-      <Box>
-        {memberData ? (
-          <TableContainer>
-            <Table className={classes.table} aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>팀원 이름</TableCell>
-                  <TableCell align='center'>학습 코스 구분</TableCell>
-                  <TableCell align='center'>pre팀명</TableCell>
-                  <TableCell align='center'>main팀명</TableCell>
-                  <TableCell align='center'>하차여부</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {memberData.map((row) => (
-                  <TableRow key={nanoid()}>
-                    <TableCell component='th' scope='row'>
-                      {memberData.member_name}
-                    </TableCell>
-                    <TableCell align='center'>
-                      {memberData.position_cd}
-                    </TableCell>
-                    <TableCell align='center'>
-                      {memberData.pre_team_id}
-                    </TableCell>
-                    <TableCell align='center'>
-                      {memberData.main_team_id}
-                    </TableCell>
-                    <TableCell align='center'>{memberData.is_active}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+      <Center>
+        {memberData.number === undefined ? (
+          '해당 기수의 정보를 찾을 수 없습니다'
         ) : (
-          '해당 수강생의 정보를 찾을 수 없습니다'
+          <>
+            <Row1>{memberData.member_name}</Row1>
+            <Row2>
+              <Title>기수</Title>
+              <Content>{memberData.number.number_name}</Content>
+            </Row2>
+            <Row2>
+              <Title>Pre-Project 팀</Title>
+              <Content>
+                {memberData.pre_team_id === null ? '-' : memberData.pre_team_id}
+              </Content>
+            </Row2>
+            <Row2>
+              <Title>Main-Project 팀</Title>
+              <Content>
+                {memberData.main_team_id === null
+                  ? '-'
+                  : memberData.main_team_id}
+              </Content>
+            </Row2>
+            <Row2>
+              <Title>학습 코스 구분</Title>
+              <Content>
+                {memberData.position_cd
+                  ? memberData.position_cd === 'p_be'
+                    ? '백엔드'
+                    : '프론트엔드'
+                  : null}
+              </Content>
+            </Row2>
+            <Row2>
+              <Title>학습 여부</Title>
+              <Content>
+                {memberData.is_active
+                  ? memberData.is_active
+                    ? '학습중'
+                    : '하차'
+                  : null}
+              </Content>
+            </Row2>
+          </>
         )}
         <Stack spacing={1} direction='row'>
           <MemberButton variant='contained' onClick={openModalHandler}>
@@ -228,7 +265,7 @@ const SpecificMember = () => {
           </MemberButton>
           <ModalContainer>
             {deleteOpen ? (
-              <ModalBackdrop onClick={openDeleteHandler}>
+              <DeleteModalBackDrop onClick={openDeleteHandler}>
                 <DeleteModalView
                   onClick={(event) => {
                     event.stopPropagation();
@@ -241,15 +278,15 @@ const SpecificMember = () => {
                     <DeleteModals />
                   </div>
                 </DeleteModalView>
-              </ModalBackdrop>
+              </DeleteModalBackDrop>
             ) : null}
           </ModalContainer>
           <MemberButton variant='contained' onClick={handleNavigate}>
             뒤로가기
           </MemberButton>
         </Stack>
-      </Box>
-    </>
+      </Center>
+    </Container>
   );
 };
 

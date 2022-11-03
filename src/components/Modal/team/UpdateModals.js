@@ -7,7 +7,7 @@ import styled from 'styled-components';
 export const ButtonPosition = styled.div`
   position: absolute;
   top: 77%;
-  right: 60%;
+  right: 50%;
   transform: translateX(50%);
   margin: 4rem 0;
 `;
@@ -79,7 +79,7 @@ const UpdateModals = ({ setModalOpen }) => {
         variant='outlined'
         autoFocus
         value={teamName}
-        readOnly
+        onChange={handleTeam}
       />
       {/* <input value={teamName} onChange={handleTeam}></input> */}
       <h4>기타사항</h4>

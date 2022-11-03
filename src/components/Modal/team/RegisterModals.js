@@ -19,11 +19,18 @@ const MyButton = styled(Button)`
   padding: 0 30px;
 `;
 
+// const ErrorMessage = styled.div`
+//   margin-top: 0.2rem;
+//   color: red;
+//   font-size: 0.5rem;
+// `;
+
 const RegisterModals = ({ setModalOpen }) => {
   const [team, setTeam] = useState('');
   const [numberId, setNumberId] = useState('');
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
+  // const [duplicateMessage, setDuplicateMessage] = useState('');
   // 라디오 버튼 상태변경
   // const [inputStatus, setInputStatus] = useState('');
 

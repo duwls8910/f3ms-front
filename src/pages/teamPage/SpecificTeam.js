@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import UpdateModals from 'components/Modal/team/UpdateModals';
@@ -252,7 +252,9 @@ const SpecificTeam = () => {
                 </TableHead>
                 <TableBody>
                   <TableCell component='th' scope='row'>
-                    {teamData.team_name}
+                    <Link to={`/admin/management/member/${id}`}>
+                      {memberData.member_name}
+                    </Link>
                   </TableCell>
                   <TableCell align='center'>{memberData.position_cd}</TableCell>
                   <TableCell align='center'>

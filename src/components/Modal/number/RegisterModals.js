@@ -23,8 +23,13 @@ export const MyButton = styled(Button)`
   padding: 0 30px;
 `;
 
+const ErrorMessage = styled.div`
+  margin-top: 0.2rem;
+  color: red;
+  font-size: 0.5rem;
+`;
+
 const RegisterModals = ({ setModalOpen }) => {
-  // const [inputStatus, setInputStatus] = useState('');
   const [numberName, setNumberName] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -32,6 +37,7 @@ const RegisterModals = ({ setModalOpen }) => {
   const [createdDate, setCreatedDate] = useState(new Date());
   const [updatedDate, setUpdatedDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
+  const [duplicateMessage, setDuplicateMessage] = useState('');
 
   // 기수 작성을 위한 input value
   const handleNumber = (e) => {
@@ -54,7 +60,6 @@ const RegisterModals = ({ setModalOpen }) => {
   //   setNumber({ ...number, [key]: e.target.value });
   // };
 
-  // 모달창 내의 등록 버튼을 눌렀을 때 일어날 이벤트
   const onSubmit = async () => {
     try {
       await axios.post(`${process.env.REACT_APP_URL}/admin/management/number`, {
@@ -74,7 +79,7 @@ const RegisterModals = ({ setModalOpen }) => {
       setCreatedDate('');
       setUpdatedDate('');
     } catch (err) {
-      console.log(err);
+      setDuplicateMessage(err.response.data.message);
     }
   };
 
@@ -95,6 +100,9 @@ const RegisterModals = ({ setModalOpen }) => {
         value={numberName}
         onChange={handleNumber}
       />
+      <ErrorMessage>
+        {duplicateMessage === '' ? null : duplicateMessage}
+      </ErrorMessage>
       <h4>프로젝트 기간</h4>
       <div>프로젝트 진행 기간을 선택해주세요</div>
       <br />

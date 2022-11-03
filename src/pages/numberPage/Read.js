@@ -1,4 +1,3 @@
-// 전체 기수 조회 페이지
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Loading from 'utils/LoadingIndicator';
@@ -74,11 +73,6 @@ export const ModalView = styled.div.attrs((props) => ({
   }
 `;
 
-// const progressNumber = [
-//   { id: 0, data: '진행중' },
-//   { id: 1, data: '종료' },
-// ];
-
 export const numberRows = [
   {
     id: '',
@@ -101,14 +95,12 @@ const useStyles = makeStyles({
 const ReadNumber = () => {
   const [number, setNumber] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const [isActive, setIsActive] = useState(false);
   const [rows, setRows] = useState(numberRows);
   // const [searched, setSearched] = useState('');
   const classes = useStyles();
   const [modalOpen, setModalOpen] = useState(false);
 
   const { id } = useParams();
-  // 전체 기수 데이터 조회 시
   useEffect(() => {
     const getNumber = async () => {
       const response = await axios(
@@ -142,7 +134,6 @@ const ReadNumber = () => {
   //   setSelectedNumber(selectedNumber.filter((el) => el !== id));
   // };
 
-  // validation check(필수 조건을 입력했을 때만 넘어갈 수 있게끔)
   return (
     <>
       {loading ? <Loading /> : null}
@@ -191,7 +182,7 @@ const ReadNumber = () => {
                   <TableRow key={nanoid()}>
                     <TableCell component='th' scope='row'>
                       <Link
-                        to={`/admin/management/number/${id}`}
+                        to={`/admin/management/number/${row.id}`}
                       >{`seb_${row.number_name}`}</Link>
                     </TableCell>
                     <TableCell align='center'>{row.start_date}</TableCell>
