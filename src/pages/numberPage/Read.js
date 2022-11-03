@@ -16,6 +16,15 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { nanoid } from 'nanoid';
 
+const Container = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: center;
+`;
+const Center = styled.div`
+margin-top : 1rem;
+width : 80%;
+`;
 export const NumberButton = styled(Button)`
   display: flex;
   flex-direction: row;
@@ -135,72 +144,74 @@ const ReadNumber = () => {
   // };
 
   return (
-    <>
-      {loading ? <Loading /> : null}
-      <Box>
-        <div>
-          <Stack spacing={1} direction='row'>
-            <NumberButton variant='contained' onClick={openModalHandler}>
-              등록
-            </NumberButton>
-            <ModalContainer>
-              {modalOpen ? (
-                <ModalBackdrop onClick={openModalHandler}>
-                  <ModalView
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    <div className='close-btn' onClick={closeModalHandler}>
-                      &times;
-                    </div>
-                    <div className='desc'>
-                      <RegisterModals setModalOpen={setModalOpen} />
-                    </div>
-                  </ModalView>
-                </ModalBackdrop>
-              ) : null}
-            </ModalContainer>
-          </Stack>
-        </div>
-        {number ? (
-          <TableContainer>
-            <Table className={classes.table} aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>기수명</TableCell>
-                  <TableCell align='center'>시작일</TableCell>
-                  <TableCell align='center'>종료일</TableCell>
-                  <TableCell align='center'>기타사항</TableCell>
-                  <TableCell align='center'>기수종료여부</TableCell>
-                  <TableCell align='center'>생성날짜</TableCell>
-                  <TableCell align='center'>수정날짜</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={nanoid()}>
-                    <TableCell component='th' scope='row'>
-                      <Link
-                        to={`/admin/management/number/${row.id}`}
-                      >{`seb_${row.number_name}`}</Link>
-                    </TableCell>
-                    <TableCell align='center'>{row.start_date}</TableCell>
-                    <TableCell align='center'>{row.end_date}</TableCell>
-                    <TableCell align='center'>
-                      {row.comment ? row.comment : '-'}
-                    </TableCell>
-                    <TableCell align='center'>{row.is_closed}</TableCell>
-                    <TableCell align='center'>{row.created_date}</TableCell>
-                    <TableCell align='center'>{row.updated_date}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ) : null}
-      </Box>
-    </>
+      <Container>
+        <Center>
+          {loading ? <Loading/> : null}
+          <Box>
+            <div>
+              <Stack spacing={1} direction='row'>
+                <NumberButton variant='contained' onClick={openModalHandler}>
+                  등록
+                </NumberButton>
+                <ModalContainer>
+                  {modalOpen ? (
+                      <ModalBackdrop onClick={openModalHandler}>
+                        <ModalView
+                            onClick={(event) => {
+                              event.stopPropagation();
+                            }}
+                        >
+                          <div className='close-btn' onClick={closeModalHandler}>
+                            &times;
+                          </div>
+                          <div className='desc'>
+                            <RegisterModals setModalOpen={setModalOpen}/>
+                          </div>
+                        </ModalView>
+                      </ModalBackdrop>
+                  ) : null}
+                </ModalContainer>
+              </Stack>
+            </div>
+            {number ? (
+                <TableContainer>
+                  <Table className={classes.table} aria-label='simple table'>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>기수명</TableCell>
+                        <TableCell align='center'>시작일</TableCell>
+                        <TableCell align='center'>종료일</TableCell>
+                        <TableCell align='center'>기타사항</TableCell>
+                        <TableCell align='center'>기수종료여부</TableCell>
+                        <TableCell align='center'>생성날짜</TableCell>
+                        <TableCell align='center'>수정날짜</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {rows.map((row) => (
+                          <TableRow key={nanoid()}>
+                            <TableCell component='th' scope='row'>
+                              <Link
+                                  to={`/admin/management/number/${row.id}`}
+                              >{`seb_${row.number_name}`}</Link>
+                            </TableCell>
+                            <TableCell align='center'>{row.start_date}</TableCell>
+                            <TableCell align='center'>{row.end_date}</TableCell>
+                            <TableCell align='center'>
+                              {row.comment ? row.comment : '-'}
+                            </TableCell>
+                            <TableCell align='center'>{row.is_closed?'수료':'학습중'}</TableCell>
+                            <TableCell align='center'>{row.created_date}</TableCell>
+                            <TableCell align='center'>{row.updated_date}</TableCell>
+                          </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+            ) : null}
+          </Box>
+        </Center>
+      </Container>
   );
 };
 

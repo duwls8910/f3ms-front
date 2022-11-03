@@ -21,13 +21,17 @@ export const Center = styled.div`
   width: 80%;
   background-color: rgb(240, 240, 240);
   border-radius: 5px;
-  box-shadow: 5px 5px 3px 3px grey;
+  box-shadow: 2px 2px 2px 2px grey;
+`;
+const ReadCenter =styled.div`
+margin-top : 1rem;
+width : 80%;
 `;
 
 export const Row1 = styled.div`
   align-self: center;
   font-size: 2rem;
-  padding: 2rem;
+  padding: 2rem 2rem 1rem 2rem;
   width: 90%;
 `;
 
@@ -190,103 +194,109 @@ const SpecificMember = () => {
   };
 
   return (
-    <Container>
-      {loading ? <Loading /> : null}
-      <Center>
-        {memberData.number === undefined ? (
-          '해당 기수의 정보를 찾을 수 없습니다'
-        ) : (
-          <>
-            <Row1>{memberData.member_name}</Row1>
-            <Row2>
-              <Title>기수</Title>
-              <Content>{memberData.number.number_name}</Content>
-            </Row2>
-            <Row2>
-              <Title>Pre-Project 팀</Title>
-              <Content>
-                {memberData.pre_team_id === null ? '-' : memberData.pre_team_id}
-              </Content>
-            </Row2>
-            <Row2>
-              <Title>Main-Project 팀</Title>
-              <Content>
-                {memberData.main_team_id === null
-                  ? '-'
-                  : memberData.main_team_id}
-              </Content>
-            </Row2>
-            <Row2>
-              <Title>학습 코스 구분</Title>
-              <Content>
-                {memberData.position_cd
-                  ? memberData.position_cd === 'p_be'
-                    ? '백엔드'
-                    : '프론트엔드'
-                  : null}
-              </Content>
-            </Row2>
-            <Row2>
-              <Title>학습 여부</Title>
-              <Content>
-                {memberData.is_active
-                  ? memberData.is_active
-                    ? '학습중'
-                    : '하차'
-                  : null}
-              </Content>
-            </Row2>
-          </>
-        )}
-        <Stack spacing={1} direction='row'>
-          <MemberButton variant='contained' onClick={openModalHandler}>
-            수정
-          </MemberButton>
-          <ModalContainer>
-            {updateOpen ? (
-              <ModalBackdrop onClick={openModalHandler}>
-                <ModalView
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <div className='close-btn' onClick={closeModalHandler}>
-                    &times;
-                  </div>
-                  <div className='desc'>
-                    <UpdateModals setModalOpen={setUpdateOpen} />
-                  </div>
-                </ModalView>
-              </ModalBackdrop>
-            ) : null}
-          </ModalContainer>
-          <MemberButton variant='contained' onClick={openDeleteHandler}>
-            비활성
-          </MemberButton>
-          <ModalContainer>
-            {deleteOpen ? (
-              <DeleteModalBackDrop onClick={openDeleteHandler}>
-                <DeleteModalView
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <div className='close-btn' onClick={closeDeleteHandler}>
-                    &times;
-                  </div>
-                  <div className='desc'>
-                    <DeleteModals />
-                  </div>
-                </DeleteModalView>
-              </DeleteModalBackDrop>
-            ) : null}
-          </ModalContainer>
-          <MemberButton variant='contained' onClick={handleNavigate}>
-            뒤로가기
-          </MemberButton>
-        </Stack>
-      </Center>
-    </Container>
+      <>
+        <Container>
+          {loading ? <Loading/> : null}
+          <Center>
+            {memberData.number === undefined ? (
+                '해당 기수의 정보를 찾을 수 없습니다'
+            ) : (
+                <>
+                  <Row1>{memberData.member_name}</Row1>
+                  <Row2>
+                    <Title>기수</Title>
+                    <Content>{memberData.number.number_name}</Content>
+                  </Row2>
+                  <Row2>
+                    <Title>Pre-Project 팀</Title>
+                    <Content>
+                      {memberData.pre_team_id === null ? '-' : memberData.pre_team_id}
+                    </Content>
+                  </Row2>
+                  <Row2>
+                    <Title>Main-Project 팀</Title>
+                    <Content>
+                      {memberData.main_team_id === null
+                          ? '-'
+                          : memberData.main_team_id}
+                    </Content>
+                  </Row2>
+                  <Row2>
+                    <Title>학습 코스 구분</Title>
+                    <Content>
+                      {memberData.position_cd
+                          ? memberData.position_cd === 'p_be'
+                              ? '백엔드'
+                              : '프론트엔드'
+                          : null}
+                    </Content>
+                  </Row2>
+                  <Row2>
+                    <Title>학습 여부</Title>
+                    <Content>
+                      {memberData.is_active
+                          ? memberData.is_active
+                              ? '학습중'
+                              : '하차'
+                          : null}
+                    </Content>
+                  </Row2>
+                </>
+            )}
+          </Center>
+        </Container>
+        <Container>
+          <ReadCenter>
+            <Stack spacing={1} direction='row'>
+              <MemberButton variant='contained' onClick={openModalHandler}>
+                수정
+              </MemberButton>
+              <ModalContainer>
+                {updateOpen ? (
+                    <ModalBackdrop onClick={openModalHandler}>
+                      <ModalView
+                          onClick={(event) => {
+                            event.stopPropagation();
+                          }}
+                      >
+                        <div className='close-btn' onClick={closeModalHandler}>
+                          &times;
+                        </div>
+                        <div className='desc'>
+                          <UpdateModals setModalOpen={setUpdateOpen}/>
+                        </div>
+                      </ModalView>
+                    </ModalBackdrop>
+                ) : null}
+              </ModalContainer>
+              <MemberButton variant='contained' onClick={openDeleteHandler}>
+                비활성
+              </MemberButton>
+              <ModalContainer>
+                {deleteOpen ? (
+                    <DeleteModalBackDrop onClick={openDeleteHandler}>
+                      <DeleteModalView
+                          onClick={(event) => {
+                            event.stopPropagation();
+                          }}
+                      >
+                        <div className='close-btn' onClick={closeDeleteHandler}>
+                          &times;
+                        </div>
+                        <div className='desc'>
+                          <DeleteModals/>
+                        </div>
+                      </DeleteModalView>
+                    </DeleteModalBackDrop>
+                ) : null}
+              </ModalContainer>
+              <MemberButton variant='contained' onClick={handleNavigate}>
+                뒤로가기
+              </MemberButton>
+            </Stack>
+          </ReadCenter>
+        </Container>
+      </>
   );
 };
 

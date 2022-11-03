@@ -16,7 +16,15 @@ import {
   TableCell,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
+const Container =styled.div`
+display: flex;
+flex-direction: row;
+justify-content: center;
+`;
+const Center =styled.div`
+margin-top : 1rem;
+width : 80%;
+`;
 export const MemberButton = styled(Button)`
   display: flex;
   flex-direction: row;
@@ -124,64 +132,66 @@ const ReadMember = () => {
   };
 
   return (
-    <>
-      {loading ? <Loading /> : null}
-      <Box>
-        <div>
-          <Stack spacing={1} direction='row'>
-            <MemberButton variant='contained' onClick={openModalHandler}>
-              등록
-            </MemberButton>
-            <ModalContainer>
-              {modalOpen ? (
-                <ModalBackdrop onClick={openModalHandler}>
-                  <ModalView
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    <div className='close-btn' onClick={closeModalHandler}>
-                      &times;
-                    </div>
-                    <div className='desc'>
-                      <RegisterModals setModalOpen={setModalOpen} />
-                    </div>
-                  </ModalView>
-                </ModalBackdrop>
-              ) : null}
-            </ModalContainer>
-          </Stack>
-        </div>
-        <TableContainer>
-          <Table className={classes.table} aria-label='simple table'>
-            <TableHead>
-              <TableRow>
-                <TableCell>팀원 이름</TableCell>
-                <TableCell align='center'>pre팀이름</TableCell>
-                <TableCell align='center'>main팀이름</TableCell>
-                <TableCell align='center'>학습 코스 구분</TableCell>
-                <TableCell align='center'>하차여부</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={nanoid()}>
-                  <TableCell component='th' scope='row'>
-                    <Link to={`/admin/management/member/${row.id}`}>
-                      {row.member_name}
-                    </Link>
-                  </TableCell>
-                  <TableCell align='center'>{row.pre_team_id}</TableCell>
-                  <TableCell align='center'>{row.main_team_id}</TableCell>
-                  <TableCell align='center'>{row.position_cd}</TableCell>
-                  <TableCell align='center'>{row.is_active}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-    </>
+      <Container>
+        <Center>
+          {loading ? <Loading/> : null}
+          <Box>
+            <div>
+              <Stack spacing={1} direction='row'>
+                <MemberButton variant='contained' onClick={openModalHandler}>
+                  등록
+                </MemberButton>
+                <ModalContainer>
+                  {modalOpen ? (
+                      <ModalBackdrop onClick={openModalHandler}>
+                        <ModalView
+                            onClick={(event) => {
+                              event.stopPropagation();
+                            }}
+                        >
+                          <div className='close-btn' onClick={closeModalHandler}>
+                            &times;
+                          </div>
+                          <div className='desc'>
+                            <RegisterModals setModalOpen={setModalOpen}/>
+                          </div>
+                        </ModalView>
+                      </ModalBackdrop>
+                  ) : null}
+                </ModalContainer>
+              </Stack>
+            </div>
+            <TableContainer>
+              <Table className={classes.table} aria-label='simple table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>팀원 이름</TableCell>
+                    <TableCell align='center'>pre팀이름</TableCell>
+                    <TableCell align='center'>main팀이름</TableCell>
+                    <TableCell align='center'>학습 코스 구분</TableCell>
+                    <TableCell align='center'>하차여부</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                      <TableRow key={nanoid()}>
+                        <TableCell component='th' scope='row'>
+                          <Link to={`/admin/management/member/${row.id}`}>
+                            {row.member_name}
+                          </Link>
+                        </TableCell>
+                        <TableCell align='center'>{row.pre_team_id === null ? '-' : row.pre_team_id}</TableCell>
+                        <TableCell align='center'>{row.main_team_id === null ? '-' : row.main_team_id}</TableCell>
+                        <TableCell align='center'>{row.position_cd}</TableCell>
+                        <TableCell align='center'>{row.is_active ? '학습중' : '하차'}</TableCell>
+                      </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        </Center>
+      </Container>
   );
 };
 
