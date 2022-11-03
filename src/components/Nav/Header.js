@@ -16,8 +16,6 @@ export const HeaderContainer = styled.header`
 `;
 
 const NavBlock = styled.div`
-  max-width: 1550px;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -25,6 +23,9 @@ const NavBlock = styled.div`
 
 export const LogoStyle = styled.div`
   img {
+    position: relative;
+    right: 70px;
+    bottom: 10px;
     background-size: 50% 50%;
   }
   &:link {

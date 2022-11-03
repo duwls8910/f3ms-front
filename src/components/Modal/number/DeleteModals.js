@@ -76,14 +76,19 @@ const DeleteModals = () => {
 
   // 비활성화 버튼 클릭 -> 예 버튼을 눌렀을 때 해당 기수는 비활성화되는 클릭 이벤트
   const handleClick = () => {
-    axios
-      .patch(`${process.env.REACT_APP_URL}/admin/management/number/${id}`, {
-        is_closed: true,
-      })
-      .then((res) => {
-        console.log(res);
-      });
-    setOpenDeleteModal(openDeleteModal);
+    try {
+      axios
+        .patch(`${process.env.REACT_APP_URL}/admin/management/number/${id}`, {
+          is_closed: true,
+          withCredentials: true,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+      setOpenDeleteModal(openDeleteModal);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // 비활성화 버튼 클릭 -> 아니오 버튼을 눌렀을 때 해당 기수는 비활성화되지 않는 클릭 이벤트

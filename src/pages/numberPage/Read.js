@@ -1,4 +1,3 @@
-/* eslint-disable no-lone-blocks */
 // 전체 기수 조회 페이지
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -192,7 +191,7 @@ const ReadNumber = () => {
                   <TableRow key={nanoid()}>
                     <TableCell component='th' scope='row'>
                       <Link
-                        to={`/admin/management/number/${row.id}`}
+                        to={`/admin/management/number/${id}`}
                       >{`seb_${row.number_name}`}</Link>
                     </TableCell>
                     <TableCell align='center'>{row.start_date}</TableCell>
@@ -215,10 +214,3 @@ const ReadNumber = () => {
 };
 
 export default ReadNumber;
-
-{
-  /* <TableCell component='th' scope='row'>
-  <Link
-    to={`/admin/management/number/${row.id}`}
-  >{`seb_${row.number_name}`}</Link> */
-}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from 'utils/LoadingIndicator';
 import UpdateModals from 'components/Modal/number/UpdateModals';
@@ -124,6 +124,7 @@ const SpecificNumber = () => {
   let tData = [
     {
       id: '',
+      number_id: '',
       team_name: '',
       is_opened: '',
       comment: '',
@@ -286,7 +287,9 @@ const SpecificNumber = () => {
                 </TableHead>
                 <TableBody>
                   <TableCell component='th' scope='row'>
-                    {teamData.team_name}
+                    <Link to={`/admin/management/pre-team/${id}`}>
+                      {`seb_${teamData.number_id}_pre_${teamData.team_name}`}
+                    </Link>
                   </TableCell>
                   <TableCell align='center'>
                     {teamData.is_opened ? '종료' : '진행중'}
