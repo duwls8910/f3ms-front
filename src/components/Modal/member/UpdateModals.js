@@ -21,7 +21,7 @@ export const MyButton = styled(Button)`
 
 const position_data = [{ label: '프론트엔드' }, { label: '백엔드' }];
 
-const MemberRegister = ({ setModalOpen }) => {
+const MemberRegister = ({ setModalOpen, memberName }) => {
   const [newMember, setNewMember] = useState({
     member_id: '',
     new_member_id: '',
@@ -34,7 +34,6 @@ const MemberRegister = ({ setModalOpen }) => {
     comment: '',
     new_comment: '',
   });
-  const [memberName, setMemberName] = useState('');
   const [position, setPosition] = useState('');
   const [preTeam, setPreTeam] = useState('');
   const [mainTeam, setMainTeam] = useState('');

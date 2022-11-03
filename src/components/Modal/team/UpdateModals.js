@@ -35,13 +35,12 @@ const UpdateModals = ({ setModalOpen }) => {
 
   const handleTeam = (e) => {
     const { value } = e.target;
-    // setSelectedDropValue(member_data.filter((el) => el.value === value)[0].id);
     setTeamName(value);
   };
 
-  const handleInputValue = (key) => (e) => {
-    setNewTeam({ ...newTeam, [key]: e.target.value });
-  };
+  // const handleInputValue = (key) => (e) => {
+  //   setNewTeam({ ...newTeam, [key]: e.target.value });
+  // };
 
   const handleComment = (e) => {
     const { value } = e.target;
@@ -81,7 +80,6 @@ const UpdateModals = ({ setModalOpen }) => {
         value={teamName}
         onChange={handleTeam}
       />
-      {/* <input value={teamName} onChange={handleTeam}></input> */}
       <h4>기타사항</h4>
       <TextField
         item='standard-basic'

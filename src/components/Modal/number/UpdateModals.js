@@ -23,7 +23,7 @@ export const MyButton = styled(Button)`
   padding: 0 30px;
 `;
 
-const UpdateModals = ({ setModalOpen }) => {
+const UpdateModals = ({ setModalOpen, numberName }) => {
   const [newNumber, setNewNumber] = useState({
     number_id: '',
     new_number_id: '',
@@ -34,9 +34,6 @@ const UpdateModals = ({ setModalOpen }) => {
     comment: '',
     new_comment: '',
   });
-  // const [selectedDropValue, setSelectedDropValue] =
-  //   useState('기수를 선택하세요');
-  const [numberName, setNumberName] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [comment, setComment] = useState('');
@@ -59,7 +56,7 @@ const UpdateModals = ({ setModalOpen }) => {
   };
 
   const onSubmit = async () => {
-    console.log(startDate, endDate, comment);
+    // console.log(startDate, endDate, comment);
     try {
       await axios.put(
         `${process.env.REACT_APP_URL}/admin/management/number/${id}`,
